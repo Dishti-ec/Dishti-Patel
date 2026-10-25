@@ -200,7 +200,7 @@ function navLink(mode, label, href, active) {
 function header(active) {
   const theme = localStorage.getItem('portfolio-theme') || 'light';
   return `<header class="site-header">
-    <div class="header-inner">
+    <div class="header-inner${active === 'archive' ? ' archive-header-inner' : ''}">
       <a class="wordmark" href="#/" aria-label="Dishti Patel — Archive"><span class="mark" aria-hidden="true">✳</span><span class="wordmark-name">Dishti Patel</span></a>
       <nav class="mode-nav" id="mode-nav" aria-label="Portfolio modes">
         ${navLink('archive', 'Archive', '#/', active)}
@@ -212,6 +212,15 @@ function header(active) {
         <button class="icon-button theme-button" type="button" aria-label="${theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}" title="Toggle theme">${theme === 'dark' ? icons.sun : icons.moon}</button>
         <button class="icon-button menu-button" type="button" aria-expanded="false" aria-controls="mode-nav" aria-label="Open navigation">${icons.menu}</button>
       </div>
+      ${active === 'archive' ? `<div class="archive-hanging" aria-hidden="true">
+        <svg class="hanging-filter-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <filter id="hanging-wave" x="-8%" y="-5%" width="116%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="2" seed="4" result="wave" />
+            <feDisplacementMap in="SourceGraphic" in2="wave" scale="0" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </svg>
+        <img class="archive-hanging-image" src="./assets/dangling-transparent.png" alt="" draggable="false">
+      </div>` : ''}
     </div>
   </header>`;
 }
@@ -240,7 +249,21 @@ function projectCard(project) {
       <div class="project-card-foot"><span class="project-status">STORY IN PROGRESS</span><a class="project-open" href="#/workshop/${project.slug}">Explore <span aria-hidden="true">↗</span></a></div>
     </div>
   </article>`;
-}
+};
+
+const polaroidPhotos = [
+  { image: 'img 1.jpeg', width: 899, height: 1599, alt: 'A close-up selfie of Dishti in a black top.', caption: 'a little moment to keep', note: 'collect moments, not things ♡' },
+  { image: 'img 2.jpeg', width: 576, height: 1280, alt: 'Dishti taking a mirror selfie with an event lanyard.', caption: 'somewhere new, feeling brave', note: 'ideas, adventures & little victories' },
+  { image: 'img 3.jpeg', width: 899, height: 1599, alt: 'A portrait of Dishti wearing a teal kurta.', caption: 'soft days, bright colors', note: 'soft heart, sharp mind' },
+  { image: 'img 4.jpeg', width: 1141, height: 720, alt: 'Dishti at a mountain overlook beneath a hazy sky.', caption: 'a little closer to the clouds', note: 'mountains = healing' },
+  { image: 'img 5.jpeg', width: 960, height: 1280, alt: 'Dishti standing outside a grand university building.', caption: 'showing up, one day at a time', note: 'build · learn · repeat' },
+  { image: 'img 6.jpeg', width: 484, height: 658, alt: 'A candid portrait of Dishti in a light shirt with a lanyard.', caption: 'good people, good memories', note: 'still becoming ✿' }
+];
+
+let polaroidShuffleTimer = 0;
+let polaroidTransitionTimer = 0;
+let polaroidObserver = null;
+let polaroidVisibilityHandler = null;
 
 function archive() {
   return `${header('archive')}
@@ -261,17 +284,19 @@ function archive() {
             <p class="sr-only" id="resume-status">The résumé download is unavailable because no verified résumé file has been supplied.</p>
             <div class="currently-exploring"><span class="eyebrow">CURRENTLY EXPLORING</span><strong>Building at the intersection of code and curiosity.</strong><div class="exploring-tags"><span>Cloud</span><span>Open source</span><span>Research</span></div><small>A snapshot of ongoing interests · update as they evolve</small></div>
           </div>
-          <div class="hero-visual">
-            <span class="hero-coordinate" aria-hidden="true">22°18′N / 73°11′E</span>
-            <span class="hero-orbit-path" aria-hidden="true"></span>
-            <div class="portrait-dossier" aria-label="Portrait placeholder">
-            <div class="portrait-art"><span class="portrait-crosshair" aria-hidden="true">✳</span><span class="portrait-monogram" aria-hidden="true">DP</span></div>
-            <p class="portrait-note"><span>Portrait to be supplied</span><span>Notebook / 2026</span></p>
-            <span class="portrait-caption">A space for the real portrait</span>
+          <div class="polaroid-scrapbook" data-polaroid-stack role="group" aria-label="A scrapbook bundle of six personal photographs">
+            <div class="polaroid-stage">
+              ${polaroidPhotos.map((photo, index) => `<figure class="polaroid-card" data-position="${index}" data-note="${photo.note}" data-shuffle-direction="left">
+                <img src="./assets/${photo.image}" width="${photo.width}" height="${photo.height}" alt="${photo.alt}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
+                <figcaption>${photo.caption}</figcaption>
+              </figure>`).join('')}
+              <p class="scrap-note scrap-note--featured" data-polaroid-note aria-hidden="true">${polaroidPhotos[0].note}</p>
+              <p class="scrap-note scrap-note--fixed" aria-hidden="true">little life lately ✿</p>
+              <p class="scrap-note scrap-note--code" aria-hidden="true">somewhere between code &amp; coffee</p>
+              <span class="scrap-doodle" aria-hidden="true">✧</span>
+              <span class="scrap-doodle scrap-doodle--heart" aria-hidden="true">♡</span>
             </div>
-            <span class="hero-note hero-note-top">currently building <i>↗</i></span>
-            <span class="hero-note hero-note-bottom">semester 03 · curiosity index: high</span>
-            <span class="hero-dot" aria-hidden="true">✳</span>
+            <p class="polaroid-caption">small frames, big feelings <span aria-hidden="true">↗</span></p>
           </div>
         </section>
 
@@ -695,13 +720,84 @@ function applyTheme() {
 
 function render() {
   clearObservatoryInteractions();
+  clearPolaroidShuffle();
   const route = getRoute();
   document.getElementById('app').innerHTML = route.mode === 'workshop' ? workshop(route) : route.mode === 'observatory' ? observatory() : archive();
   applyTheme();
   bindInteractions();
   setupObservatoryInteractions();
+  setupPolaroidShuffle();
   if (route.anchor) requestAnimationFrame(() => document.getElementById(route.anchor)?.scrollIntoView());
   else if (location.hash.startsWith('#/')) window.scrollTo(0, 0);
+}
+
+function clearPolaroidShuffle() {
+  if (polaroidShuffleTimer) window.clearTimeout(polaroidShuffleTimer);
+  if (polaroidTransitionTimer) window.clearTimeout(polaroidTransitionTimer);
+  polaroidShuffleTimer = 0;
+  polaroidTransitionTimer = 0;
+  polaroidObserver?.disconnect();
+  polaroidObserver = null;
+  if (polaroidVisibilityHandler) document.removeEventListener('visibilitychange', polaroidVisibilityHandler);
+  polaroidVisibilityHandler = null;
+}
+
+function setupPolaroidShuffle() {
+  const stack = document.querySelector('[data-polaroid-stack]');
+  if (!stack || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const note = stack.querySelector('[data-polaroid-note]');
+  let isVisible = false;
+  let entranceDirection = 'left';
+
+  const scheduleShuffle = () => {
+    if (polaroidShuffleTimer) window.clearTimeout(polaroidShuffleTimer);
+    polaroidShuffleTimer = 0;
+    if (!isVisible || document.hidden || polaroidTransitionTimer) return;
+    polaroidShuffleTimer = window.setTimeout(shuffle, 3900);
+  };
+
+  const shuffle = () => {
+    if (!isVisible || document.hidden) return;
+    const cards = [...stack.querySelectorAll('.polaroid-card')];
+    const outgoing = cards.find(card => card.dataset.position === '0');
+    const incoming = cards.find(card => card.dataset.position === '1');
+    if (!outgoing || !incoming) return;
+
+    outgoing.dataset.shuffleDirection = entranceDirection === 'left' ? 'right' : 'left';
+    incoming.dataset.shuffleDirection = entranceDirection;
+    outgoing.classList.add('is-leaving');
+    polaroidTransitionTimer = window.setTimeout(() => {
+      polaroidTransitionTimer = 0;
+      incoming.classList.add('is-entering');
+      outgoing.classList.add('is-resetting');
+      cards.forEach(card => {
+        const position = Number(card.dataset.position);
+        card.dataset.position = String(position === 0 ? cards.length - 1 : position - 1);
+      });
+      outgoing.classList.remove('is-leaving');
+      if (note) note.textContent = incoming.dataset.note;
+      entranceDirection = entranceDirection === 'left' ? 'right' : 'left';
+      requestAnimationFrame(() => {
+        outgoing.classList.remove('is-resetting');
+        requestAnimationFrame(() => incoming.classList.remove('is-entering'));
+      });
+      scheduleShuffle();
+    }, 760);
+  };
+
+  polaroidVisibilityHandler = scheduleShuffle;
+  document.addEventListener('visibilitychange', polaroidVisibilityHandler);
+  if ('IntersectionObserver' in window) {
+    polaroidObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      scheduleShuffle();
+    }, { threshold: 0.15 });
+    polaroidObserver.observe(stack);
+  } else {
+    isVisible = true;
+    scheduleShuffle();
+  }
 }
 
 function bindInteractions() {
@@ -734,16 +830,21 @@ function bindInteractions() {
   document.querySelector('.mobile-project-select')?.addEventListener('change', event => {
     location.hash = `#/workshop/${event.target.value}`;
   });
-  const portrait = document.querySelector('.portrait-dossier');
-  if (portrait && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    portrait.addEventListener('pointermove', event => {
-      const rect = portrait.getBoundingClientRect();
+  const hangingObject = document.querySelector('.archive-hanging');
+  if (hangingObject && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+    const wave = hangingObject.querySelector('feDisplacementMap');
+    hangingObject.addEventListener('pointermove', event => {
+      const rect = hangingObject.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
-      portrait.style.transform = `rotate(${1.6 + x * 3}deg) perspective(700px) rotateY(${x * 4}deg) rotateX(${-y * 3}deg)`;
+      const y = (event.clientY - rect.top) / rect.height;
+      hangingObject.style.setProperty('--hanging-rotation', `${(x * 4).toFixed(2)}deg`);
+      hangingObject.style.setProperty('--hanging-shift', `${(x * 5).toFixed(2)}px`);
+      wave.setAttribute('scale', String(5 + Math.round(Math.abs(x) * 13 + (1 - y) * 5)));
     });
-    portrait.addEventListener('pointerleave', () => {
-      portrait.style.transform = '';
+    hangingObject.addEventListener('pointerleave', () => {
+      hangingObject.style.removeProperty('--hanging-rotation');
+      hangingObject.style.removeProperty('--hanging-shift');
+      wave.setAttribute('scale', '0');
     });
   }
   document.querySelector('.workspace-search')?.addEventListener('input', event => {

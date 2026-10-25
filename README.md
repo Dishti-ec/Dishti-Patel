@@ -10,11 +10,13 @@ A dependency-free portfolio built with HTML, CSS and JavaScript. Open `index.htm
 
 Project and story content and route behavior live in `app.js`; visual tokens, responsive layouts and mode-specific styling live in `styles.css`. The Archive theme preference is saved in local storage.
 
+The Archive navigation has a hanging badge made from `assets/dangling.png`. Its checkerboard background is removed in `assets/dangling-transparent.png`, and cursor movement adds a subtle sway and wave distortion.
+
 The Observatory loads GSAP 3.15 and its Observer plugin from jsDelivr. If the CDN is unavailable, it logs a warning and retains wheel/touch navigation with CSS transitions. Respect for reduced-motion preferences disables automatic slide advancement.
 
 ## Content to verify before publishing
 
-- Supply a real portrait and a verified résumé file.
+- Supply a verified résumé file.
 - Confirm role titles and descriptions.
 - Verify event names, years, results and evidence before describing an award or placement.
 - Add project screenshots, implementation details and actual public demo/source links.
@@ -22,4 +24,4 @@ The Observatory loads GSAP 3.15 and its Observer plugin from jsDelivr. If the CD
 - Publish only reviewed Observatory articles with accurate dates and reading times.
 - Add the supplied Observatory image assets before replacing the clearly marked image placeholders.
 
-No contact details, social URLs, résumé, portrait, project links or article content were provided for this draft, so they are not fabricated here.
+No contact details, social URLs, résumé, project links or article content were provided for this draft, so they are not fabricated here.
