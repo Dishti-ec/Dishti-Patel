@@ -4,11 +4,17 @@ A dependency-free portfolio built with HTML, CSS and JavaScript. Open `index.htm
 
 ## The three modes
 
-- **Archive** (`#/`) — the professional landing page, academic profile, roles, event records, project cards and contact section.
+- **Archive** (`#/`) — the professional landing page, exploration index, interactive project desktop, roles, event records and contact section.
 - **Workshop** (`#/workshop`) — a responsive project explorer. Select a project and its documents to navigate the case-study outline.
 - **Observatory** (`#/observatory`) — a full-screen vertical thought archive with 11 story sections, category filters, wheel/touch navigation, keyboard controls and a timed, pause-to-advance slideshow.
 
 Project and story content and route behavior live in `app.js`; visual tokens, responsive layouts and mode-specific styling live in `styles.css`. The Archive theme preference is saved in local storage.
+
+## Field Notes
+
+The Archive's **Field Notes** section is driven by the `fieldNotes` array in `app.js`. The homepage presents five featured entries and three clearly labeled demo memories in a continuously gliding Polaroid carousel; pause it to browse manually. `#/field-notes/archive` opens the complete filtered collection, without the homepage-only demo cards. Each record uses a stable `id`, an explicit `status` (`draft`, `needs-verification` or `verified`), and a separate `visibility` setting (`public` by default). It also supports optional case-study fields and empty `gallery`, `documents`, and `externalLinks` arrays until real materials are available. Keep historical result claims in `historicalClaim`; they remain visibly unverified until evidence supports changing the status to `verified` and adding a `result`. Do not replace the clearly marked homepage photo placeholders with stock or generated event imagery.
+
+To add a competition, add a record to `fieldNotes` with a unique id, event name, category, summary and appropriate status. Populate the `sections`, `timeline`, and resource arrays only with confirmed information. Add photographs under `assets/field-notes/<record-id>/gallery/` and PPT/PDF files under `assets/field-notes/<record-id>/documents/`, then add their actual relative paths to that record. The page only renders usable resource links and images; do not add paths for files that do not exist.
 
 The Archive navigation has a hanging badge made from `assets/dangling.png`. Its checkerboard background is removed in `assets/dangling-transparent.png`, and cursor movement adds a subtle sway and wave distortion.
 

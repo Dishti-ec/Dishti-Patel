@@ -1,10 +1,542 @@
+const fieldNotes = [
+  {
+    id: 'sih-internal',
+    title: 'Smart India Hackathon',
+    eventName: 'Smart India Hackathon Internal Selection',
+    organizer: null,
+    category: 'Hackathon',
+    filter: 'Hackathons',
+    accent: 'var(--blue)',
+    year: null,
+    location: null,
+    teamName: null,
+    status: 'needs-verification',
+    historicalClaim: 'An internal winner result was previously reported; the event year and supporting evidence have not been added.',
+    summary: 'An internal selection record; the official edition, challenge and result still need confirmation.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Official problem statement / ID': null, 'Organizing institution': null },
+      approach: { 'Proposed solution': null, 'Prototype or presentation': null },
+      contribution: { 'Team and role': null, 'Personal contribution': null },
+      learning: { 'Verified selection result': null, 'Lessons learned': null },
+      reflection: { 'What I would improve': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'iit-roorkee-casequest',
+    title: 'CaseQuest',
+    eventName: 'IIT Roorkee E-Summit',
+    organizer: 'Indian Institute of Technology Roorkee',
+    category: 'Case Competition',
+    filter: 'Case Competitions',
+    accent: 'var(--brass)',
+    year: null,
+    location: null,
+    teamName: 'Midnight Thinkers',
+    status: 'needs-verification',
+    historicalClaim: 'Previously described as a finalist; supporting evidence has not been added.',
+    summary: 'A case competition entry associated with IIT Roorkee E-Summit.',
+    knownContext: ['The available case context mentions FPOs and NABARD.'],
+    sections: {
+      challenge: { 'Problem statement': null, 'FPO / NABARD research notes': null },
+      approach: { 'Team strategy': null, 'Proposed recommendation': null, 'Presentation and pitch': null },
+      contribution: { 'Personal contribution': null, 'Role': null },
+      learning: { 'What I learned': null },
+      reflection: { 'What I would improve': null, 'Future applications': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'star-ideaxplore',
+    title: 'STAR · IDEAXPLORE 2025',
+    eventName: 'IDEAXPLORE 2025',
+    organizer: null,
+    category: 'Innovation',
+    filter: 'Innovation',
+    accent: 'var(--terracotta)',
+    year: 2025,
+    location: null,
+    teamName: 'STAR',
+    status: 'needs-verification',
+    historicalClaim: 'A first-place result was previously reported; supporting evidence has not been added.',
+    summary: 'An IDEAXPLORE 2025 entry identified by the project/team name STAR.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Problem addressed': null, 'Idea origin': null, 'Intended users': null },
+      approach: { 'Proposed solution': null, 'Differentiation': null, 'Prototype or implementation': null, 'Presentation / demonstration': null },
+      contribution: { 'Personal contribution': null, 'Team collaboration': null },
+      learning: { 'Feedback received': null, 'Learning outcomes': null },
+      reflection: { 'Future development possibilities': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'solaris-nexus',
+    title: 'Solaris Nexus',
+    eventName: 'Solaris Nexus',
+    organizer: null,
+    category: 'University Event',
+    filter: 'University Events',
+    accent: 'var(--sage)',
+    year: null,
+    location: null,
+    teamName: null,
+    status: 'needs-verification',
+    historicalClaim: 'A first-place result at a university-level competition was previously reported; evidence has not been added.',
+    summary: 'A university-level competition entry; its category, organizer and project details are to be confirmed.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Category / theme': null, 'Problem statement': null },
+      approach: { 'Project or entry title': null, 'Approach': null, 'Presentation and judging': null },
+      contribution: { 'Personal contribution': null, 'Team details': null },
+      learning: { 'Lessons learned': null },
+      reflection: { 'Why the experience mattered': null, 'What I would improve': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'nuv-event',
+    title: 'NUV event',
+    eventName: 'NUV',
+    organizer: null,
+    category: 'Category to confirm',
+    filter: 'Uncategorized',
+    accent: 'var(--blue)',
+    year: null,
+    location: null,
+    teamName: null,
+    status: 'draft',
+    historicalClaim: null,
+    summary: 'A placeholder record for an NUV event; the exact title and event details have not been confirmed.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Exact event title / edition': null, 'Competition track': null, 'Problem statement': null },
+      approach: { 'Solution details': null },
+      contribution: { 'Team and role': null },
+      learning: { 'Learning outcomes': null },
+      reflection: { 'Experience and reflection': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'kanadshield',
+    title: 'KanadShield',
+    eventName: 'CyberCrime Ahmedabad · KanadShield',
+    organizer: 'CyberCrime Ahmedabad (association to confirm)',
+    category: 'Cybersecurity',
+    filter: 'Cybersecurity',
+    accent: '#8a7baa',
+    year: null,
+    location: null,
+    teamName: null,
+    status: 'draft',
+    historicalClaim: null,
+    summary: 'A cybersecurity-related event associated with CyberCrime Ahmedabad and KanadShield.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Official event title / format': null, 'Challenge category': null, 'Problem statement': null },
+      approach: { 'Technical approach': null, 'Tools and technologies': null, 'Authorized challenge artifacts': null, 'Defensive considerations': null },
+      contribution: { 'Personal contribution': null, 'Team collaboration': null },
+      learning: { 'Skills practiced': null, 'Lessons learned': null },
+      reflection: { 'Further technical exploration': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'sih-2025',
+    title: 'Smart India Hackathon · 2025',
+    eventName: 'Smart India Hackathon 2025',
+    organizer: null,
+    category: 'Hackathon',
+    filter: 'Hackathons',
+    accent: 'var(--blue)',
+    year: 2025,
+    location: null,
+    teamName: null,
+    status: 'draft',
+    historicalClaim: null,
+    summary: 'A Smart India Hackathon 2025 record; participation stage and outcome remain unconfirmed.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Official problem statement / ID': null, 'Organizing institution': null, 'Research and user needs': null },
+      approach: { 'Proposed solution': null, 'Architecture / prototype': null, 'Repository': null },
+      contribution: { 'Team and members': null, 'Personal contribution': null },
+      learning: { 'Verified stage reached': null, 'Lessons learned': null },
+      reflection: { 'Future implementation opportunities': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'sih-2026',
+    title: 'Smart India Hackathon · 2026',
+    eventName: 'Smart India Hackathon 2026',
+    organizer: null,
+    category: 'Hackathon',
+    filter: 'Hackathons',
+    accent: 'var(--blue)',
+    year: 2026,
+    location: null,
+    teamName: null,
+    status: 'draft',
+    historicalClaim: null,
+    summary: 'A Smart India Hackathon 2026 record; dates, category, stage and outcome remain unconfirmed.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Problem statement / category': null, 'Research and user needs': null },
+      approach: { 'Project overview': null, 'Proposed solution': null, 'Architecture / prototype': null },
+      contribution: { 'Team and role': null, 'Personal contribution': null },
+      learning: { 'Selection stage / verified result': null, 'Learning outcomes': null },
+      reflection: { 'Reflection and next steps': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  },
+  {
+    id: 'navrachana-tetrathon',
+    title: 'Navrachana TetraTHON',
+    eventName: 'Navrachana TetraTHON',
+    organizer: 'Navrachana (event details to confirm)',
+    category: 'Innovation',
+    filter: 'Innovation',
+    accent: 'var(--sage)',
+    year: null,
+    location: null,
+    teamName: null,
+    status: 'needs-verification',
+    historicalClaim: 'Top-nine overall, top-two in AgriTech, and only GSFC participant were previously reported; each claim needs evidence.',
+    summary: 'An innovation competition record with a reported AgriTech track; project and event details remain to be confirmed.',
+    knownContext: [],
+    sections: {
+      challenge: { 'Official track / AgriTech problem': null, 'Target beneficiaries': null },
+      approach: { 'Project or idea': null, 'Research and solution approach': null },
+      contribution: { 'Personal contribution': null, 'Competition process': null, 'Participation context': null },
+      learning: { 'Learning outcomes': null },
+      reflection: { 'Future opportunities': null }
+    },
+    timeline: [],
+    gallery: [],
+    documents: [],
+    externalLinks: []
+  }
+].map(note => ({
+  date: null,
+  result: null,
+  teamSize: null,
+  role: null,
+  coverImage: null,
+  coverAlt: null,
+  skills: [],
+  technologies: [],
+  tags: [],
+  learningOutcomes: [],
+  nextSteps: [],
+  featured: false,
+  visibility: 'public',
+  ...note
+}));
+
+const fieldNoteFilters = ['All', 'Hackathons', 'Innovation', 'Case Competitions', 'Cybersecurity', 'University Events'];
+let activeFieldNoteFilter = 'All';
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[character]);
+}
+
+function publishedFieldNotes() {
+  return fieldNotes.filter(note => note.visibility === 'public');
+}
+
+function filteredFieldNotes() {
+  const notes = publishedFieldNotes();
+  return activeFieldNoteFilter === 'All'
+    ? notes
+    : notes.filter(note => note.filter === activeFieldNoteFilter);
+}
+
+const featuredFieldNoteDetails = {
+  'sih-internal': { caption: 'the first big leap', icon: 'lightbulb', rotation: '-2.2deg' },
+  'iit-roorkee-casequest': { caption: 'a case of thinking bigger', icon: 'presentation', rotation: '1.8deg' },
+  'star-ideaxplore': { caption: 'an idea that found its way', icon: 'rocket', rotation: '-1.4deg' },
+  'navrachana-tetrathon': { caption: 'small team, big ambitions', icon: 'sprout', rotation: '2.5deg' },
+  'solaris-nexus': { caption: 'one for the university', icon: 'trophy', rotation: '-1.7deg' },
+  'demo-workshop-after-hours': { caption: 'the best ideas happen after hours', icon: 'lightbulb', rotation: '1.5deg' },
+  'demo-good-company': { caption: 'good people, new perspectives', icon: 'presentation', rotation: '-2deg' },
+  'demo-one-more-try': { caption: 'one more idea, one more try', icon: 'rocket', rotation: '2.3deg' }
+};
+const featuredFieldNoteIds = [
+  'sih-internal',
+  'iit-roorkee-casequest',
+  'star-ideaxplore',
+  'navrachana-tetrathon',
+  'solaris-nexus'
+];
+const demoFieldNotes = [
+  {
+    id: 'demo-workshop-after-hours',
+    title: 'A Workshop After Hours',
+    eventName: 'Workshop / demo memory',
+    category: 'Demo memory',
+    year: null,
+    status: 'draft',
+    summary: 'A placeholder for a future workshop, experiment or behind-the-scenes moment.',
+    isDemo: true
+  },
+  {
+    id: 'demo-good-company',
+    title: 'Learning in Good Company',
+    eventName: 'People / demo memory',
+    category: 'Demo memory',
+    year: null,
+    status: 'draft',
+    summary: 'A placeholder for a future collaboration, team memory or shared learning moment.',
+    isDemo: true
+  },
+  {
+    id: 'demo-one-more-try',
+    title: 'One More Idea, One More Try',
+    eventName: 'Ideas / demo memory',
+    category: 'Demo memory',
+    year: null,
+    status: 'draft',
+    summary: 'A placeholder for a future idea, attempt or experience worth remembering.',
+    isDemo: true
+  }
+];
+
+function featuredFieldNotes() {
+  const notesById = new Map(publishedFieldNotes().map(note => [note.id, note]));
+  return [...featuredFieldNoteIds.map(id => notesById.get(id)).filter(Boolean), ...demoFieldNotes];
+}
+
+function fieldNoteIcon(name) {
+  const paths = {
+    lightbulb: '<path d="M9 18h6m-5 3h4m-5-7a6 6 0 1 1 6 0c-.8.6-1.2 1.3-1.3 2h-3.4c-.1-.7-.5-1.4-1.3-2Z"/><path d="M12 2v2m8 7h2M2 11h2m13.7-5.7 1.4-1.4M4.9 5.3l1.4 1.4"/>',
+    presentation: '<rect x="3" y="4" width="18" height="13" rx="1"/><path d="M12 17v4m-4 0h8M7 9h4m-4 4h8m-1-4h3"/>',
+    rocket: '<path d="M14 4c2.8-2 5-2 6-2 0 1 0 3.2-2 6l-5 7-5-5 6-6Z"/><path d="m8 10-4 1-2 4 6-1m4 1-1 6 4-2 1-4"/><circle cx="16" cy="6" r="1"/><path d="M5 18c-1 1-1 3-1 3s2 0 3-1"/>',
+    sprout: '<path d="M12 21v-9m0 4c-6 0-9-3-9-8 5 0 9 2 9 8Zm0-4c0-5 3-8 9-8 0 5-3 8-9 8Zm-5 9h10"/>',
+    trophy: '<path d="M8 3h8v5a4 4 0 0 1-8 0V3Zm4 9v5m-4 4h8m-6-4h4"/><path d="M8 5H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4"/>'
+  };
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${paths[name] || paths.lightbulb}</svg>`;
+}
+
+function fieldMemoryCard(note, index) {
+  const details = featuredFieldNoteDetails[note.id];
+  const photograph = note.coverImage
+    ? { src: note.coverImage, alt: note.coverAlt || note.title }
+    : (note.gallery || []).find(image => image.src);
+  const isVerified = note.status === 'verified' && note.result;
+  const result = note.isDemo ? 'DEMO · DETAILS TO ADD' : isVerified ? note.result : note.historicalClaim ? 'Reported result · unverified' : 'Outcome to confirm';
+  const route = note.isDemo ? '#/field-notes/archive' : `#/field-notes/${encodeURIComponent(note.id)}`;
+  const photo = photograph
+    ? `<img src="${escapeHtml(photograph.src)}" alt="${escapeHtml(photograph.alt || note.title)}" loading="lazy">`
+    : `<span class="field-memory-photo-pending" role="img" aria-label="${note.isDemo ? 'Demo photograph placeholder' : `An event photograph for ${escapeHtml(note.title)} has not been added`}"><span class="field-memory-photo-mark" aria-hidden="true">${fieldNoteIcon(details.icon)}</span><span>${note.isDemo ? 'SAMPLE MEMORY' : 'REAL MOMENT'}<br>PHOTO TO ADD</span></span>`;
+  const duplicateAttributes = note.isDuplicate ? ' aria-hidden="true"' : '';
+  const duplicateTabIndex = note.isDuplicate ? ' tabindex="-1"' : '';
+  return `<li class="field-memory${note.isDuplicate ? ' field-memory--duplicate' : ''}" style="--memory-rotation:${details.rotation};--memory-delay:${index * -0.7}s" data-field-memory${duplicateAttributes}>
+    <span class="field-memory-clip" aria-hidden="true"></span>
+    <span class="field-memory-sticker" aria-hidden="true">${fieldNoteIcon(details.icon)}</span>
+    <a class="field-memory-polaroid" href="${route}"${note.isDemo ? '' : ` data-field-note-link="${escapeHtml(note.id)}"`} aria-label="${note.isDemo ? `Explore Field Notes; ${escapeHtml(note.title)} is a demo placeholder` : `Read the ${escapeHtml(note.title)} field note`}"${duplicateTabIndex}>
+      <span class="field-memory-photo">${photo}${!photograph ? '<span class="field-memory-photo-stamp" aria-hidden="true">PHOTO NEEDED</span>' : ''}</span>
+      <span class="field-memory-caption">${escapeHtml(details.caption)}.</span>
+      <span class="field-memory-event">${escapeHtml(note.eventName)}</span>
+      <span class="field-memory-outcome">${escapeHtml(result)}</span>
+      <span class="field-memory-date">${note.year || 'DATE TO CONFIRM'}</span>
+    </a>
+    <button class="field-memory-preview-toggle" type="button" aria-expanded="false" aria-controls="field-memory-preview-${index}" data-memory-preview-toggle${duplicateTabIndex}>+ story</button>
+    <div class="field-memory-preview" id="field-memory-preview-${index}" hidden>
+      <span class="eyebrow">${escapeHtml(note.category)} / ${note.year || 'DATE TO CONFIRM'}</span>
+      <strong>${escapeHtml(note.title)}</strong>
+      <span class="field-memory-preview-result">${escapeHtml(result)}</span>
+      <p>${escapeHtml(note.summary)}</p>
+      ${note.teamName ? `<span class="field-memory-team">TEAM · ${escapeHtml(note.teamName)}</span>` : ''}
+      <a href="${route}"${note.isDemo ? '' : ` data-field-note-link="${escapeHtml(note.id)}"`}${duplicateTabIndex}>${note.isDemo ? 'EXPLORE FIELD NOTES' : 'VIEW STORY'} <span aria-hidden="true">↗</span></a>
+    </div>
+  </li>`;
+}
+
+function fieldNoteCard(note, index) {
+  const isVerified = note.status === 'verified' && note.result;
+  const result = isVerified
+    ? note.result
+    : note.historicalClaim ? 'Result awaiting verification' : 'Event details in progress';
+  const evidenceCount = (note.gallery || []).length + (note.documents || []).length + (note.externalLinks || []).length;
+  return `<a class="field-note-card" href="#/field-notes/${encodeURIComponent(note.id)}" data-field-note-link="${escapeHtml(note.id)}" style="--note-accent:${note.accent || 'var(--blue)'}">
+    <span class="field-note-card-top"><span>FIELD NOTE / ${String(index + 1).padStart(2, '0')}</span><span>${note.year || 'YEAR TO CONFIRM'}</span></span>
+    ${note.coverImage ? `<span class="field-note-card-cover"><img src="${escapeHtml(note.coverImage)}" alt="${escapeHtml(note.coverAlt || note.title)}" loading="lazy"></span>` : ''}
+    <span class="field-note-category">${escapeHtml(note.category)}</span>
+    <h3>${escapeHtml(note.title)}</h3>
+    <p>${escapeHtml(note.summary)}</p>
+    <span class="field-note-card-bottom"><span class="field-note-result">${escapeHtml(result)}</span><span class="field-note-evidence">${evidenceCount ? `${evidenceCount} ASSETS` : '0 ASSETS'}</span><span class="field-note-explore">Explore this field note <span aria-hidden="true">↗</span></span></span>
+  </a>`;
+}
+
+function fieldNotesSection() {
+  const notes = featuredFieldNotes();
+  const duplicatedNotes = [...notes, ...notes.map(note => ({ ...note, isDuplicate: true }))];
+  return `<section class="section field-notes-section" id="field-notes" aria-labelledby="field-notes-title">
+    <div class="section-heading"><div><span class="eyebrow">MILESTONES &amp; MEMORIES</span><h2 id="field-notes-title">A few things happened along the way.</h2></div><span class="section-index">05 / FIELD NOTES</span></div>
+    <div class="field-notes-intro">
+      <p>Competitions · Hackathons · Case studies · Experiences</p>
+      <span class="field-notes-date-note">A COLLECTION OF MOMENTS <span>·</span> DATES SHOWN WHEN CONFIRMED</span>
+    </div>
+    <div class="field-notes-carousel-controls">
+      <span class="field-notes-motion-status" data-carousel-status aria-live="polite">Eight memories · gliding from right to left</span>
+      <button class="field-notes-motion-toggle" type="button" data-carousel-toggle aria-pressed="false">Pause cards</button>
+    </div>
+    <div class="field-notes-clothesline" role="region" aria-label="Field Notes Polaroid carousel">
+      <svg class="field-clothesline-svg field-clothesline-svg--horizontal" viewBox="0 0 1000 525" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="field-clothesline-path" d="M 0 62 C 40 62 68 73 100 76 S 245 102 300 96 S 435 67 500 74 S 646 122 700 112 S 855 77 900 86 S 977 89 1000 85"/></svg>
+      <ol class="field-memory-list">${duplicatedNotes.map(fieldMemoryCard).join('')}</ol>
+    </div>
+    <div class="field-note-ending">
+      <div class="field-note-ending-paper"><span class="eyebrow">FINAL NOTE</span><p class="field-note-ending-handwritten">To be continued...</p><p>Still collecting stories, building things, and finding new challenges.</p></div>
+      <a class="field-note-archive-link" href="#/field-notes/archive">EXPLORE ALL FIELD NOTES <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>`;
+}
+
+function fieldNotesArchive() {
+  const notes = filteredFieldNotes();
+  return `${header('archive')}
+    <main id="main" class="field-note-archive-main">
+      <div class="shell">
+        <a class="field-back-link" href="#/">← Back to the Archive</a>
+        <section class="field-note-archive-section" aria-labelledby="field-note-archive-title">
+          <div class="section-heading"><div><span class="eyebrow">COMPETITIONS · EXPERIENCES · CASE STUDIES</span><h1 id="field-note-archive-title">The Field Notes archive.</h1></div><span class="section-index">${String(publishedFieldNotes().length).padStart(2, '0')} / RECORDS</span></div>
+          <p class="field-note-archive-intro">A growing collection of challenges, attempts, collaborations and outcomes. Results remain marked for verification until their supporting details are confirmed.</p>
+          <div class="field-notes-toolbar">
+            <nav class="field-note-filters" aria-label="Filter field notes">
+              ${fieldNoteFilters.map(filter => `<button type="button" class="field-note-filter" data-field-filter="${escapeHtml(filter)}" aria-pressed="${activeFieldNoteFilter === filter}">${escapeHtml(filter)}</button>`).join('')}
+            </nav>
+            <span class="field-note-count" aria-live="polite">${notes.length} ${notes.length === 1 ? 'record' : 'records'}</span>
+          </div>
+          <div class="field-note-grid" aria-live="polite">${notes.length ? notes.map(fieldNoteCard).join('') : '<p class="field-note-empty">No field notes in this category yet.</p>'}</div>
+        </section>
+      </div>
+    </main>
+    ${footer('archive')}`;
+}
+
+function fieldNoteDetail(route) {
+  const notes = publishedFieldNotes();
+  const note = notes.find(entry => entry.id === route.fieldNote);
+  if (!note) {
+    return `${header('archive')}<main id="main" class="field-note-detail-main"><div class="shell"><a class="field-back-link" href="#/">← Back to Field Notes</a><h1>Field note not found</h1><p>This record may have moved or its identifier may be incorrect.</p></div></main>${footer('archive')}`;
+  }
+
+  const sectionLabels = [
+    ['overview', 'Overview'],
+    ['challenge', 'The challenge'],
+    ['approach', 'Approach & solution'],
+    ['contribution', 'My contribution'],
+    ['sprint', 'Competitive sprint'],
+    ['evidence', 'Evidence & resources'],
+    ['learning', 'Learning outcomes'],
+    ['reflection', 'Reflection & next steps']
+  ];
+  const sections = note.sections || {};
+  const renderFields = fields => {
+    const entries = Object.entries(fields || {}).filter(([, value]) => value !== null && value !== '');
+    return entries.length
+      ? `<dl class="field-detail-list">${entries.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>`
+      : '<span class="field-pending-label">DOCUMENTATION PENDING</span>';
+  };
+  const gallery = note.gallery || [];
+  const resources = note.documents || [];
+  const links = note.externalLinks || [];
+  const timeline = note.timeline || [];
+  const knownFacts = note.knownContext || [];
+  const detailSections = [
+    `<section class="field-detail-section" id="overview"><span class="eyebrow">01 / EVENT RECORD</span><h2>Overview</h2>
+      <dl class="field-meta-grid">
+        ${[['Event', note.eventName], ['Organizer', note.organizer], ['Year', note.year], ['Location', note.location], ['Category', note.category], ['Team', note.teamName]].filter(([, value]) => value).map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}
+        <div><dt>Result</dt><dd>${note.status === 'verified' && note.result ? escapeHtml(note.result) : note.historicalClaim ? 'Reported claim awaits verification' : 'Not recorded'}</dd></div>
+      </dl>
+      ${note.historicalClaim && !(note.status === 'verified' && note.result) ? `<aside class="field-claim-note"><span class="eyebrow">UNVERIFIED HISTORICAL CLAIM</span><p>${escapeHtml(note.historicalClaim)}</p></aside>` : ''}
+      ${knownFacts.length ? `<div class="field-known-context">${knownFacts.map(fact => `<p>${escapeHtml(fact)}</p>`).join('')}</div>` : ''}
+    </section>`,
+    ...sectionLabels.slice(1, 4).map(([id, label], index) => `<section class="field-detail-section" id="${id}"><span class="eyebrow">${String(index + 2).padStart(2, '0')} / CASE NOTES</span><h2>${label}</h2>${renderFields(sections[id])}</section>`),
+    `<section class="field-detail-section" id="sprint"><span class="eyebrow">05 / EVENT SEQUENCE</span><h2>Competitive sprint</h2>
+      ${timeline.length ? `<ol class="field-sprint">${timeline.map(stage => `<li><span>${escapeHtml(stage.title)}</span>${stage.date ? `<small>${escapeHtml(stage.date)}</small>` : ''}<p>${escapeHtml(stage.description)}</p></li>`).join('')}</ol>` : '<span class="field-pending-label">TIMELINE TO BE ADDED</span>'}
+    </section>`,
+    `<section class="field-detail-section" id="evidence"><span class="eyebrow">06 / DOCUMENTATION</span><h2>Evidence &amp; resources</h2>
+      ${gallery.length ? `<div class="field-gallery">${gallery.map((image, index) => `<button type="button" class="field-gallery-item" data-gallery-index="${index}" aria-label="View image ${index + 1}: ${escapeHtml(image.alt || image.caption || note.title)}"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || '')}" loading="lazy"><span>${escapeHtml(image.caption || '')}</span></button>`).join('')}</div>` : '<p class="field-empty-state">Gallery to be added.</p>'}
+      ${resources.length ? `<div class="field-resource-list">${resources.map(resource => {
+        const href = resource.url || resource.path;
+        const validHref = href && /^(https?:\/\/|\.\.\/|\.\/|assets\/)/i.test(href);
+        return validHref
+          ? `<a class="field-resource" href="${escapeHtml(href)}" ${resource.url ? 'target="_blank" rel="noopener noreferrer"' : 'download'}><span class="eyebrow">${escapeHtml(resource.type || 'RESOURCE')}</span><strong>${escapeHtml(resource.title)}</strong><span>${escapeHtml(resource.description || '')}</span><b>Open resource ↗</b></a>`
+          : `<article class="field-resource"><span class="eyebrow">${escapeHtml(resource.type || 'RESOURCE')}</span><strong>${escapeHtml(resource.title)}</strong><span>${escapeHtml(resource.description || '')}</span><span class="field-pending-label">FILE OR LINK NOT ADDED</span></article>`;
+      }).join('')}</div>` : '<p class="field-empty-state">No presentations or supporting documents have been added yet.</p>'}
+      ${links.length ? `<div class="field-external-links">${links.filter(link => /^https?:\/\//i.test(link.url || '')).map(link => `<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)} ↗</a>`).join('')}</div>` : ''}
+    </section>`,
+    ...sectionLabels.slice(6).map(([id, label], index) => `<section class="field-detail-section" id="${id}"><span class="eyebrow">${String(index + 7).padStart(2, '0')} / JOURNAL</span><h2>${label}</h2>${renderFields(sections[id])}</section>`)
+  ].join('');
+  const currentIndex = notes.indexOf(note);
+  const previous = notes[currentIndex - 1];
+  const next = notes[currentIndex + 1];
+
+  const storedReturn = sessionStorage.getItem('field-note-return');
+  const returnHref = storedReturn === '#/field-notes/archive' ? storedReturn : '#/';
+  sessionStorage.removeItem('field-note-return');
+  return `${header('archive')}
+    <main id="main" class="field-note-detail-main">
+      <div class="shell">
+        <a class="field-back-link" href="${returnHref}">← Back to Field Notes</a>
+        <header class="field-detail-heading">
+          <span class="eyebrow">FIELD NOTE / ${String(currentIndex + 1).padStart(2, '0')} · ${escapeHtml(note.category)}</span>
+          <h1 tabindex="-1">${escapeHtml(note.title)}</h1>
+          <p>${escapeHtml(note.summary)}</p>
+          <span class="field-detail-status">${note.status === 'verified' && note.result ? 'VERIFIED RECORD' : note.historicalClaim ? 'HISTORICAL CLAIM NEEDS VERIFICATION' : 'DRAFT · DETAILS TO CONFIRM'}</span>
+        </header>
+        ${note.coverImage ? `<figure class="field-detail-cover"><img src="${escapeHtml(note.coverImage)}" alt="${escapeHtml(note.coverAlt || note.title)}"><figcaption>${escapeHtml(note.coverAlt || note.title)}</figcaption></figure>` : ''}
+        <div class="field-detail-layout">
+          <nav class="field-detail-toc" aria-label="On this page"><span class="eyebrow">ON THIS PAGE</span>${sectionLabels.map(([id, label], index) => `<a href="#${id}">${String(index + 1).padStart(2, '0')} ${label}</a>`).join('')}</nav>
+          <article class="field-detail-content">${detailSections}
+            <nav class="field-detail-pagination" aria-label="Other field notes">
+              ${previous ? `<a href="#/field-notes/${previous.id}">← ${escapeHtml(previous.title)}</a>` : '<span></span>'}
+              ${next ? `<a href="#/field-notes/${next.id}">${escapeHtml(next.title)} →</a>` : '<span></span>'}
+            </nav>
+          </article>
+        </div>
+      </div>
+    </main>
+    ${gallery.length ? `<dialog class="field-lightbox" aria-label="Field note image viewer"><button type="button" class="field-lightbox-close" aria-label="Close image viewer">×</button><button type="button" class="field-lightbox-previous" aria-label="Previous image">←</button><figure><img alt=""><figcaption></figcaption></figure><button type="button" class="field-lightbox-next" aria-label="Next image">→</button></dialog>` : ''}
+    ${footer('archive')}`;
+}
+
 const projects = [
   {
     slug: 'nexterra',
     accent: '#79c9c1',
     name: 'NexTerra',
     folder: '01_NexTerra',
-    category: 'Geospatial · Environmental intelligence',
+    category: 'AI / Geospatial Intelligence / Environment',
     tagline: 'Exploring how geospatial data can make environmental risk easier to understand.',
     concept: 'A proposed geospatial environmental intelligence project. Data sources, analysis and validated capabilities need confirmation.',
     files: [
@@ -16,11 +548,26 @@ const projects = [
     ]
   },
   {
+    slug: 'cloudforge',
+    accent: '#c4a9f3',
+    name: 'CloudForge',
+    folder: '02_CloudForge',
+    category: 'Cloud / AWS / Gamified Learning',
+    tagline: 'Exploring a more hands-on path into cloud concepts and developer tools.',
+    concept: 'A proposed gamified cloud-learning environment. Simulated scenarios and any real AWS integrations need confirmation.',
+    files: [
+      ['overview.md', 'Project overview', 'CloudForge is framed as a gamified cloud-learning environment. Confirm the learner audience, completed challenges and current project status before describing it as a working product.'],
+      ['learning-design.md', 'Learning design', 'Show how a learner progresses from a concept to an exercise and useful feedback. Label planned exercises separately from scenarios that have actually been built.'],
+      ['system-design.md', 'System design', 'Document the implementation and distinguish simulated cloud scenarios from any real AWS integration. This draft does not imply that cloud resources are provisioned.'],
+      ['build-notes.md', 'Build notes & reflection', 'Add the hardest implementation problem, what was tried, and the trade-offs or limitations observed. No performance or learning outcomes are claimed here.']
+    ]
+  },
+  {
     slug: 'pravaha',
     accent: '#9ad5b2',
     name: 'PRAVAHA',
-    folder: '02_PRAVAHA',
-    category: 'Circular economy · E-waste',
+    folder: '03_PRAVAHA',
+    category: 'Sustainability / Circular Economy',
     tagline: 'A project direction around more transparent e-waste collection and valuation.',
     concept: 'A proposed e-waste collection and circular-economy workflow. User research and implemented capabilities need confirmation.',
     files: [
@@ -32,26 +579,11 @@ const projects = [
     ]
   },
   {
-    slug: 'cloudforge',
-    accent: '#c4a9f3',
-    name: 'CloudForge',
-    folder: '03_CloudForge',
-    category: 'Cloud · Learning experience',
-    tagline: 'Exploring a more hands-on path into cloud concepts and developer tools.',
-    concept: 'A proposed gamified cloud-learning environment. Simulated scenarios and any real AWS integrations need confirmation.',
-    files: [
-      ['overview.md', 'Project overview', 'CloudForge is framed as a gamified cloud-learning environment. Confirm the learner audience, completed challenges and current project status before describing it as a working product.'],
-      ['learning-design.md', 'Learning design', 'Show how a learner progresses from a concept to an exercise and useful feedback. Label planned exercises separately from scenarios that have actually been built.'],
-      ['system-design.md', 'System design', 'Document the implementation and distinguish simulated cloud scenarios from any real AWS integration. This draft does not imply that cloud resources are provisioned.'],
-      ['build-notes.md', 'Build notes & reflection', 'Add the hardest implementation problem, what was tried, and the trade-offs or limitations observed. No performance or learning outcomes are claimed here.']
-    ]
-  },
-  {
     slug: 'carbon-credits',
     accent: '#b4c690',
     name: 'Carbon Credits Ecosystem',
     folder: '04_Carbon_Credits',
-    category: 'Climate · Verification & traceability',
+    category: 'Climate Tech / Verification',
     tagline: 'A systems concept for land registration and environmental evidence.',
     concept: 'A proposed carbon-credit registration and verification concept. Verification methods, data and implementation need confirmation.',
     files: [
@@ -189,6 +721,9 @@ function getRoute() {
   const path = location.hash.replace(/^#\/?/, '').split('/');
   if (path[0] === 'workshop') return { mode: 'workshop', project: path[1] || 'home', file: path[2] || '' };
   if (path[0] === 'observatory') return { mode: 'observatory' };
+  if (path[0] === 'field-notes' && path[1] === 'archive') return { mode: 'field-notes-archive' };
+  if (path[0] === 'field-notes' && path[1]) return { mode: 'field-note', fieldNote: path[1] };
+  if (path[0] === 'field-notes') return { mode: 'field-notes-archive' };
   if (path[0] === 'contact') return { mode: 'archive', anchor: 'contact' };
   return { mode: 'archive' };
 }
@@ -237,19 +772,24 @@ function footer(active) {
   </div></footer>`;
 }
 
-function projectCard(project) {
-  const number = String(projects.indexOf(project) + 1).padStart(2, '0');
-  const motif = project.slug === 'nexterra' ? '<i class="project-contour" aria-hidden="true"></i>' : project.slug === 'pravaha' ? '<i class="workflow-nodes" aria-hidden="true"><b>01</b><b>02</b><b>03</b></i>' : project.slug === 'cloudforge' ? '<i class="cloud-path" aria-hidden="true"><b>LEARN</b><b>BUILD</b><b>DEPLOY</b></i>' : '<i class="forest-map" aria-hidden="true"><b>VERIFY</b><b>TRACE</b></i>';
-  return `<article class="project-card project-${project.slug}">
-    <div class="project-art ${project.slug}" role="img" aria-label="Concept visual for ${project.name}, not a project screenshot"><span class="project-art-index" aria-hidden="true">${number} / 04</span><span class="project-art-mark" aria-hidden="true">${project.name === 'Carbon Credits Ecosystem' ? 'CC' : project.name === 'PRAVAHA' ? 'P' : project.name.slice(0, 1)}</span>${motif}<small aria-hidden="true">Concept visual · not a screenshot</small></div>
-    <div class="project-info">
-      <span class="eyebrow">${project.category}</span>
-      <h3>${project.name}</h3>
-      <p>${project.tagline}</p>
-      <div class="project-card-foot"><span class="project-status">STORY IN PROGRESS</span><a class="project-open" href="#/workshop/${project.slug}">Explore <span aria-hidden="true">↗</span></a></div>
-    </div>
-  </article>`;
-};
+function projectArtwork(slug) {
+  const illustrations = {
+    nexterra: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M17 37c37-29 65 8 103-8s60-33 99-12 57 4 84 19M10 60c37-29 67 11 109-7s62-30 98-8 54 3 87 18M6 85c45-25 66 8 111-8s67-29 99-8 51 3 82 18M18 111c34-20 62 4 101-9s72-26 106-6 51 2 72 12M39 139c25-14 53 1 83-9s67-20 97-5 47 4 66 10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M216 48c0 20-26 42-26 42s-26-22-26-42a26 26 0 1 1 52 0Z" fill="currentColor" opacity=".14"/><circle cx="190" cy="48" r="7" fill="currentColor"/><path d="M235 122h52M261 96v52" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>',
+    cloudforge: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M84 83a31 31 0 0 1 59-13 25 25 0 0 1 40 14h6a21 21 0 0 1 0 42H89a22 22 0 0 1-5-43Z" fill="currentColor" opacity=".17" stroke="currentColor" stroke-width="2"/><rect x="194" y="46" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><rect x="194" y="79" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><rect x="194" y="112" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M205 58h4m-4 33h4m-4 33h4M218 58h35m-35 33h35m-35 33h35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m75 137 11-11 11 11m-11-11v27h36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    pravaha: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M86 78a51 51 0 0 1 89-23l10 12m0 0-19 2m19-2-2-19M232 91a51 51 0 0 1-88 30l-11-12m0 0 19-1m-19 1 1 19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M147 78h39l-5 43h-30z" fill="currentColor" opacity=".14" stroke="currentColor" stroke-width="2"/><path d="M150 91h34m-30 9h28m-24 9h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="109" cy="55" r="4" fill="currentColor"/><circle cx="213" cy="128" r="4" fill="currentColor"/><path d="M62 145h196" stroke="currentColor" stroke-width="1" stroke-dasharray="3 6"/></svg>',
+    'carbon-credits': '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M52 142h220M69 142V89m0 0 20-29 20 29v53m38 0V70m0 0 25-35 25 35v72m30 0V95m0 0 18-25 18 25v47" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="239" cy="51" r="28" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><path d="m226 51 9 9 18-19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M43 40h45M43 48h29M254 135h31" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>'
+  };
+  return illustrations[slug] || '';
+}
+
+function projectDesktopFolder(project, index) {
+  const number = String(index + 1).padStart(2, '0');
+  return `<a class="project-folder project-folder--${project.slug}" href="#/workshop/${project.slug}" aria-label="Open ${escapeHtml(project.name)} project overview in the Workshop">
+    <span class="project-folder-topline"><span class="project-folder-number">${number}</span><span class="project-folder-code">${project.slug === 'nexterra' ? 'GEO / AI' : project.slug === 'cloudforge' ? 'AWS / CLOUD' : project.slug === 'pravaha' ? 'CIRCULARITY' : 'CLIMATE TECH'}</span><span class="project-folder-open">OPEN PROJECT <span aria-hidden="true">↗</span></span></span>
+    <span class="project-folder-art" role="img" aria-label="${escapeHtml(project.name)} conceptual illustration, not a product screenshot">${projectArtwork(project.slug)}<span class="project-folder-art-caption" aria-hidden="true">CONCEPT VISUAL</span></span>
+    <div class="project-folder-copy"><div class="project-folder-meta"><h3>${escapeHtml(project.name)}</h3><span class="project-folder-category">${escapeHtml(project.category)}</span></div><span class="project-folder-arrow" aria-hidden="true">↗</span></div>
+  </a>`;
+}
 
 const polaroidPhotos = [
   { image: 'img 1.jpeg', width: 899, height: 1599, alt: 'A close-up selfie of Dishti in a black top.', caption: 'a little moment to keep', note: 'collect moments, not things ♡' },
@@ -264,6 +804,12 @@ let polaroidShuffleTimer = 0;
 let polaroidTransitionTimer = 0;
 let polaroidObserver = null;
 let polaroidVisibilityHandler = null;
+let explorationObserver = null;
+let explorationTween = null;
+let projectDesktopObserver = null;
+let projectDesktopTimeline = null;
+let fieldNotesObserver = null;
+let fieldNotesTimeline = null;
 
 function archive() {
   return `${header('archive')}
@@ -300,17 +846,79 @@ function archive() {
           </div>
         </section>
 
-        <section class="section" aria-labelledby="academic-title">
-          <div class="section-heading"><h2 id="academic-title">Academic profile</h2><span class="section-index">01 / CURRENTLY LEARNING</span></div>
-          <div class="academic-spread">
-            <article class="academic-score"><span class="eyebrow">CUMULATIVE CGPA</span><strong>8.36</strong><span class="score-denominator">/ 10</span><p>After Semester 2 · update when results change</p><div class="semester-track" aria-label="Semester 1 and 2 complete; currently in semester 3"><span class="done">01</span><i></i><span class="done">02</span><i></i><span class="current">03</span></div><small>ACADEMIC PATH · CURRENT SGPA NOT PUBLISHED</small></article>
-            <div class="academic-details">
-              <article class="academic-detail programme"><span class="eyebrow">PROGRAMME</span><strong>B.Tech CSE</strong><span>GSFC University</span><i aria-hidden="true">⌁</i></article>
-              <article class="academic-detail stage"><span class="eyebrow">CURRENT STAGE</span><strong>Semester 3</strong><span>Academic snapshot</span><i aria-hidden="true">03</i></article>
-              <article class="academic-detail focus"><span class="eyebrow">CURRENT FOCUS</span><strong>Learning by building</strong><span>Projects, systems and experimentation</span><i aria-hidden="true">✳</i></article>
+        <section class="section exploration-section" aria-labelledby="exploring-title">
+          <div class="section-heading"><h2 id="exploring-title">A mind in progress.</h2><span class="section-index">03 / CURRENTLY EXPLORING</span></div>
+          <p class="section-intro exploration-intro">Areas I'm exploring, experimenting with, and learning to understand better.</p>
+          <div class="exploration-grid">
+            <details class="exploration-item">
+              <summary>
+                <span class="exploration-code">01 / INFRASTRUCTURE</span>
+                <svg class="exploration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 16.2a4.5 4.5 0 0 0-4.5-4.5h-.3A6.2 6.2 0 1 0 4.5 17h11"></path><path d="M16 19h6m-3-3 3 3-3 3"></path></svg>
+                <strong class="exploration-title">Cloud &amp; DevOps</strong>
+                <span class="exploration-summary">AWS · Linux · Infrastructure</span>
+                <span class="exploration-arrow" aria-hidden="true">↗</span>
+              </summary>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Exploring how systems are deployed, managed, automated and scaled.</p><span class="exploration-tags">AWS / LINUX / CI-CD / AUTOMATION</span></div></div>
+            </details>
+            <details class="exploration-item">
+              <summary>
+                <span class="exploration-code">02 / INTELLIGENCE</span>
+                <svg class="exploration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 18V5.5a3.5 3.5 0 0 0-7 0A3.5 3.5 0 0 0 4 12a3.5 3.5 0 0 0 3 5.5"></path><path d="M12 18V5.5a3.5 3.5 0 0 1 7 0A3.5 3.5 0 0 1 20 12a3.5 3.5 0 0 1-3 5.5"></path><path d="M8 9h1m-2 5h2m6-5h1m-1 5h2m-5-8v2m0 8v2"></path><path d="M9 18v2m6-2v2"></path></svg>
+                <strong class="exploration-title">AI &amp; ML</strong>
+                <span class="exploration-summary">Intelligent systems · Data</span>
+                <span class="exploration-arrow" aria-hidden="true">↗</span>
+              </summary>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Exploring intelligent systems and how data can make them more useful.</p><span class="exploration-tags">INTELLIGENT SYSTEMS / DATA</span></div></div>
+            </details>
+            <details class="exploration-item">
+              <summary>
+                <span class="exploration-code">03 / ENGINEERING</span>
+                <svg class="exploration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 17 6-5-6-5"></path><path d="M12 19h8"></path></svg>
+                <strong class="exploration-title">Development</strong>
+                <span class="exploration-summary">Full-stack · Experimentation</span>
+                <span class="exploration-arrow" aria-hidden="true">↗</span>
+              </summary>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Building across the stack and learning through hands-on experimentation.</p><span class="exploration-tags">FULL-STACK / EXPERIMENTATION</span></div></div>
+            </details>
+            <details class="exploration-item">
+              <summary>
+                <span class="exploration-code">04 / CREATIVITY</span>
+                <svg class="exploration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15.5 5.5 3 3"></path><path d="M4 20c4.5-.5 7.5-3 10-5.5l5-5a2.1 2.1 0 0 0-3-3l-5 5C8.5 14 6 16.5 4 20Z"></path><path d="m13 8 3 3"></path></svg>
+                <strong class="exploration-title">Design &amp; Ideas</strong>
+                <span class="exploration-summary">Product thinking · UI/UX</span>
+                <span class="exploration-arrow" aria-hidden="true">↗</span>
+              </summary>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Thinking about how useful products feel, work and communicate.</p><span class="exploration-tags">PRODUCT THINKING / UI/UX</span></div></div>
+            </details>
+          </div>
+          <div class="exploration-footer"><span>ALWAYS LEARNING. ALWAYS BUILDING.</span><a class="text-link" href="#projects">Explore my work <span aria-hidden="true">↗</span></a></div>
+        </section>
+
+        <section class="section selected-work-section" id="projects" aria-labelledby="projects-title">
+          <div class="section-heading selected-work-heading">
+            <div class="selected-work-title"><span class="eyebrow">PROJECT ARCHIVE · 2026</span><h2 id="projects-title">Things I've been building.</h2></div>
+            <span class="section-index">04 / SELECTED WORK</span>
+          </div>
+          <p class="section-intro selected-work-intro">A collection of ideas, experiments and things brought to life.</p>
+          <div class="project-desktop" role="group" aria-label="Dishti's project desktop">
+            <nav class="project-desktop-toolbar" aria-label="Project desktop controls">
+              <a class="project-toolbar-control" href="#exploring-title" aria-label="Back to currently exploring" title="Back to currently exploring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></a>
+              <a class="project-toolbar-control" href="#projects" aria-label="Forward to selected work" title="Forward to selected work"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a>
+              <span class="project-desktop-address"><span class="address-lock" aria-hidden="true">⌑</span>dishti.dev <span aria-hidden="true">/</span> workshop</span>
+              <button class="project-toolbar-control project-desktop-refresh" type="button" aria-label="Refresh the project desktop" title="Refresh the project desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5"></path><path d="M19 12a7 7 0 1 1-2-5l3 5"></path></svg></button>
+              <span class="project-toolbar-spacer"></span>
+              <a class="project-toolbar-control project-github-link" href="https://github.com/Dishti-ec" target="_blank" rel="noopener noreferrer" aria-label="Open Dishti's GitHub profile in a new tab" title="GitHub profile"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .9a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.1c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.01-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15.99 1.7 2.6 1.21 3.24.93.1-.73.39-1.21.7-1.49-2.47-.28-5.06-1.24-5.06-5.52 0-1.22.44-2.22 1.16-3-.12-.29-.5-1.42.11-2.96 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.13-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.67.11 2.96.72.78 1.16 1.78 1.16 3 0 4.29-2.6 5.23-5.08 5.51.4.35.75 1.02.75 2.06v3.05c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .9Z"></path></svg></a>
+              <a class="project-toolbar-control project-workshop-link" href="#/workshop/home" aria-label="Open the full Workshop" title="Open the full Workshop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"></path><path d="m20 4-9 9"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg></a>
+            </nav>
+            <div class="project-desktop-caption"><span>MY PROJECT DESKTOP</span><span>04 ITEMS · OPEN TO EXPLORE <span aria-hidden="true">↗</span></span></div>
+            <div class="project-desktop-grid">
+              ${projects.map((project, index) => projectDesktopFolder(project, index)).join('')}
             </div>
+            <div class="project-desktop-footer"><span><strong>DISHTI'S WORKSPACE</strong><span>A glimpse into the Workshop.</span></span><a href="#/workshop/home">OPEN FULL WORKSPACE <span aria-hidden="true">↗</span></a></div>
           </div>
         </section>
+
+        ${fieldNotesSection()}
 
         <section class="section" aria-labelledby="roles-title">
           <div class="section-heading"><h2 id="roles-title">Roles &amp; current work</h2><span class="section-index">02 / COMMUNITY</span></div>
@@ -318,35 +926,6 @@ function archive() {
             <article class="role-card role-cloud"><div class="role-illustration" aria-hidden="true"><span class="role-star">✳</span><span class="role-orbit"></span><span class="role-planet"></span><span class="role-coordinate">AWS / BUILD</span></div><div class="role-copy"><span class="eyebrow">CLOUD · COMMUNITY · TECHNICAL LEADERSHIP</span><h3>AWS Student Builder Group</h3><p class="role">Technical Lead</p><p>Cloud learning, technical exploration and student building initiatives.</p><div class="role-tags"><span>Cloud</span><span>Learning</span><span>Community</span></div></div></article>
             <article class="role-card role-literature"><div class="role-illustration" aria-hidden="true"><span class="book-mark">Aa</span><span class="book-line"></span><span class="role-coordinate">WORDS / IDEAS</span><span class="book-star">✳</span></div><div class="role-copy"><span class="eyebrow">LITERATURE · LEADERSHIP · CREATIVITY</span><h3>University Literature Club</h3><p class="role">President</p><p>Literary initiatives, student participation and creative expression.</p><div class="role-tags"><span>Literature</span><span>Leadership</span><span>Community</span></div></div></article>
           </div>
-        </section>
-
-        <section class="section" aria-labelledby="milestones-title">
-          <div class="section-heading"><h2 id="milestones-title">Milestones &amp; events</h2><span class="section-index">03 / VERIFY BEFORE PUBLISHING</span></div>
-          <p class="section-intro">These event names are included as portfolio records, not as claims of a placement or award. Results, years, categories and supporting evidence should be confirmed before adding accolades.</p>
-          <div class="milestone-timeline">
-            <article class="milestone"><span class="milestone-pin"></span><span class="milestone-number">01</span><div><span class="eyebrow">EVENT · YEAR TO CONFIRM</span><h3>IIT Roorkee</h3><p>Event, category and result need verification before publication.</p></div><span class="verification">RESULT<br>TO VERIFY</span></article>
-            <article class="milestone"><span class="milestone-pin"></span><span class="milestone-number">02</span><div><span class="eyebrow">EVENT · YEAR TO CONFIRM</span><h3>NUV</h3><p>Event, category and result need verification before publication.</p></div><span class="verification">RESULT<br>TO VERIFY</span></article>
-            <article class="milestone"><span class="milestone-pin"></span><span class="milestone-number">03</span><div><span class="eyebrow">CYBER SECURITY AHMEDABAD</span><h3>KanadShield</h3><p>Category and result need verification before publication.</p></div><span class="verification">RESULT<br>TO VERIFY</span></article>
-            <article class="milestone"><span class="milestone-pin"></span><span class="milestone-number">04</span><div><span class="eyebrow">HACKATHON · 2025</span><h3>Smart India Hackathon</h3><p>Participation and outcome need verification before publication.</p></div><span class="verification">RESULT<br>TO VERIFY</span></article>
-            <article class="milestone"><span class="milestone-pin"></span><span class="milestone-number">05</span><div><span class="eyebrow">HACKATHON · 2026</span><h3>Smart India Hackathon</h3><p>Participation and outcome need verification before publication.</p></div><span class="verification">RESULT<br>TO VERIFY</span></article>
-          </div>
-        </section>
-
-        <section class="section" aria-labelledby="build-title">
-          <div class="section-heading"><h2 id="build-title">What I build</h2><span class="section-index">04 / AREAS OF INTEREST</span></div>
-          <div class="build-grid">
-            <article class="build-item build-software"><span class="eyebrow">01 · MAKE</span><div class="build-visual software-diagram" aria-hidden="true"><i>Idea</i><b>→</b><i>Interface</i></div><h3>Software &amp; web</h3><p>Thoughtful interfaces and useful digital experiences.</p></article>
-            <article class="build-item build-cloud"><span class="eyebrow">02 · CONNECT</span><div class="build-visual cloud-diagram" aria-hidden="true"><i>Learn</i><b>→</b><i>Build</i><b>→</b><i>Deploy</i></div><h3>Cloud &amp; tooling</h3><p>Exploring cloud systems and tools that support builders.</p></article>
-            <article class="build-item build-data"><span class="eyebrow">03 · EXPLORE</span><div class="build-visual data-diagram" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><h3>AI/ML &amp; data</h3><p>Learning through data-led questions and prototypes.</p></article>
-            <article class="build-item build-climate"><span class="eyebrow">04 · OBSERVE</span><div class="build-visual map-diagram" aria-hidden="true"><i></i><i></i><i></i></div><h3>Climate &amp; place</h3><p>Geospatial and environmental technology ideas.</p></article>
-            <article class="build-item build-writing"><span class="eyebrow">05 · DOCUMENT</span><div class="build-visual writing-diagram" aria-hidden="true"><i>01</i><i>02</i><i>03</i></div><h3>Research &amp; writing</h3><p>Making the process, evidence and decisions legible.</p></article>
-          </div>
-        </section>
-
-        <section class="section" id="projects" aria-labelledby="projects-title">
-          <div class="section-heading"><h2 id="projects-title">Selected projects</h2><span class="section-index">05 / THE WORK, IN PROGRESS</span></div>
-          <p class="section-intro">Start with the project names and directions already in the brief. Case-study content is clearly marked for verification until real implementation evidence is supplied.</p>
-          <div class="project-grid">${projects.map(projectCard).join('')}</div>
         </section>
 
         <section class="section" aria-labelledby="worlds-title">
@@ -703,13 +1282,18 @@ function applyTheme() {
   const route = getRoute();
   const theme = localStorage.getItem('portfolio-theme') || 'light';
   const project = projects.find(item => item.slug === route.project);
+  const fieldNote = publishedFieldNotes().find(item => item.id === route.fieldNote);
   document.documentElement.dataset.theme = theme;
-  document.body.className = `${route.mode}-page`;
+  document.body.className = `${route.mode === 'field-notes-archive' ? 'archive' : route.mode}-page`;
   document.querySelector('meta[name="theme-color"]').content = route.mode === 'observatory' ? '#0c1422' : route.mode === 'workshop' ? '#171a21' : theme === 'dark' ? '#151b24' : '#f5f2ea';
-  const title = route.mode === 'archive' ? 'Dishti Patel — The Archive' : route.mode === 'workshop' ? `Dishti Patel — ${project?.name || 'The Workshop'}` : 'Dishti Patel — The Observatory';
+  const title = route.mode === 'archive' ? 'Dishti Patel — The Archive' : route.mode === 'field-notes-archive' ? 'Field Notes — Dishti Patel' : route.mode === 'field-note' ? `Field Note: ${fieldNote?.title || 'Not found'} — Dishti Patel` : route.mode === 'workshop' ? `Dishti Patel — ${project?.name || 'The Workshop'}` : 'Dishti Patel — The Observatory';
   const description = route.mode === 'archive'
     ? 'Dishti Patel — Computer Science student, builder and curious mind. Explore the Archive, Workshop and Observatory.'
-    : route.mode === 'workshop'
+    : route.mode === 'field-notes-archive'
+      ? 'A growing collection of Dishti Patel’s competitions, case studies, experiences and lessons learned.'
+    : route.mode === 'field-note'
+      ? `${fieldNote?.eventName || 'Field note'} — competition notes, evidence and reflections.`
+      : route.mode === 'workshop'
       ? `${project?.name || 'The Workshop'} — project outline, design questions and implementation details to verify.`
       : 'The Observatory — a personal reading room for reviewed reflections on technology, literature and learning.';
   document.title = title;
@@ -721,14 +1305,117 @@ function applyTheme() {
 function render() {
   clearObservatoryInteractions();
   clearPolaroidShuffle();
+  clearExplorationAnimation();
+  clearProjectDesktopAnimation();
+  clearFieldNotesAnimation();
   const route = getRoute();
-  document.getElementById('app').innerHTML = route.mode === 'workshop' ? workshop(route) : route.mode === 'observatory' ? observatory() : archive();
+  document.getElementById('app').innerHTML = route.mode === 'workshop' ? workshop(route) : route.mode === 'observatory' ? observatory() : route.mode === 'field-note' ? fieldNoteDetail(route) : route.mode === 'field-notes-archive' ? fieldNotesArchive() : archive();
   applyTheme();
   bindInteractions();
   setupObservatoryInteractions();
   setupPolaroidShuffle();
+  setupExplorationAnimation();
+  setupProjectDesktopAnimation();
+  setupFieldNotesAnimation();
   if (route.anchor) requestAnimationFrame(() => document.getElementById(route.anchor)?.scrollIntoView());
-  else if (location.hash.startsWith('#/')) window.scrollTo(0, 0);
+  else if ((route.mode === 'archive' || route.mode === 'field-notes-archive') && sessionStorage.getItem('field-note-scroll')) {
+    const position = Number(sessionStorage.getItem('field-note-scroll'));
+    const focusedNote = sessionStorage.getItem('field-note-focus');
+    sessionStorage.removeItem('field-note-scroll');
+    sessionStorage.removeItem('field-note-focus');
+    requestAnimationFrame(() => {
+      window.scrollTo(0, position);
+      const card = [...document.querySelectorAll('[data-field-note-link]')].find(item => item.dataset.fieldNoteLink === focusedNote);
+      card?.focus({ preventScroll: true });
+    });
+  } else if (location.hash.startsWith('#/')) window.scrollTo(0, 0);
+}
+
+function clearExplorationAnimation() {
+  explorationObserver?.disconnect();
+  explorationObserver = null;
+  explorationTween?.kill();
+  explorationTween = null;
+}
+
+function setupExplorationAnimation() {
+  const section = document.querySelector('.exploration-section');
+  const gsap = window.gsap;
+  if (!section || !gsap || typeof gsap.set !== 'function' || typeof gsap.to !== 'function' || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+  const targets = [...section.querySelectorAll('.section-heading, .exploration-intro, .exploration-item, .exploration-footer')];
+  gsap.set(targets, { autoAlpha: 0, y: 12 });
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    if (explorationObserver === observer) explorationObserver = null;
+    explorationTween = gsap.to(targets, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.12, ease: 'power2.out' });
+  });
+  explorationObserver = observer;
+  observer.observe(section);
+}
+
+function clearProjectDesktopAnimation() {
+  projectDesktopObserver?.disconnect();
+  projectDesktopObserver = null;
+  projectDesktopTimeline?.kill();
+  projectDesktopTimeline = null;
+}
+
+function setupProjectDesktopAnimation() {
+  const section = document.querySelector('.selected-work-section');
+  const gsap = window.gsap;
+  if (!section || !gsap || typeof gsap.set !== 'function' || typeof gsap.timeline !== 'function' || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+  const heading = section.querySelector('.section-heading');
+  const desktop = section.querySelector('.project-desktop');
+  const toolbar = section.querySelector('.project-desktop-toolbar');
+  const folders = [...section.querySelectorAll('.project-folder')];
+  const footer = section.querySelector('.project-desktop-footer');
+  gsap.set(heading, { autoAlpha: 0, y: 14 });
+  gsap.set(desktop, { autoAlpha: 0, scale: 0.985, transformOrigin: '50% 50%' });
+  gsap.set([toolbar, ...folders, footer], { autoAlpha: 0, y: 14 });
+
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    if (projectDesktopObserver === observer) projectDesktopObserver = null;
+    projectDesktopTimeline = gsap.timeline();
+    projectDesktopTimeline
+      .to(heading, { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power2.out' })
+      .to(desktop, { autoAlpha: 1, scale: 1, duration: 0.48, ease: 'power2.out' }, '-=0.16')
+      .to(toolbar, { autoAlpha: 1, y: 0, duration: 0.34, ease: 'power2.out' }, '-=0.2')
+      .to(folders, { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.12, ease: 'power2.out' }, '-=0.12')
+      .to(footer, { autoAlpha: 1, y: 0, duration: 0.32, ease: 'power2.out' }, '-=0.16');
+  }, { threshold: 0.12 });
+  projectDesktopObserver = observer;
+  observer.observe(section);
+}
+
+function clearFieldNotesAnimation() {
+  fieldNotesObserver?.disconnect();
+  fieldNotesObserver = null;
+  fieldNotesTimeline?.kill();
+  fieldNotesTimeline = null;
+}
+
+function setupFieldNotesAnimation() {
+  const section = document.querySelector('.field-notes-section');
+  const gsap = window.gsap;
+  if (!section || !gsap || typeof gsap.set !== 'function' || typeof gsap.timeline !== 'function' || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+  const heading = section.querySelector('.section-heading');
+  const intro = section.querySelector('.field-notes-intro');
+  gsap.set([heading, intro], { autoAlpha: 0, y: 12 });
+
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    if (fieldNotesObserver === observer) fieldNotesObserver = null;
+    fieldNotesTimeline = gsap.to([heading, intro], { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.08, ease: 'power2.out' });
+  }, { threshold: 0.12 });
+  fieldNotesObserver = observer;
+  observer.observe(section);
 }
 
 function clearPolaroidShuffle() {
@@ -830,6 +1517,117 @@ function bindInteractions() {
   document.querySelector('.mobile-project-select')?.addEventListener('change', event => {
     location.hash = `#/workshop/${event.target.value}`;
   });
+  document.querySelector('.project-desktop-refresh')?.addEventListener('click', () => window.location.reload());
+  document.querySelector('.field-note-filters')?.addEventListener('click', event => {
+    const button = event.target.closest('[data-field-filter]');
+    if (!button) return;
+    activeFieldNoteFilter = button.dataset.fieldFilter;
+    document.querySelectorAll('[data-field-filter]').forEach(filterButton => {
+      filterButton.setAttribute('aria-pressed', String(filterButton === button));
+    });
+    const notes = filteredFieldNotes();
+    const grid = document.querySelector('.field-note-grid');
+    grid.innerHTML = notes.length
+      ? notes.map(fieldNoteCard).join('')
+      : '<p class="field-note-empty">No field notes in this category yet.</p>';
+    document.querySelector('.field-note-count').textContent = `${notes.length} ${notes.length === 1 ? 'record' : 'records'}`;
+  });
+  const rememberFieldNoteReturn = event => {
+    const link = event.target.closest('[data-field-note-link]');
+    if (!link) return;
+    sessionStorage.setItem('field-note-return', location.hash === '#/field-notes/archive' ? '#/field-notes/archive' : '#/');
+    sessionStorage.setItem('field-note-scroll', String(window.scrollY));
+    sessionStorage.setItem('field-note-focus', link.dataset.fieldNoteLink);
+  };
+  document.querySelector('.field-note-grid')?.addEventListener('click', rememberFieldNoteReturn);
+  const clothesline = document.querySelector('.field-notes-clothesline');
+  if (clothesline) {
+    const motionToggle = document.querySelector('[data-carousel-toggle]');
+    const motionStatus = document.querySelector('[data-carousel-status]');
+    const setManualPause = paused => {
+      clothesline.classList.toggle('is-manual', paused);
+      motionToggle.setAttribute('aria-pressed', String(paused));
+      motionToggle.textContent = paused ? 'Resume cards' : 'Pause cards';
+      motionStatus.textContent = paused
+        ? 'Paused · scroll to browse all eight memories'
+        : 'Eight memories · gliding from right to left';
+    };
+    setManualPause(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    motionToggle.addEventListener('click', () => setManualPause(!clothesline.classList.contains('is-manual')));
+    clothesline.addEventListener('focusin', event => {
+      const memory = event.target.closest('[data-field-memory]');
+      if (!memory) return;
+      setManualPause(true);
+      memory.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'auto' });
+    });
+    const setPreview = (memory, open) => {
+      const panel = memory.querySelector('.field-memory-preview');
+      const button = memory.querySelector('[data-memory-preview-toggle]');
+      panel.hidden = !open;
+      memory.classList.toggle('is-preview-open', open);
+      button.setAttribute('aria-expanded', String(open));
+      button.textContent = open ? '− close' : '+ story';
+    };
+    const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches && !window.matchMedia('(max-width: 700px)').matches;
+    clothesline.addEventListener('pointerover', event => {
+      if (!hasHover) return;
+      const memory = event.target.closest('[data-field-memory]');
+      if (memory && !(event.relatedTarget instanceof Node && memory.contains(event.relatedTarget))) setPreview(memory, true);
+    });
+    clothesline.addEventListener('pointerout', event => {
+      if (!hasHover) return;
+      const memory = event.target.closest('[data-field-memory]');
+      if (memory && !(event.relatedTarget instanceof Node && memory.contains(event.relatedTarget)) && !memory.contains(document.activeElement) && memory.dataset.previewPinned !== 'true') setPreview(memory, false);
+    });
+    clothesline.addEventListener('focusin', event => {
+      const memory = event.target.closest('[data-field-memory]');
+      if (memory) setPreview(memory, true);
+    });
+    clothesline.addEventListener('focusout', event => {
+      const memory = event.target.closest('[data-field-memory]');
+      if (memory && !(event.relatedTarget instanceof Node && memory.contains(event.relatedTarget)) && memory.dataset.previewPinned !== 'true') setPreview(memory, false);
+    });
+    clothesline.addEventListener('click', event => {
+      const previewButton = event.target.closest('[data-memory-preview-toggle]');
+      if (previewButton) {
+        const memory = previewButton.closest('[data-field-memory]');
+        const open = memory.dataset.previewPinned !== 'true';
+        memory.dataset.previewPinned = String(open);
+        setPreview(memory, open);
+        return;
+      }
+      rememberFieldNoteReturn(event);
+    });
+  }
+  const lightbox = document.querySelector('.field-lightbox');
+  if (lightbox) {
+    const images = publishedFieldNotes().find(note => note.id === getRoute().fieldNote)?.gallery || [];
+    let imageIndex = 0;
+    const showImage = index => {
+      imageIndex = (index + images.length) % images.length;
+      const image = images[imageIndex];
+      lightbox.querySelector('img').src = image.src;
+      lightbox.querySelector('img').alt = image.alt || '';
+      lightbox.querySelector('figcaption').textContent = image.caption || '';
+    };
+    document.querySelectorAll('[data-gallery-index]').forEach(button => {
+      button.addEventListener('click', () => {
+        showImage(Number(button.dataset.galleryIndex));
+        lightbox.showModal();
+        lightbox.querySelector('.field-lightbox-close').focus();
+      });
+    });
+    lightbox.querySelector('.field-lightbox-close').addEventListener('click', () => lightbox.close());
+    lightbox.querySelector('.field-lightbox-previous').addEventListener('click', () => showImage(imageIndex - 1));
+    lightbox.querySelector('.field-lightbox-next').addEventListener('click', () => showImage(imageIndex + 1));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) lightbox.close();
+    });
+    lightbox.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') showImage(imageIndex - 1);
+      if (event.key === 'ArrowRight') showImage(imageIndex + 1);
+    });
+  }
   const hangingObject = document.querySelector('.archive-hanging');
   if (hangingObject && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
     const wave = hangingObject.querySelector('feDisplacementMap');
@@ -866,7 +1664,10 @@ function bindInteractions() {
 }
 
 window.addEventListener('hashchange', () => {
-  if (location.hash.startsWith('#/')) render();
+  if (location.hash.startsWith('#/')) {
+    render();
+    if (getRoute().mode === 'field-note') document.querySelector('.field-detail-heading h1')?.focus();
+  }
   else document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
 });
 render();
