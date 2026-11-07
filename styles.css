@@ -706,16 +706,14 @@ h1, h2, h3, p { margin-top: 0; }
 .field-note-card:hover, .field-note-card:focus-visible { transform: translateY(-3px); border-color: var(--note-accent); box-shadow: 0 8px 20px rgb(32 41 54 / 7%); }
 .field-note-card:hover::before, .field-note-card:focus-visible::before { width: 4px; opacity: 1; }
 .field-note-card-top, .field-note-card-bottom { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font: .51rem/1.5 var(--mono); letter-spacing: .035em; text-transform: uppercase; }
-.field-note-card-top span:last-child { text-align: right; }
 .field-note-card-cover { display: block; margin-top: 12px; overflow: hidden; border: 1px solid var(--rule); }
 .field-note-card-cover img { width: 100%; aspect-ratio: 3 / 1; display: block; object-fit: cover; }
 .field-note-category { margin-top: 22px; color: var(--note-accent); font: .56rem var(--mono); letter-spacing: .065em; text-transform: uppercase; }
 .field-note-card h3 { margin: 7px 0 8px; font: 400 1.42rem/1.06 var(--serif); }
 .field-note-card p { max-width: 42ch; margin: 0 0 18px; color: var(--muted); font-size: .73rem; line-height: 1.6; }
 .field-note-card-bottom { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 5px 8px; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--rule); }
-.field-note-result { color: var(--muted); }
 .field-note-evidence { color: var(--muted); font-size: .48rem; }
-.field-note-explore { grid-column: 2; grid-row: 1 / span 2; color: var(--ink); text-align: right; }
+.field-note-explore { grid-column: 2; grid-row: 1; color: var(--ink); text-align: right; }
 .field-note-explore span { display: inline-block; color: var(--note-accent); transition: transform .2s ease; }
 .field-note-card:hover .field-note-explore span, .field-note-card:focus-visible .field-note-explore span { transform: translate(2px, -2px); }
 .field-note-empty { grid-column: 1 / -1; margin: 0; padding: 28px; border: 1px dashed var(--rule); color: var(--muted); text-align: center; font: .72rem var(--mono); }
@@ -728,8 +726,6 @@ h1, h2, h3, p { margin-top: 0; }
 .field-notes-section > .section-heading h2 { max-width: 720px; font-size: clamp(2rem, 4.2vw, 3.1rem); }
 .field-notes-intro { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin: 0 0 12px; }
 .field-notes-intro p { margin: 0; color: var(--muted); font: .78rem/1.6 var(--serif); }
-.field-notes-date-note { color: var(--muted); font: .5rem/1.5 var(--mono); letter-spacing: .06em; text-align: right; }
-.field-notes-date-note span { padding: 0 5px; color: var(--brass); }
 .field-notes-carousel-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 2px 0 8px; }
 .field-notes-motion-status { color: var(--muted); font: .52rem/1.5 var(--mono); letter-spacing: .04em; }
 .field-notes-motion-toggle { min-height: 31px; padding: 5px 10px; border: 1px solid var(--rule); border-radius: 2px; color: var(--ink); background: var(--paper-raised); cursor: pointer; font: .52rem var(--mono); }
@@ -765,13 +761,10 @@ h1, h2, h3, p { margin-top: 0; }
 .field-memory-photo-stamp { position: absolute; right: 5px; bottom: 5px; padding: 3px 4px; color: #756b5e; background: rgb(255 253 247 / 85%); font: .39rem var(--mono); letter-spacing: .05em; }
 .field-memory-caption { min-height: 36px; display: grid; place-items: center; padding: 8px 2px 5px; color: #665c4f; font: italic .68rem/1.2 'Segoe Print', 'Bradley Hand', cursive; text-align: center; }
 .field-memory-event { display: block; color: #353b41; font: 400 1.05rem/1.15 var(--serif); }
-.field-memory-outcome { display: block; margin-top: 5px; color: #856749; font: .45rem/1.4 var(--mono); letter-spacing: .025em; text-transform: uppercase; }
-.field-memory-date { display: block; margin-top: 7px; color: #817a6f; font: .42rem/1.4 var(--mono); letter-spacing: .05em; text-align: right; }
 .field-memory-preview-toggle { position: absolute; top: 100%; right: 1px; min-height: 25px; padding: 4px 2px; border: 0; color: var(--muted); background: transparent; cursor: pointer; font: .52rem var(--mono); text-transform: uppercase; }
 .field-memory-preview { position: absolute; z-index: 7; top: 16px; left: 50%; width: calc(100% - 20px); max-width: 250px; padding: 13px 14px; border: 1px solid var(--rule); background: var(--paper-raised); box-shadow: 0 10px 24px rgb(32 41 54 / 16%); transform: translateX(-50%); }
 .field-memory-preview .eyebrow { display: block; margin-bottom: 7px; color: var(--muted); font-size: .47rem; }
 .field-memory-preview > strong { display: block; color: var(--ink); font: 400 1.15rem/1.1 var(--serif); }
-.field-memory-preview-result { display: block; margin-top: 5px; color: var(--brass); font: .48rem/1.4 var(--mono); text-transform: uppercase; }
 .field-memory-preview p { margin: 8px 0; color: var(--muted); font-size: .67rem; line-height: 1.55; }
 .field-memory-team { display: block; color: var(--muted); font: .47rem/1.5 var(--mono); }
 .field-memory-preview > a { display: inline-block; margin-top: 8px; color: var(--blue); font: .53rem var(--mono); text-decoration: none; }
@@ -866,7 +859,6 @@ a.field-resource:hover { border-color: var(--blue); }
 }
 @media (max-width: 700px) {
   .field-notes-intro { display: grid; align-items: start; gap: 4px; }
-  .field-notes-date-note { text-align: left; }
   .field-notes-carousel-controls { margin-top: 8px; }
   .field-notes-motion-status { max-width: 66%; }
   .field-notes-clothesline { height: 420px; margin: 6px 0 12px; }
@@ -876,8 +868,6 @@ a.field-resource:hover { border-color: var(--blue); }
   .field-memory-sticker svg { width: 15px; height: 15px; }
   .field-memory-event { font-size: .82rem; }
   .field-memory-caption { min-height: 34px; font-size: .6rem; }
-  .field-memory-outcome { font-size: .4rem; }
-  .field-memory-date { font-size: .39rem; }
   .field-memory-preview-toggle { font-size: .49rem; }
   .field-note-ending { align-items: flex-start; flex-direction: column; gap: 13px; margin-top: 10px; }
   .field-note-ending-paper { max-width: 100%; }

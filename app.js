@@ -293,10 +293,7 @@ const featuredFieldNoteDetails = {
   'iit-roorkee-casequest': { caption: 'a case of thinking bigger', icon: 'presentation', rotation: '1.8deg' },
   'star-ideaxplore': { caption: 'an idea that found its way', icon: 'rocket', rotation: '-1.4deg' },
   'navrachana-tetrathon': { caption: 'small team, big ambitions', icon: 'sprout', rotation: '2.5deg' },
-  'solaris-nexus': { caption: 'one for the university', icon: 'trophy', rotation: '-1.7deg' },
-  'demo-eduspark': { caption: 'a day to remember at EduSpark', icon: 'presentation', rotation: '-1.2deg' },
-  'demo-workshop-after-hours': { caption: 'the best ideas happen after hours', icon: 'lightbulb', rotation: '1.5deg' },
-  'demo-one-more-try': { caption: 'one more idea, one more try', icon: 'rocket', rotation: '2.3deg' }
+  'solaris-nexus': { caption: 'one for the university', icon: 'trophy', rotation: '-1.7deg' }
 };
 const featuredFieldNoteIds = [
   'sih-2025',
@@ -305,44 +302,9 @@ const featuredFieldNoteIds = [
   'navrachana-tetrathon',
   'solaris-nexus'
 ];
-const demoFieldNotes = [
-  {
-    id: 'demo-workshop-after-hours',
-    title: 'A Workshop After Hours',
-    eventName: 'Workshop / demo memory',
-    category: 'Demo memory',
-    year: null,
-    status: 'draft',
-    summary: 'A placeholder for a future workshop, experiment or behind-the-scenes moment.',
-    isDemo: true
-  },
-  {
-    id: 'demo-eduspark',
-    title: 'EduSpark',
-    eventName: 'EduSpark / demo memory',
-    category: 'Demo memory',
-    year: null,
-    status: 'draft',
-    summary: 'An EduSpark photograph. Event details and a fuller memory can be added later.',
-    coverImage: './assets/EDUSPARK.jpeg',
-    coverAlt: 'Four people standing together at an EduSpark event, two holding certificates.',
-    isDemo: true
-  },
-  {
-    id: 'demo-one-more-try',
-    title: 'One More Idea, One More Try',
-    eventName: 'Ideas / demo memory',
-    category: 'Demo memory',
-    year: null,
-    status: 'draft',
-    summary: 'A placeholder for a future idea, attempt or experience worth remembering.',
-    isDemo: true
-  }
-];
-
 function featuredFieldNotes() {
   const notesById = new Map(publishedFieldNotes().map(note => [note.id, note]));
-  return [...featuredFieldNoteIds.map(id => notesById.get(id)).filter(Boolean), ...demoFieldNotes];
+  return featuredFieldNoteIds.map(id => notesById.get(id)).filter(Boolean);
 }
 
 function fieldNoteIcon(name) {
@@ -361,49 +323,40 @@ function fieldMemoryCard(note, index) {
   const photograph = note.coverImage
     ? { src: note.coverImage, alt: note.coverAlt || note.title }
     : (note.gallery || []).find(image => image.src);
-  const isVerified = note.status === 'verified' && note.result;
-  const result = note.isDemo ? 'DEMO · DETAILS TO ADD' : isVerified ? note.result : note.historicalClaim ? 'Reported result · unverified' : 'Outcome to confirm';
-  const route = note.isDemo ? '#/field-notes/archive' : `#/field-notes/${encodeURIComponent(note.id)}`;
+  const route = `#/field-notes/${encodeURIComponent(note.id)}`;
   const photo = photograph
     ? `<img src="${escapeHtml(photograph.src)}" alt="${escapeHtml(photograph.alt || note.title)}" loading="lazy">`
-    : `<span class="field-memory-photo-pending" role="img" aria-label="${note.isDemo ? 'Demo photograph placeholder' : `An event photograph for ${escapeHtml(note.title)} has not been added`}"><span class="field-memory-photo-mark" aria-hidden="true">${fieldNoteIcon(details.icon)}</span><span>${note.isDemo ? 'SAMPLE MEMORY' : 'REAL MOMENT'}<br>PHOTO TO ADD</span></span>`;
+    : `<span class="field-memory-photo-pending" role="img" aria-label="An event photograph for ${escapeHtml(note.title)} has not been added"><span class="field-memory-photo-mark" aria-hidden="true">${fieldNoteIcon(details.icon)}</span><span>REAL MOMENT<br>PHOTO TO ADD</span></span>`;
   const duplicateAttributes = note.isDuplicate ? ' aria-hidden="true"' : '';
   const duplicateTabIndex = note.isDuplicate ? ' tabindex="-1"' : '';
   return `<li class="field-memory${note.isDuplicate ? ' field-memory--duplicate' : ''}" style="--memory-rotation:${details.rotation};--memory-delay:${index * -0.7}s" data-field-memory${duplicateAttributes}>
     <span class="field-memory-clip" aria-hidden="true"></span>
     <span class="field-memory-sticker" aria-hidden="true">${fieldNoteIcon(details.icon)}</span>
-    <a class="field-memory-polaroid" href="${route}"${note.isDemo ? '' : ` data-field-note-link="${escapeHtml(note.id)}"`} aria-label="${note.isDemo ? `Explore Field Notes; ${escapeHtml(note.title)} is a demo placeholder` : `Read the ${escapeHtml(note.title)} field note`}"${duplicateTabIndex}>
+    <a class="field-memory-polaroid" href="${route}" data-field-note-link="${escapeHtml(note.id)}" aria-label="Read the ${escapeHtml(note.title)} field note"${duplicateTabIndex}>
       <span class="field-memory-photo">${photo}${!photograph ? '<span class="field-memory-photo-stamp" aria-hidden="true">PHOTO NEEDED</span>' : ''}</span>
       <span class="field-memory-caption">${escapeHtml(details.caption)}.</span>
       <span class="field-memory-event">${escapeHtml(note.eventName)}</span>
-      <span class="field-memory-outcome">${escapeHtml(result)}</span>
-      <span class="field-memory-date">${note.year || 'DATE TO CONFIRM'}</span>
     </a>
     <button class="field-memory-preview-toggle" type="button" aria-expanded="false" aria-controls="field-memory-preview-${index}" data-memory-preview-toggle${duplicateTabIndex}>+ story</button>
     <div class="field-memory-preview" id="field-memory-preview-${index}" hidden>
-      <span class="eyebrow">${escapeHtml(note.category)} / ${note.year || 'DATE TO CONFIRM'}</span>
+      <span class="eyebrow">${escapeHtml(note.category)}</span>
       <strong>${escapeHtml(note.title)}</strong>
-      <span class="field-memory-preview-result">${escapeHtml(result)}</span>
       <p>${escapeHtml(note.summary)}</p>
       ${note.teamName ? `<span class="field-memory-team">TEAM · ${escapeHtml(note.teamName)}</span>` : ''}
-      <a href="${route}"${note.isDemo ? '' : ` data-field-note-link="${escapeHtml(note.id)}"`}${duplicateTabIndex}>${note.isDemo ? 'EXPLORE FIELD NOTES' : 'VIEW STORY'} <span aria-hidden="true">↗</span></a>
+      <a href="${route}" data-field-note-link="${escapeHtml(note.id)}"${duplicateTabIndex}>VIEW STORY <span aria-hidden="true">↗</span></a>
     </div>
   </li>`;
 }
 
 function fieldNoteCard(note, index) {
-  const isVerified = note.status === 'verified' && note.result;
-  const result = isVerified
-    ? note.result
-    : note.historicalClaim ? 'Result awaiting verification' : 'Event details in progress';
   const evidenceCount = (note.gallery || []).length + (note.documents || []).length + (note.externalLinks || []).length;
   return `<a class="field-note-card" href="#/field-notes/${encodeURIComponent(note.id)}" data-field-note-link="${escapeHtml(note.id)}" style="--note-accent:${note.accent || 'var(--blue)'}">
-    <span class="field-note-card-top"><span>FIELD NOTE / ${String(index + 1).padStart(2, '0')}</span><span>${note.year || 'YEAR TO CONFIRM'}</span></span>
+    <span class="field-note-card-top"><span>FIELD NOTE / ${String(index + 1).padStart(2, '0')}</span></span>
     ${note.coverImage ? `<span class="field-note-card-cover"><img src="${escapeHtml(note.coverImage)}" alt="${escapeHtml(note.coverAlt || note.title)}" loading="lazy"></span>` : ''}
     <span class="field-note-category">${escapeHtml(note.category)}</span>
     <h3>${escapeHtml(note.title)}</h3>
     <p>${escapeHtml(note.summary)}</p>
-    <span class="field-note-card-bottom"><span class="field-note-result">${escapeHtml(result)}</span><span class="field-note-evidence">${evidenceCount ? `${evidenceCount} ASSETS` : '0 ASSETS'}</span><span class="field-note-explore">Explore this field note <span aria-hidden="true">↗</span></span></span>
+    <span class="field-note-card-bottom"><span class="field-note-evidence">${evidenceCount ? `${evidenceCount} ASSETS` : '0 ASSETS'}</span><span class="field-note-explore">Explore this field note <span aria-hidden="true">↗</span></span></span>
   </a>`;
 }
 
@@ -414,10 +367,9 @@ function fieldNotesSection() {
     <div class="section-heading"><div><span class="eyebrow">MILESTONES &amp; MEMORIES</span><h2 id="field-notes-title">A few things happened along the way.</h2></div><span class="section-index">05 / FIELD NOTES</span></div>
     <div class="field-notes-intro">
       <p>Competitions · Hackathons · Case studies · Experiences</p>
-      <span class="field-notes-date-note">A COLLECTION OF MOMENTS <span>·</span> DATES SHOWN WHEN CONFIRMED</span>
     </div>
     <div class="field-notes-carousel-controls">
-      <span class="field-notes-motion-status" data-carousel-status aria-live="polite">Eight memories · gliding from right to left</span>
+      <span class="field-notes-motion-status" data-carousel-status aria-live="polite">${notes.length} memories · gliding from right to left</span>
       <button class="field-notes-motion-toggle" type="button" data-carousel-toggle aria-pressed="false">Pause cards</button>
     </div>
     <div class="field-notes-clothesline" role="region" aria-label="Field Notes Polaroid carousel">
@@ -560,24 +512,30 @@ const documentationModules = [
 const projectRegistry = [
   {
     slug: 'nexterra', featured: true, order: 1, accent: '#86c9a6', deep: '#173a34', soft: '#e8f1e7',
-    name: 'NexTerra', folder: '01_NexTerra', category: 'Environmental intelligence / ClimateTech', identity: 'Climate Intelligence Laboratory', code: 'CLIMATE / GEO',
-    tagline: 'Environmental intelligence, explored through a climate-focused lens.',
-    concept: 'A climate intelligence project direction. The intended users, environmental data sources, methods and implemented scope still need confirmation.',
-    signature: 'Interactive environmental map and climate-risk layer exploration.'
+    name: 'NexTerra', folder: '01_NexTerra', category: 'ClimateTech / Urban heat planning', identity: 'Urban Heat Planning Demo', code: 'CLIMATE / CITY',
+    status: 'Interactive demo · illustrative data',
+    tagline: 'Explore neighbourhood heat and test city-cooling scenarios.',
+    concept: 'A self-contained browser demo with schematic neighbourhood maps for Bengaluru and Vadodara, seven selectable map layers, draggable cooling interventions and a transparent rules-based scenario. Its data and impact estimates are explicitly illustrative, not live measurements or certified predictions.',
+    signature: 'Place cooling interventions on a schematic city map and compare baseline and illustrative scenarios.',
+    technologies: ['HTML', 'CSS', 'JavaScript', 'SVG', 'localStorage']
   },
   {
     slug: 'cloudforge', featured: true, order: 2, accent: '#93b8ff', deep: '#182b50', soft: '#e8eefb',
     name: 'CloudForge', folder: '02_CloudForge', category: 'Cloud computing / Education', identity: 'Cloud Engineering Playground', code: 'CLOUD / LEARN',
-    tagline: 'A cloud engineering playground shaped around learning and practice.',
-    concept: 'A cloud computing and education project direction. Learner workflows, completed exercises and any real cloud integrations need confirmation.',
-    signature: 'Simulated terminal or interactive cloud quest explorer.'
+    status: 'Learning prototype · AWS and AI integrations not supplied',
+    tagline: 'Learn AWS by building, breaking, debugging and explaining.',
+    concept: 'A gamified cloud-learning prototype centered on Serverless Rescue: diagnose a simulated 403 AccessDeniedException between Lambda and DynamoDB, explain the IAM fix and earn mock XP. The ZIP also includes a five-stage First Deploy quest and a catalog of planned future quests; no live AWS environment or AI mentor service is configured.',
+    signature: 'Follow an interactive AWS incident from architecture and logs through diagnosis and explanation.',
+    technologies: ['React', 'Vite', 'React Router', 'JavaScript', 'TypeScript', 'CSS Modules']
   },
   {
     slug: 'carbon-credits', featured: true, order: 3, accent: '#b4c690', deep: '#334431', soft: '#edf1e2',
     name: 'Carbon Credits Ecosystem', folder: '03_Carbon_Credits', category: 'Climate finance / Sustainability', identity: 'The Carbon Exchange', code: 'CARBON / LEDGER',
-    tagline: 'A sustainability-focused exploration of the carbon-credit ecosystem.',
-    concept: 'A climate finance and sustainability project direction. Credit-generation methods, verification evidence and marketplace scope need confirmation.',
-    signature: 'Explore a carbon-credit lifecycle from generation through verification to trading.'
+    status: 'Prototype source supplied · integrations unverified',
+    tagline: 'A farmer–corporate platform concept for India’s carbon market.',
+    concept: 'The supplied CarbonBridge dashboard source and Indian Carbon Nexus brief describe a role-based platform for farmer land records, carbon-credit workflows, corporate compliance, geospatial monitoring and education. Live registry, verification, trading and impact evidence are not supplied.',
+    signature: 'Follow farmer and corporate records through evidence review toward registry-ready credits.',
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Supabase', 'Leaflet', 'Recharts']
   },
   {
     slug: 'pravaha', featured: true, order: 4, accent: '#9ad5b2', deep: '#183d32', soft: '#e8eee3',
@@ -595,10 +553,13 @@ const projectRegistry = [
   },
   {
     slug: 'trilogy', featured: true, order: 6, accent: '#e5a9bd', deep: '#482a3d', soft: '#f5e8ec',
-    name: 'Trilogy', folder: '06_Trilogy', category: 'Creative / Editorial', identity: 'A Shared Digital Scrapbook', code: 'EDITORIAL / MEMORY',
-    tagline: 'A creative and editorial space for three contributors.',
-    concept: 'A shared digital scrapbook project direction. Contributor histories, content and media organization have not been supplied.',
-    signature: 'Flip through photographs, journal entries and memories from three contributors.'
+    name: 'Triology', folder: '06_Triology', category: 'Shared scrapbook / Personal blogs', identity: 'Three-Volume Digital Scrapbook', code: 'TRIO / ARCHIVE',
+    status: 'Static multi-page scrapbook supplied',
+    tagline: 'Three creators, three volumes, one shared scrapbook.',
+    concept: 'A scrapbook-style collection that brings together Dishti, Mallika and Palak as three linked volumes. Readers can move through the illustrated archive, then open each contributor’s personal site, journal, travel diary or blog. The supplied README identifies the implementation as HTML, CSS and JavaScript.',
+    signature: 'Scroll through three illustrated volumes or jump directly to a creator from the volume tabs.',
+    technologies: ['HTML', 'CSS', 'JavaScript'],
+    links: { website: 'https://dishti-ec.github.io/triology-blog/', github: null, prototype: null }
   },
   {
     slug: 'kanochi', featured: false, order: 7, accent: '#77d7a2', deep: '#122e2b', soft: '#e4efe9',
@@ -666,23 +627,49 @@ function resetWorkshopSession() {
 
 const projectDocuments = {
   nexterra: {
-    overview: 'The supplied Workshop brief identifies NexTerra as an environmental intelligence / ClimateTech project with a climate intelligence laboratory identity. Its problem statement, current build and project history have not been supplied.',
-    research: 'Document environmental problem research, urban heat mitigation methodology and geospatial data sources. No datasets, interviews or findings have been supplied.',
-    architecture: 'The brief calls for mapping and analytics architecture documentation. The actual system design, data flow and technologies are not yet supplied.',
-    implementation: 'Implementation evidence, repository links and screenshots have not been supplied. Add them only after reviewing the project source.',
-    testing: 'Model and data validation are priority documentation areas. No validation results or performance claims have been supplied.'
+    overview: `NexTerra is a browser-based urban-heat planning demo. Its interface lets a user explore schematic neighbourhoods in Bengaluru and Vadodara, place cooling interventions, compare a baseline with a rules-based scenario, and draft a neighbourhood action plan. The supplied page prominently states that the dataset is illustrative—not live measurements or engineering-certified predictions.`,
+    research: `The prototype includes eight named schematic neighbourhoods per demo city and seeded temperature, population-context, vegetation, built-area, industrial, water, wind, humidity and driver-share values. The included source does not identify a live measurement feed, authoritative source for those values, field study, or validation report. Treat all city, neighbourhood and scenario numbers as synthetic demonstration data, not evidence about the real places.`,
+    ideation: `The core interaction makes an urban-planning question tangible: select a neighbourhood, inspect the displayed context, place a cooling option, and compare the scenario with its baseline. The toolbox covers tree planting, cool roofs, reflective surfaces, pocket parks, water-body restoration, rooftop solar, green roofs and vertical gardens. A contextual assistant and phased action-plan view help make the scenario explorable; they are scripted demo features, not a connected AI planning service.`,
+    requirements: `The supplied demo supports choosing Bengaluru or Vadodara; switching among seven illustrative overlays (heat, land-surface temperature, land use, vegetation, wind, humidity and population/exposure); selecting neighbourhoods; adding, moving, adjusting or removing interventions; undo and redo; baseline/scenario comparison; a guided tour; action-plan generation; and CSV/print-report workflows. Intervention placement checks a few seeded suitability rules. These interactions do not establish live GIS, engineering feasibility, verified benefits, costs, or a deployable municipal plan.`,
+    architecture: `The supplied prototype is a dependency-free HTML, CSS and vanilla JavaScript page. JavaScript keeps city, layer, selected-zone, intervention, chat, plan, score and map-view state; inline SVG groups render schematic zones, roads, hotspots and placed solutions. A deterministic rules-based model computes illustrative scenario values. Browser localStorage persists the demo session. No external GIS tiles, weather feed, sensor/API service, remote model or municipal system integration is present in the supplied files.`,
+    'user-flows': `Choose a demo city and map layer, inspect a neighbourhood, select or drag an intervention into a suitable zone, adjust or remove placements, and compare the illustrative scenario with its baseline. The user can ask Terra about hotspots or interventions, confirm suggested placements, draft a phased action plan, and export a scenario CSV or print-ready report. Undo/redo, keyboard-accessible map actions, tutorial, reset and browser-persisted progress support the demo. This is a planner interaction flow—not a validated operational decision workflow.`,
+    'design-studio': `The interface presents an urban-planning control panel: city and heat-risk indicators, intervention toolbox, an interactive schematic map, layer controls, selected-zone context, a demo assistant, and scenario analytics/action plan. Seven colored overlays, baseline/scenario toggles, keyboard controls, guided tour, and explicit illustrative-data disclosures are part of the supplied UI. The look and interactions communicate a planning scenario; they do not imply geographic accuracy, engineering certification, or a live assistant.`,
+    implementation: `The ZIP supplies index.html, styles.css and app.js. Its JavaScript defines two seeded city datasets, eight neighbourhood zones per city, hotspot and layer definitions, eight intervention types, drag/drop and keyboard map operations, undo/redo history, deterministic scenario and benefit calculations, a scripted Terra response flow, staged plan generation, CSV/print exports, guided tour, reset confirmation, and localStorage persistence. The source warns when stored state cannot be restored or saved. It does not contain a server, external data connector, real AI integration, geospatial basemap, or independently sourced live measurements.`,
+    decisions: `The supplied implementation favors a self-contained, no-build browser demo with inline SVG and explicit local state over a live GIS or server architecture. City zones, overlays, intervention parameters and assistant responses are deterministic fixture data, keeping the interaction repeatable and available offline after loading. The interface labels these values as illustrative and warns that plans, impacts and timings need local confirmation. No separate decision log, alternative evaluation, stakeholder sign-off or quantified cost/benefit analysis is included.`,
+    testing: `The ZIP contains no automated test suite, test runner, user-study report, model-validation report, browser-compatibility results or performance benchmark. Before operational use, test map interactions across input types, persistence/error recovery, exports, accessibility and responsive behavior. Independently validate city geometry, source data, intervention suitability rules, carbon/energy/water estimates, temperature effects, timelines and plan recommendations with local data and qualified practitioners. Current generated estimates are not validated forecasts.`,
+    outcomes: `The supplied artifact demonstrates an interactive browser prototype with two city scenarios, selectable illustrative layers, intervention placement, derived scenario comparisons, scripted guidance and plan/export views. The files report no deployment usage, municipal adoption, measured cooling, emissions reduction, energy or water savings, verified beneficiaries, or user-feedback results. Demo score/badges and benefit metrics are application-generated placeholders, not real project outcomes.`,
+    'future-scope': `Prioritize authoritative, licensed and dated geospatial/environmental data; real neighborhood boundaries and transparent provenance; independent validation of temperature and co-benefit methods; uncertainty ranges; field/site suitability and maintenance requirements; and locally reviewed intervention costs, permissions and delivery plans. If connecting live GIS or AI services, document sources, access, privacy and limitations, and preserve a clearly labeled synthetic demo mode. Add a test suite and accessibility/usability review before using the tool to inform real public-health or infrastructure decisions.`,
+    'media-assets': `The ZIP includes the demo interface and its CSS-rendered controls/illustrations; the city geometry and overlays are drawn as SVG in the page. It does not supply verified satellite/map datasets, GIS tile imagery, validated city photographs, model-training data, or independent results graphics. The interface itself labels its geometry as schematic and its maps, values, impact estimates and reports as illustrative.`
   },
   cloudforge: {
-    overview: 'The supplied Workshop brief identifies CloudForge as a cloud computing / education project with a cloud engineering playground identity. The learner audience, completed challenges and project status need confirmation.',
-    ideation: 'The brief proposes documenting learning architecture and the quest or challenge system. No completed learning materials or outcomes have been supplied.',
-    architecture: 'Document the actual cloud service mapping and infrastructure. Distinguish any simulated scenario from a real cloud integration.',
-    implementation: 'Implementation details and repository links have not been supplied. No cloud resources or deployment are represented as verified.',
-    testing: 'No learner testing or learning outcomes have been supplied.'
+    overview: `CloudForge is an AI-described, gamified AWS-learning lab organized around Learn → Build → Break → Debug → Explain → Master. The requirements and design documents define a Serverless Rescue mission: diagnose a simulated 403 AccessDeniedException because a Lambda execution role lacks dynamodb:GetItem permission for a DynamoDB table. The ZIP also contains a five-stage First Deploy quest and a catalog for planned quests. Its learner profile, XP and quest state are seeded/mock data; no deployed AWS exercise or real AI mentor service is supplied.`,
+    research: `The included requirements, design specification and engineering task board define a hands-on learning approach based on incident diagnosis, service architecture, logs, explanation and mastery rather than a conventional video-first LMS. The documented learner is a student building AWS fundamentals; content covers IAM, API Gateway, Lambda, DynamoDB, S3, CloudWatch and serverless systems. These are product specifications, not evidence of user interviews, classroom trials, measured learning gains, or AWS industry validation.`,
+    ideation: `CloudForge reframes AWS learning as an incident-response loop: inspect a service graph and logs, choose a diagnosis, retry with mentor feedback, explain the root cause, and review a scored result. The MVP's Serverless Rescue exercise teaches least-privilege IAM through a Lambda-to-DynamoDB access failure. The archive additionally plans Permission Denied, The Scaling Crisis and Data Leak Detective, while the separate First Deploy journey teaches foundational services through five stages. Catalog entries marked unimplemented should not be described as available quests.`,
+    requirements: `The supplied specifications describe landing, dashboard, quest introduction, debug/explanation and results routes; an architecture graph; readable logs; four radio-style diagnosis answers; incorrect-answer retry feedback; a labelled explanation field; score, XP, badge and skill results; route fallback; responsive layouts; keyboard/screen-reader access; and reduced-motion behavior. The intended reward for Serverless Rescue is 250 XP and the IAM Detective badge. Requirements propose replaceable static-data integration boundaries for future AWS, Bedrock AI and authentication, not evidence that these services are connected.`,
+    architecture: `The ZIP contains parallel front-end snapshots rather than one unambiguous production deployment: an inner cloudforge app described as React 18, Vite 5 and React Router 6, plus a root Figma Make app whose included guide describes React 19, Vite 8, TypeScript, Tailwind CSS 4 and React Router 7. The specifications define component/page boundaries and static quest data; the newer snapshot also includes staged First Deploy and a quest catalog. Seed data and context state drive learning and rewards. The docs describe future seams for AWS/CloudWatch, Amazon Bedrock and authentication; no AWS SDK, cloud account, backend, database or live model is supplied.`,
+    'user-flows': `The documented Serverless Rescue path is landing → dashboard → quest introduction → investigation → diagnosis retry or correct answer → written explanation → result → dashboard. The learner examines API Gateway, Lambda and DynamoDB, reads an AccessDeniedException log, selects the missing IAM permission diagnosis, explains the execution-role requirement and receives the configured result state. A separate five-stage First Deploy path covers IAM, Lambda, CloudWatch, API Gateway and S3. Other quests are listed as future content; static route demos and mock state are not deployed cloud exercises.`,
+    'design-studio': `The design brief specifies a dark, premium cloud-engineering control room rather than an LMS: near-black surfaces, restrained AWS-orange actions, cyan architecture/flow lines, green/yellow/red system states, Inter and JetBrains Mono, operational status indicators, a service graph, terminal-style logs, selectable diagnosis cards and compact XP/skill signals. It defines desktop/tablet/mobile layouts, visible keyboard focus, non-color status cues, labelled form controls and reduced-motion behavior. Treat this as the supplied design direction; no accessibility audit or usability study is included.`,
+    implementation: `The archive contains componentized React source and data for the landing page, dashboard, quest intro/debug/result stages, service graph, log panel, answer options, mentor feedback, gamification state, a five-stage First Deploy quest, quest catalog, CSS modules and Vite routes. Quest results and starting student statistics are hard-coded; completing the simulated quest updates local React context and awards the configured XP/badge. Mentor responses are static strings. The specifications explicitly describe static mock data and future integration points; the supplied files do not demonstrate live AWS deployments/logs, an AI/Bedrock connection, persisted learner accounts, or real cloud infrastructure. The ZIP includes multiple app snapshots, so confirm which is the deployable canonical build before publishing.`,
+    decisions: `The written design selects a short, guided incident-response exercise over a traditional course catalog; mock data is isolated behind page/component boundaries so future services can replace it; and the dark console visual language helps connect logs, architecture state and progress. Serverless Rescue is the primary diagnosed incident, with First Deploy as a separate guided foundation path. The task/spec files include acceptance criteria and planned work, but do not certify every item is complete. Multiple bundled React/Vite snapshots make the canonical app and actual deployment decision unclear; no formal architecture decision record or AWS integration approval is included.`,
+    testing: `Requirements and task-board documents provide detailed acceptance criteria for navigation, answer selection/retry, explanation validation, scoring, responsive behavior, accessibility, reduced motion and static deployment. The ZIP does not include an executed test report, automated test suite, real AWS integration test, or evidence that every acceptance criterion passes. Verify both bundled app snapshots independently, all deep links and SPA fallbacks, keyboard and screen-reader flows, scoring/idempotency, reduced motion, and failure states. AWS/AI integrations and student learning outcomes remain unverified.`,
+    outcomes: `The supplied files show a detailed UI specification and front-end implementation for the simulated Serverless Rescue learning loop, plus a separate First Deploy flow and future-quest catalog. The score of 92%, +250 XP, starting profile values, streak and badge are scripted demonstration data. No course completion cohort, learner feedback, skill assessment, production deployment, AWS incident repair, certification or measured learning outcome is included.`,
+    'future-scope': `First select and verify the canonical bundled app and bring its runtime/toolchain into alignment with the design requirements. Then add tests and deployment checks, persist learner progress, implement a secure account model, and connect only approved AWS sandbox resources with cost limits and reset controls. Add a real mentor service only behind server-side credentials, safety/privacy controls and clear disclosure; do not call the supplied fixed mentor copy AI. Build the planned quests, test learning outcomes with students, and distinguish sandbox simulations from actions on production AWS.`,
+    'media-assets': `The ZIP supplies React page/component source, CSS-module designs, icon-based AWS/service diagrams, state/status/answer components and written requirements, design and task specifications. The landing design describes a User → API Gateway → Lambda → DynamoDB graph and an incident log panel. These are application UI assets and simulated architecture views; they are not screenshots of a verified AWS account, cloud deployment, production telemetry, or learner results.`
   },
   'carbon-credits': {
-    overview: 'The supplied Workshop brief identifies this as a climate finance / sustainability project with a carbon exchange identity. No credit lifecycle, marketplace or impact is claimed as implemented.',
-    research: 'Document carbon-credit ecosystem research, farmer and company personas, and the evidence behind the proposed workflow. No research findings have been supplied.',
-    implementation: 'The project source and actual transaction, verification or traceability implementation have not been supplied.'
+    overview: 'Carbon Credits Ecosystem is presented in the supplied interface as CarbonBridge / Indian Carbon Market; the accompanying research brief calls the proposed platform Indian Carbon Nexus (ICN). Its goal is to connect farmer and FPO participation with corporate emissions compliance, carbon-credit monitoring and public market education under India’s Carbon Credit Trading Scheme (CCTS). The intended lifecycle is measure, reduce, verify, then issue and trade. The ZIP contains a React application and strategic brief, so this is more than a concept-only entry; however, it does not establish a production deployment, verified credits, completed trades or measured climate impact.',
+    research: 'The supplied Project_2.md brief describes the Indian Carbon Market, the CCTS governance roles of the National Steering Committee, BEE, CERC, Grid-India and MoEFCC, and a corporate monitoring, reporting and verification (MRV) cycle. It also examines FPO aggregation, agroforestry, alternate wetting and drying for rice, soil-carbon practices, biomass estimation, and proposed geospatial layers such as land use, wasteland, soil organic carbon, vegetation index and water. Its references include BEE, ICAP, Bhuvan/NRSC, ICAR and market sources, marked as accessed 6 March 2026. Treat regulatory dates, targets, methods and market claims as statements in that supplied brief—not verified current guidance—and recheck them against authoritative sources before use.',
+    ideation: 'The platform concept brings together four connected needs: lower the onboarding burden for smallholder farmers through FPO aggregation; give companies an at-a-glance compliance view with supporting evidence behind key indicators; use parcel and remote-sensing context to inform farm monitoring; and explain carbon methods through separate farmer and corporate learning paths. The brief proposes a land-to-tree Carbon Credit Checker, alerts for reporting and target proximity, a credit lifecycle view, and registry/exchange connectivity. The ZIP does not include a formal alternatives study or decision log. In the application, the credit-ID checker searches a hard-coded sample list, so its “verified” result is not a registry lookup.',
+    requirements: 'The supplied application implements public landing and sign-in/sign-up views, farmer/company role selection, role-aware dashboards, farmer portfolio and farmland listing, a company directory, a carbon-credit list with search and type/status filters, a map view, education courses and quizzes, alerts, compliance screens, and profile settings. The brief additionally calls for auditable MRV evidence, geotagged farm records, accessible low-connectivity farmer journeys, localized learning, official credit issuance and compliant trading. Those additional capabilities are requirements or proposals, not all completed features. A production release also needs verified inputs, authorization and privacy rules, dependable error/loading states, and a clearly bounded scope for payments and exchange trading.',
+    architecture: 'The supplied app is a React 18 / TypeScript single-page application built with Vite, Tailwind CSS, React Router, Supabase, Leaflet / React-Leaflet and Recharts. Routes cover dashboard, portfolio, compliance, credits, companies, farmlands, map, education, alerts and settings; farmer and company routes are role-gated. The included SQL creates users, companies and farmlands with basic row-level policies. The research brief proposes Grid-India registry APIs, Bhuvan/NRSC map services, ACVA document review and IEX/PXIL trading connections, but no such live integrations are present in the supplied code. There is also a schema mismatch to resolve: the SQL defines `users`, while the profile provider reads and writes `profiles`.',
+    'user-flows': 'Public visitors explore the carbon-credit explainer and landing-page features, then can sign in or register with a farmer/FPO or company role. A farmer is routed toward a portfolio, can register farmland, browse map and credit views, and open farmer learning content. A company user gets a compliance view and can browse credits, alerts and corporate learning content. The brief’s target journeys add FPO-assisted aggregation, geotagged evidence capture, ACVA review, official registry issuance and exchange trading. Government administrator and verifier journeys are described in the brief but are not implemented as application roles or routes. The included map uses seeded sample locations; the end-to-end farmer-to-issued-credit journey is not demonstrated.',
+    'design-studio': 'The interface uses the CarbonBridge name, a forest-green and pale-green palette, dashboard cards, charts, a four-step measure/reduce/verify/issue-and-trade explainer, map markers, and distinct farmer and corporate areas. The research brief specifies a field-friendly farmer experience: strong outdoor contrast, literal iconography, low-typing interactions, local-language/voice support and offline-sync feedback. For corporate users it recommends progressive disclosure from summary indicators to audit evidence, with priority-coded compliance alerts. These are design requirements in the brief; the supplied application is primarily English and does not demonstrate offline operation, voice interaction or a completed localization system. The ZIP includes landing and education imagery; see Media Assets for the supplied set.',
+    implementation: 'The ZIP contains a working front-end codebase, route components, styles, course data, Supabase client setup, SQL schema and an imported strategy/requirements brief. Sign-up uses Supabase Auth; farmland and company screens query Supabase tables, while the schema supports only users, companies and farmlands. Many visible figures and records are seeded examples: the dashboard labels its data as dummy, credit certificates are held in a local array, company and map views add sample records, and compliance/portfolio screens also contain sample entries. Education progress is local component state; the farmer credit-sale action is explicitly simulated. Supabase environment variables are required but not included. Do not describe the mock credit checker, seeded map or sample dashboard metrics as live market data or actual verification.',
+    decisions: 'The source materials consistently organize the product around separate farmer and corporate experiences, an FPO-assisted route for smallholders, evidence-led MRV, role-based dashboards, and an education layer. The code chooses a modular React front end and Supabase-backed account/company/farmland data, while many other views remain seeded or local simulations. The research brief’s proposed external architecture—Grid-India, Bhuvan/GeoServer, ACVAs and exchange gateways—has not been connected. No formal decision log, comparison of alternatives, usability findings or recorded trade-off approvals are included in the ZIP. A key implementation issue before expanding the data layer is aligning the `profiles` queries with the included `users` schema and then validating row-level access by role.',
+    testing: 'The ZIP does not include a test suite or a test script in package.json, and it supplies no test report, performance results, security review, usability study or independent MRV validation. The visible app data is illustrative and cannot validate a credit calculation, registry identity, compliance status or transaction. Before production, test role authorization and row-level policies, profile creation, missing Supabase configuration, form errors, data-empty states, map coordinates, credit lifecycle transitions, accessible farmer workflows, and regulatory deadline calculations. Validate any emissions or sequestration method with qualified reviewers and reproducible evidence; no such validation is provided here.',
+    outcomes: 'The supplied artifact demonstrates a designed application structure and front-end interactions across farmer, corporate, map, education, credit and compliance views. It does not report a deployed service, enrolled farmers, participating companies, verified Carbon Credit Certificates, completed trades, financial returns, emissions reductions or measured outcomes. The dashboard numbers, certificate entries, compliance statuses and sample locations are code fixtures or simulated content; they are not project results. No user feedback or outcome evidence is included in the ZIP.',
+    'future-scope': 'Prioritize (1) reconcile the account/profile schema and enforce tested farmer/company/admin permissions; (2) replace all seeded figures and sample records with clearly sourced data or remove them; (3) define and validate the MRV methodologies and evidence chain with qualified reviewers; (4) integrate official registry and CCTS sources only through documented, authorized interfaces; (5) connect verified geospatial services and disclose data provenance; and (6) implement ACVA review, auditable certificate lifecycle, and approved exchange workflows before presenting trading as available. Then test low-connectivity use, regional-language support, accessibility and privacy. Recheck all regulatory content against current official notifications because the research brief’s citations are dated.',
+    'media-assets': 'The ZIP includes `Landing_Dishti.jpeg`, `Landing_Nand.jpeg`, `Landing_Page-header.jpeg`, `Landing_Page_CMC-bg.png`, five corporate education images (`Eh_C_c1.jpeg`–`Eh_C_c5.jpeg`) and five farmer education images (`Eh_f_c1.jpeg`–`Eh_f_c5.jpeg`). It also contains the React UI, Tailwind theme, and icon-based diagrams/components. These assets remain in the supplied ZIP and have not been copied into this portfolio. `ATTRIBUTIONS.md` identifies shadcn/ui components under the MIT license and Unsplash imagery under the Unsplash license; retain and check the relevant attribution/license terms when reusing assets.'
   },
   pravaha: {
     overview: 'The supplied Workshop brief identifies PRAVAHA as a circular economy / e-waste project with a circular systems studio identity. Scope and project status need confirmation.',
@@ -690,6 +677,21 @@ const projectDocuments = {
     architecture: 'The project source and actual material lineage, tracking or verification system have not been supplied.',
     'user-flows': 'Collection and processing workflows are priority documentation areas. Current stakeholder journeys have not been supplied.',
     testing: 'No field validation or verified impact measures have been supplied.'
+  },
+  trilogy: {
+    overview: `Triology is a static, scrapbook-style website organized as three creator volumes: Dishti, Mallika and Palak. The supplied README describes a shared illustrated landing page with volume tabs and links into each person's separate blog, profile, journal or travel diary. The source identifies the implementation as HTML, CSS and JavaScript and provides the public demo URL https://dishti-ec.github.io/triology-blog/.`,
+    research: `The ZIP README presents the project as a collaborative personal scrapbook for three contributors, combining shared navigation with individual sites. It does not include user research, interviews, audience analytics, accessibility testing, or evidence of readership. The three-volume framing is a creative information-architecture choice documented by the supplied site and README, not a result of a reported research study.`,
+    ideation: `The concept gives each contributor a distinct volume inside one shared archive, so visitors can browse the collective experience or jump to an individual's work. Tabs, scrapbook visuals and linked sub-sites make the three voices discoverable without merging their content into one feed. The supplied materials do not include a separate ideation log, tested alternative concepts or documented collaborator decision process.`,
+    requirements: `The supplied site and README support a static landing page, navigation among the three creator volumes, and links to their personal pages. Dishti's destinations include a blog and lab; Mallika's include a profile and travel diary; Palak's include a journal. The implementation is a static web scrapbook, with no supplied server, account system, content-management workflow, search backend, analytics, or evidence of automated content updates.`,
+    architecture: `The project is a static HTML/CSS/JavaScript website, as identified in its README. A shared top-level scrapbook page provides the volume navigation and links to contributor-specific pages/sites. The supplied materials do not describe a backend, database, build/deploy pipeline, API, authentication, or centralized content model. Review the linked sites individually before assuming they share the root site's implementation or hosting setup.`,
+    'user-flows': `A visitor opens the shared scrapbook, browses the illustrated volumes or uses the volume tabs to choose Dishti, Mallika or Palak, then follows a link to that contributor's personal destination. The README identifies Dishti's blog/lab, Mallika's profile/travel diary and Palak's journal as linked experiences. The source does not establish that every external destination is still available or that links are tracked.`,
+    'design-studio': `The design direction is a digital scrapbook rather than a conventional portfolio index: three distinct volumes, shared navigation, illustrated presentation and personal linked destinations. Each volume helps retain a contributor-specific identity within the collective project. The ZIP README supplies the high-level concept but no formal design system, typography/color specification, wireframe package, usability study or accessibility audit.`,
+    implementation: `The supplied README describes a static HTML, CSS and JavaScript implementation. The top-level page presents the three volumes and links outward to creator-specific pages; the README's public demo address is https://dishti-ec.github.io/triology-blog/. The ZIP does not document a backend or dynamic content service. Before changing or redeploying, inspect the actual page and linked sub-sites, confirm their current targets and hosting, and preserve any contributor-specific attribution and content ownership.`,
+    decisions: `The documented structure uses one shared scrapbook entry point with three volumes instead of a single undifferentiated personal blog. Tabs and linked destinations let each contributor retain an independent voice and website. The supplied README does not include a decision log, hosting comparison, contributor agreements, technical trade-off record, or evidence of why the exact static stack was selected.`,
+    testing: `The ZIP provides no automated tests, browser/device test report, accessibility audit, link-check results, performance results or user-study findings. Verify each volume tab and outgoing link, keyboard access and focus order, responsive layouts, readable contrast and image alternatives. Confirm the public deployment and every linked sub-site remain available; the README's demo URL is a project reference, not a guarantee of current uptime or tested behavior.`,
+    outcomes: `The supplied source and README establish a three-volume static scrapbook concept and identify a public demo URL. They do not report visitor counts, engagement, collaborator feedback, launch results, awards, or other measured outcomes. Do not infer adoption or user impact from the existence of the demo link or the project's visual presentation.`,
+    'future-scope': `Confirm current contributor links and public hosting; add a clear accessible volume-navigation state and descriptive image text; and test responsive behavior, keyboard use and contrast across devices. If the scrapbook is maintained, document who can approve edits to each contributor's pages, add link checks, and keep each linked site's ownership and content boundaries clear. No future roadmap or planned feature list is included in the supplied materials.`,
+    'media-assets': `The ZIP contains the static scrapbook site and its visual presentation, plus links to creator-specific pages. Its README identifies the public demo URL https://dishti-ec.github.io/triology-blog/. Treat the supplied visuals and personal content as project assets; verify attribution and contributor permission before reusing them elsewhere. The archive does not provide a separate media inventory, asset-license register, or verified usage/results imagery.`
   }
 };
 
@@ -705,7 +707,9 @@ function projectModules(project) {
   return documentationModules.map(module => ({
     ...module,
     content: projectContent[module.slug] || '',
-    status: projectContent[module.slug] ? 'Portfolio outline · source not supplied' : 'Documentation not supplied'
+    status: projectContent[module.slug]
+      ? ['carbon-credits', 'nexterra', 'cloudforge', 'trilogy'].includes(project.slug) ? 'ZIP source reviewed · portfolio summary' : 'Portfolio outline · source not supplied'
+      : 'Documentation not supplied'
   }));
 }
 
@@ -911,13 +915,13 @@ function projectDesktopFolder(project, index) {
   const isFeatured = index === 0;
   const isNexTerra = project.slug === 'nexterra';
   const description = isNexTerra
-    ? 'An AI-powered geospatial platform for understanding environmental risks and enabling smarter urban decisions.'
+    ? 'A browser demo for exploring schematic urban-heat scenarios and testing illustrative cooling interventions.'
     : project.tagline;
   const fileNumber = String(project.order || index + 1).padStart(3, '0');
   return `<a class="project-folder project-folder--${project.slug}${isFeatured ? ' project-folder--featured' : ''}" data-project-slug="${project.slug}" href="#/workshop/${project.slug}" style="--folder-accent:${project.accent};--folder-surface:color-mix(in srgb, ${project.soft} 66%, var(--paper-raised));--folder-border:color-mix(in srgb, ${project.accent} 66%, var(--rule))" aria-label="Open ${escapeHtml(project.name)} project overview in the Workshop">
     <span class="project-folder-topline"><span class="${isFeatured ? 'project-folder-file' : 'project-folder-number'}">${isFeatured ? `FILE ${fileNumber}` : number}</span><span class="project-folder-code">${escapeHtml(project.code)}</span><span class="project-folder-open">OPEN PROJECT <span aria-hidden="true">↗</span></span></span>
     <span class="project-folder-art" role="img" aria-label="${escapeHtml(project.identity)} conceptual illustration, not a product screenshot">${projectArtwork(project.slug)}<span class="project-folder-art-caption" aria-hidden="true">CONCEPT VISUAL</span></span>
-    <div class="project-folder-copy"><div class="project-folder-meta">${isFeatured ? `<span class="project-feature-category">${isNexTerra ? '01 — CLIMATE TECHNOLOGY' : escapeHtml(project.category)}</span>` : ''}<h3>${escapeHtml(project.name)}</h3>${isFeatured ? `${isNexTerra ? '<span class="project-feature-subtitle">Environmental Intelligence</span><strong class="project-feature-statement">Building intelligence for a changing planet.</strong>' : ''}<p class="project-feature-description">${escapeHtml(description)}</p>${isNexTerra ? '<span class="project-feature-stack">GIS · AI/ML · React · Python</span>' : ''}` : `<span class="project-folder-category">${escapeHtml(project.category)}</span>`}</div>${isFeatured ? '<span class="project-feature-cta">VIEW PROJECT <span aria-hidden="true">↗</span></span>' : '<span class="project-folder-arrow" aria-hidden="true">↗</span>'}</div>
+    <div class="project-folder-copy"><div class="project-folder-meta">${isFeatured ? `<span class="project-feature-category">${isNexTerra ? '01 — CLIMATE TECHNOLOGY' : escapeHtml(project.category)}</span>` : ''}<h3>${escapeHtml(project.name)}</h3>    ${isFeatured ? `${isNexTerra ? '<span class="project-feature-subtitle">Urban Heat Planning Demo</span><strong class="project-feature-statement">Explore heat scenarios. Test cooling ideas.</strong>' : ''}<p class="project-feature-description">${escapeHtml(description)}</p>${isNexTerra ? '<span class="project-feature-stack">SCHEMATIC MAPS · ILLUSTRATIVE DATA · BROWSER DEMO</span>' : ''}` : `<span class="project-folder-category">${escapeHtml(project.category)}</span>`}</div>${isFeatured ? '<span class="project-feature-cta">VIEW PROJECT <span aria-hidden="true">↗</span></span>' : '<span class="project-folder-arrow" aria-hidden="true">↗</span>'}</div>
   </a>`;
 }
 
@@ -1053,6 +1057,12 @@ let projectDesktopTimeline = null;
 let projectCarouselIndex = 0;
 let projectCarouselAnimating = false;
 let projectCarouselAnimations = [];
+let projectCarouselTimer = 0;
+let projectCarouselObserver = null;
+let projectCarouselSection = null;
+let projectCarouselVisibilityHandler = null;
+let projectCarouselPointerHandler = null;
+let projectCarouselFocusHandler = null;
 let fieldNotesObserver = null;
 let fieldNotesTimeline = null;
 
@@ -1206,7 +1216,7 @@ function archive() {
           <div class="world-previews">
             <a class="preview-card" href="#/workshop">
               <div class="preview-top"><span>THE WORKSHOP · PROJECT ARCHIVE</span><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-              <div class="preview-files"><div class="file-list"><span>⌄ DISHTI_WORKSPACE</span><span>　▸ 01_NexTerra</span><span>　▸ 02_CloudForge</span><span>　▸ 03_Carbon_Credits</span><span>　▸ 04_PRAVAHA</span><span>　▸ 05_Urvara</span></div><div class="mini-map" aria-hidden="true"></div></div>
+              <div class="preview-files"><div class="file-list"><span>⌄ DISHTI_WORKSPACE</span><span>　▸ 01_NexTerra</span><span>　▸ 02_CloudForge</span><span>　▸ 03_Carbon_Credits</span><span>　▸ 04_PRAVAHA</span><span>　▸ 05_Urvara</span><span>　▸ 06_Triology</span></div><div class="mini-map" aria-hidden="true"></div></div>
               <div class="preview-copy"><h3>A closer look at the work behind the work.</h3><p>Project stories, decisions, architecture and what remains to be learned.</p></div>
               <span class="preview-arrow">Explore the Archive →</span>
             </a>
@@ -1230,13 +1240,13 @@ function archive() {
 
         <section class="section" id="contact" aria-labelledby="contact-title">
           <div class="contact-panel">
-            <div class="contact-copy"><span class="eyebrow">09 / BACK COVER</span><h2 id="contact-title">Have something interesting in mind?</h2><p>For internships, collaborations, technical conversations or creative projects, I'd love to hear from you.</p><p class="muted-note">Contact details and a delivery service have not been supplied. This form will not claim to send a message; add a verified email address or configure a form endpoint to enable it.</p></div>
+            <div class="contact-copy"><span class="eyebrow">09 / BACK COVER</span><h2 id="contact-title">Have something interesting in mind?</h2><p>For internships, collaborations, technical conversations or creative projects, I'd love to hear from you.</p></div>
             <form class="contact-form" id="contact-form">
               <div class="field"><label for="contact-name">Name</label><input id="contact-name" name="name" autocomplete="name" required /></div>
               <div class="field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required /></div>
               <div class="field full"><label for="contact-message">Message</label><textarea id="contact-message" name="message" required></textarea></div>
               <button class="button form-submit" type="submit">Prepare message <span aria-hidden="true">→</span></button>
-              <p class="form-message" id="form-message" role="status" aria-live="polite">Form delivery isn't configured yet.</p>
+              <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
             </form>
           </div>
         </section>
@@ -1366,11 +1376,14 @@ function projectCover(project) {
 
 function projectModulePage(project, module) {
   const expectedFiles = module.files.map(file => `<li><code>${escapeHtml(file)}</code><span>Not supplied</span></li>`).join('');
+  const contentLabel = ['carbon-credits', 'nexterra', 'cloudforge', 'trilogy'].includes(project.slug)
+    ? 'ZIP SOURCE REVIEW / PORTFOLIO SUMMARY'
+    : 'PORTFOLIO OUTLINE / NOT SOURCE DOCUMENTATION';
   return `<section class="doc-section project-module-page">
     <div class="project-module-heading"><span class="eyebrow">${escapeHtml(module.folder)} / DOCUMENTATION MODULE</span><span class="project-module-status">${escapeHtml(module.status)}</span></div>
     <h2>${escapeHtml(module.title)}</h2>
     <p>${escapeHtml(module.purpose)}</p>
-    ${module.content ? `<div class="project-source-note"><span class="eyebrow">PORTFOLIO OUTLINE / NOT SOURCE DOCUMENTATION</span><p>${escapeHtml(module.content)}</p></div>` : `<div class="project-missing-note"><strong>Documentation not supplied.</strong><p>This section is part of the shared Workshop structure. Its project-specific content should be added after the project source and supporting materials are reviewed.</p></div>`}
+    ${module.content ? `<div class="project-source-note"><span class="eyebrow">${contentLabel}</span>${module.content.split(/\n\s*\n/).map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div>` : `<div class="project-missing-note"><strong>Documentation not supplied.</strong><p>This section is part of the shared Workshop structure. Its project-specific content should be added after the project source and supporting materials are reviewed.</p></div>`}
     <div class="project-document-list"><h3>Expected files <span>optional when not applicable</span></h3><ul>${expectedFiles}</ul><p>These are documentation targets, not files that currently exist in this portfolio.</p></div>
   </section>`;
 }
@@ -1726,6 +1739,7 @@ function render() {
   clearPolaroidShuffle();
   clearExplorationAnimation();
   clearProjectDesktopAnimation();
+  clearProjectCarouselAutoplay();
   clearFieldNotesAnimation();
   const route = getRoute();
   document.getElementById('app').innerHTML = route.mode === 'workshop' ? workshop(route) : route.mode === 'observatory' ? observatory() : route.mode === 'field-note' ? fieldNoteDetail(route) : route.mode === 'field-notes-archive' ? fieldNotesArchive() : archive();
@@ -1735,6 +1749,7 @@ function render() {
   setupPolaroidShuffle();
   setupExplorationAnimation();
   setupProjectDesktopAnimation();
+  setupProjectCarouselAutoplay();
   setupFieldNotesAnimation();
   if (route.anchor) requestAnimationFrame(() => document.getElementById(route.anchor)?.scrollIntoView());
   else if ((route.mode === 'archive' || route.mode === 'field-notes-archive') && sessionStorage.getItem('field-note-scroll')) {
@@ -1782,6 +1797,67 @@ function clearProjectDesktopAnimation() {
   projectCarouselAnimations.forEach(animation => animation.cancel());
   projectCarouselAnimations = [];
   projectCarouselAnimating = false;
+}
+
+function clearProjectCarouselAutoplay() {
+  if (projectCarouselTimer) window.clearTimeout(projectCarouselTimer);
+  projectCarouselTimer = 0;
+  projectCarouselObserver?.disconnect();
+  projectCarouselObserver = null;
+  if (projectCarouselVisibilityHandler) document.removeEventListener('visibilitychange', projectCarouselVisibilityHandler);
+  if (projectCarouselSection && projectCarouselPointerHandler) {
+    projectCarouselSection.removeEventListener('pointerenter', projectCarouselPointerHandler);
+    projectCarouselSection.removeEventListener('pointerleave', projectCarouselPointerHandler);
+  }
+  if (projectCarouselSection && projectCarouselFocusHandler) {
+    projectCarouselSection.removeEventListener('focusin', projectCarouselFocusHandler);
+    projectCarouselSection.removeEventListener('focusout', projectCarouselFocusHandler);
+  }
+  projectCarouselSection = null;
+  projectCarouselVisibilityHandler = null;
+  projectCarouselPointerHandler = null;
+  projectCarouselFocusHandler = null;
+}
+
+function setupProjectCarouselAutoplay() {
+  const section = document.querySelector('.selected-work-section');
+  if (!section || featuredProjects().length <= 4 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  projectCarouselSection = section;
+  let isVisible = false;
+  const schedule = () => {
+    if (projectCarouselTimer) window.clearTimeout(projectCarouselTimer);
+    projectCarouselTimer = 0;
+    if (!isVisible || document.hidden || section.matches(':hover') || section.contains(document.activeElement)) return;
+    projectCarouselTimer = window.setTimeout(() => {
+      projectCarouselTimer = 0;
+      stepProjectCarousel(1);
+      schedule();
+    }, 10000);
+  };
+
+  projectCarouselPointerHandler = schedule;
+  projectCarouselFocusHandler = event => {
+    if (event.type === 'focusout') requestAnimationFrame(schedule);
+    else schedule();
+  };
+  projectCarouselVisibilityHandler = schedule;
+  section.addEventListener('pointerenter', projectCarouselPointerHandler);
+  section.addEventListener('pointerleave', projectCarouselPointerHandler);
+  section.addEventListener('focusin', projectCarouselFocusHandler);
+  section.addEventListener('focusout', projectCarouselFocusHandler);
+  document.addEventListener('visibilitychange', projectCarouselVisibilityHandler);
+
+  if ('IntersectionObserver' in window) {
+    projectCarouselObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      schedule();
+    }, { threshold: 0.12 });
+    projectCarouselObserver.observe(section);
+  } else {
+    isVisible = true;
+    schedule();
+  }
 }
 
 function setupProjectDesktopAnimation() {
@@ -1992,13 +2068,14 @@ function bindInteractions() {
   if (clothesline) {
     const motionToggle = document.querySelector('[data-carousel-toggle]');
     const motionStatus = document.querySelector('[data-carousel-status]');
+    const memoryCount = clothesline.querySelectorAll('.field-memory:not(.field-memory--duplicate)').length;
     const setManualPause = paused => {
       clothesline.classList.toggle('is-manual', paused);
       motionToggle.setAttribute('aria-pressed', String(paused));
       motionToggle.textContent = paused ? 'Resume cards' : 'Pause cards';
       motionStatus.textContent = paused
-        ? 'Paused · scroll to browse all eight memories'
-        : 'Eight memories · gliding from right to left';
+        ? `Paused · scroll to browse all ${memoryCount} memories`
+        : `${memoryCount} memories · gliding from right to left`;
     };
     setManualPause(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     motionToggle.addEventListener('click', () => setManualPause(!clothesline.classList.contains('is-manual')));
