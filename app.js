@@ -149,6 +149,7 @@ const fieldNotes = [
     year: null,
     location: null,
     teamName: null,
+    coverVideo: 'vriddhaksha',
     status: 'draft',
     historicalClaim: null,
     summary: 'A cybersecurity-related event associated with CyberCrime Ahmedabad and KanadShield.',
@@ -290,6 +291,7 @@ function filteredFieldNotes() {
 const featuredFieldNoteDetails = {
   'sih-internal': { caption: 'the first big leap', icon: 'lightbulb', rotation: '-2.2deg' },
   'sih-2025': { caption: 'a team on the SIH stage', icon: 'presentation', rotation: '-2.2deg' },
+  kanadshield: { caption: 'a project concept in motion', icon: 'lightbulb', rotation: '1.2deg' },
   'iit-roorkee-casequest': { caption: 'a case of thinking bigger', icon: 'presentation', rotation: '1.8deg' },
   'star-ideaxplore': { caption: 'an idea that found its way', icon: 'rocket', rotation: '-1.4deg' },
   'navrachana-tetrathon': { caption: 'small team, big ambitions', icon: 'sprout', rotation: '2.5deg' },
@@ -300,7 +302,8 @@ const featuredFieldNoteIds = [
   'iit-roorkee-casequest',
   'star-ideaxplore',
   'navrachana-tetrathon',
-  'solaris-nexus'
+  'solaris-nexus',
+  'kanadshield'
 ];
 function featuredFieldNotes() {
   const notesById = new Map(publishedFieldNotes().map(note => [note.id, note]));
@@ -323,17 +326,20 @@ function fieldMemoryCard(note, index) {
   const photograph = note.coverImage
     ? { src: note.coverImage, alt: note.coverAlt || note.title }
     : (note.gallery || []).find(image => image.src);
+  const videoPreview = note.coverVideo ? projectPreviewFrame(note.coverVideo, `${note.title} artifact video`) : '';
   const route = `#/field-notes/${encodeURIComponent(note.id)}`;
   const photo = photograph
     ? `<img src="${escapeHtml(photograph.src)}" alt="${escapeHtml(photograph.alt || note.title)}" loading="lazy">`
-    : `<span class="field-memory-photo-pending" role="img" aria-label="An event photograph for ${escapeHtml(note.title)} has not been added"><span class="field-memory-photo-mark" aria-hidden="true">${fieldNoteIcon(details.icon)}</span><span>REAL MOMENT<br>PHOTO TO ADD</span></span>`;
+    : videoPreview
+      ? `<span class="field-memory-video-preview" role="group" aria-label="${escapeHtml(note.title)} animated artifact">${videoPreview}</span>`
+      : `<span class="field-memory-photo-pending" role="img" aria-label="An event photograph for ${escapeHtml(note.title)} has not been added"><span class="field-memory-photo-mark" aria-hidden="true">${fieldNoteIcon(details.icon)}</span><span>REAL MOMENT<br>PHOTO TO ADD</span></span>`;
   const duplicateAttributes = note.isDuplicate ? ' aria-hidden="true"' : '';
   const duplicateTabIndex = note.isDuplicate ? ' tabindex="-1"' : '';
   return `<li class="field-memory${note.isDuplicate ? ' field-memory--duplicate' : ''}" style="--memory-rotation:${details.rotation};--memory-delay:${index * -0.7}s" data-field-memory${duplicateAttributes}>
     <span class="field-memory-clip" aria-hidden="true"></span>
     <span class="field-memory-sticker" aria-hidden="true">${fieldNoteIcon(details.icon)}</span>
     <a class="field-memory-polaroid" href="${route}" data-field-note-link="${escapeHtml(note.id)}" aria-label="Read the ${escapeHtml(note.title)} field note"${duplicateTabIndex}>
-      <span class="field-memory-photo">${photo}${!photograph ? '<span class="field-memory-photo-stamp" aria-hidden="true">PHOTO NEEDED</span>' : ''}</span>
+      <span class="field-memory-photo">${photo}${!photograph && !videoPreview ? '<span class="field-memory-photo-stamp" aria-hidden="true">PHOTO NEEDED</span>' : ''}</span>
       <span class="field-memory-caption">${escapeHtml(details.caption)}.</span>
       <span class="field-memory-event">${escapeHtml(note.eventName)}</span>
     </a>
@@ -349,10 +355,11 @@ function fieldMemoryCard(note, index) {
 }
 
 function fieldNoteCard(note, index) {
-  const evidenceCount = (note.gallery || []).length + (note.documents || []).length + (note.externalLinks || []).length;
+  const evidenceCount = (note.gallery || []).length + (note.documents || []).length + (note.externalLinks || []).length + Number(Boolean(note.coverVideo));
+  const videoPreview = note.coverVideo ? projectPreviewFrame(note.coverVideo, `${note.title} artifact video`) : '';
   return `<a class="field-note-card" href="#/field-notes/${encodeURIComponent(note.id)}" data-field-note-link="${escapeHtml(note.id)}" style="--note-accent:${note.accent || 'var(--blue)'}">
     <span class="field-note-card-top"><span>FIELD NOTE / ${String(index + 1).padStart(2, '0')}</span></span>
-    ${note.coverImage ? `<span class="field-note-card-cover"><img src="${escapeHtml(note.coverImage)}" alt="${escapeHtml(note.coverAlt || note.title)}" loading="lazy"></span>` : ''}
+    ${note.coverImage || videoPreview ? `<span class="field-note-card-cover">${videoPreview || `<img src="${escapeHtml(note.coverImage)}" alt="${escapeHtml(note.coverAlt || note.title)}" loading="lazy">`}</span>` : ''}
     <span class="field-note-category">${escapeHtml(note.category)}</span>
     <h3>${escapeHtml(note.title)}</h3>
     <p>${escapeHtml(note.summary)}</p>
@@ -477,7 +484,7 @@ function fieldNoteDetail(route) {
           <p>${escapeHtml(note.summary)}</p>
           <span class="field-detail-status">${note.status === 'verified' && note.result ? 'VERIFIED RECORD' : note.historicalClaim ? 'HISTORICAL CLAIM NEEDS VERIFICATION' : 'DRAFT · DETAILS TO CONFIRM'}</span>
         </header>
-        ${note.coverImage ? `<figure class="field-detail-cover"><img src="${escapeHtml(note.coverImage)}" alt="${escapeHtml(note.coverAlt || note.title)}"><figcaption>${escapeHtml(note.coverAlt || note.title)}</figcaption></figure>` : ''}
+        ${note.coverImage || note.coverVideo ? `<figure class="field-detail-cover">${note.coverVideo ? projectPreviewFrame(note.coverVideo, `${note.title} animated artifact`) : `<img src="${escapeHtml(note.coverImage)}" alt="${escapeHtml(note.coverAlt || note.title)}">`}<figcaption>${escapeHtml(note.coverAlt || `${note.title} animated artifact preview`)}</figcaption></figure>` : ''}
         <div class="field-detail-layout">
           <nav class="field-detail-toc" aria-label="On this page"><span class="eyebrow">ON THIS PAGE</span>${sectionLabels.map(([id, label], index) => `<a href="#${id}">${String(index + 1).padStart(2, '0')} ${label}</a>`).join('')}</nav>
           <article class="field-detail-content">${detailSections}
@@ -896,6 +903,10 @@ function footer(active) {
 }
 
 function projectArtwork(slug) {
+  if (['pravaha', 'cloudforge', 'nexterra'].includes(slug)) {
+    const project = projects.find(item => item.slug === slug);
+    return projectPreviewFrame(slug, `${project?.name || 'Project'} animated artifact`);
+  }
   const illustrations = {
     nexterra: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M17 37c37-29 65 8 103-8s60-33 99-12 57 4 84 19M10 60c37-29 67 11 109-7s62-30 98-8 54 3 87 18M6 85c45-25 66 8 111-8s67-29 99-8 51 3 82 18M18 111c34-20 62 4 101-9s72-26 106-6 51 2 72 12M39 139c25-14 53 1 83-9s67-20 97-5 47 4 66 10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M216 48c0 20-26 42-26 42s-26-22-26-42a26 26 0 1 1 52 0Z" fill="currentColor" opacity=".14"/><circle cx="190" cy="48" r="7" fill="currentColor"/><path d="M235 122h52M261 96v52" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>',
     cloudforge: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M84 83a31 31 0 0 1 59-13 25 25 0 0 1 40 14h6a21 21 0 0 1 0 42H89a22 22 0 0 1-5-43Z" fill="currentColor" opacity=".17" stroke="currentColor" stroke-width="2"/><rect x="194" y="46" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><rect x="194" y="79" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><rect x="194" y="112" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M205 58h4m-4 33h4m-4 33h4M218 58h35m-35 33h35m-35 33h35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m75 137 11-11 11 11m-11-11v27h36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -918,10 +929,16 @@ function projectDesktopFolder(project, index) {
     ? 'A browser demo for exploring schematic urban-heat scenarios and testing illustrative cooling interventions.'
     : project.tagline;
   const fileNumber = String(project.order || index + 1).padStart(3, '0');
+  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra'].includes(project.slug);
+  const artworkLabel = hasArtifactPreview ? 'Animated project artifact preview' : 'Conceptual project illustration';
+  const featureCategory = isNexTerra ? '01 — CLIMATE TECHNOLOGY' : project.category;
+  const featureSubtitle = isNexTerra ? 'Urban Heat Planning Demo' : project.identity;
+  const featureStatement = isNexTerra ? 'Explore heat scenarios. Test cooling ideas.' : project.tagline;
+  const featureDescription = isNexTerra ? description : project.concept;
   return `<a class="project-folder project-folder--${project.slug}${isFeatured ? ' project-folder--featured' : ''}" data-project-slug="${project.slug}" href="#/workshop/${project.slug}" style="--folder-accent:${project.accent};--folder-surface:color-mix(in srgb, ${project.soft} 66%, var(--paper-raised));--folder-border:color-mix(in srgb, ${project.accent} 66%, var(--rule))" aria-label="Open ${escapeHtml(project.name)} project overview in the Workshop">
     <span class="project-folder-topline"><span class="${isFeatured ? 'project-folder-file' : 'project-folder-number'}">${isFeatured ? `FILE ${fileNumber}` : number}</span><span class="project-folder-code">${escapeHtml(project.code)}</span><span class="project-folder-open">OPEN PROJECT <span aria-hidden="true">↗</span></span></span>
-    <span class="project-folder-art" role="img" aria-label="${escapeHtml(project.identity)} conceptual illustration, not a product screenshot">${projectArtwork(project.slug)}<span class="project-folder-art-caption" aria-hidden="true">CONCEPT VISUAL</span></span>
-    <div class="project-folder-copy"><div class="project-folder-meta">${isFeatured ? `<span class="project-feature-category">${isNexTerra ? '01 — CLIMATE TECHNOLOGY' : escapeHtml(project.category)}</span>` : ''}<h3>${escapeHtml(project.name)}</h3>    ${isFeatured ? `${isNexTerra ? '<span class="project-feature-subtitle">Urban Heat Planning Demo</span><strong class="project-feature-statement">Explore heat scenarios. Test cooling ideas.</strong>' : ''}<p class="project-feature-description">${escapeHtml(description)}</p>${isNexTerra ? '<span class="project-feature-stack">SCHEMATIC MAPS · ILLUSTRATIVE DATA · BROWSER DEMO</span>' : ''}` : `<span class="project-folder-category">${escapeHtml(project.category)}</span>`}</div>${isFeatured ? '<span class="project-feature-cta">VIEW PROJECT <span aria-hidden="true">↗</span></span>' : '<span class="project-folder-arrow" aria-hidden="true">↗</span>'}</div>
+    <span class="project-folder-art" role="${hasArtifactPreview ? 'group' : 'img'}" aria-label="${escapeHtml(artworkLabel)} for ${escapeHtml(project.name)}">${projectArtwork(project.slug)}<span class="project-folder-art-caption" aria-hidden="true">${hasArtifactPreview ? 'ARTIFACT PREVIEW' : 'CONCEPT VISUAL'}</span></span>
+    <div class="project-folder-copy"><div class="project-folder-meta">${isFeatured ? `<span class="project-feature-category">${escapeHtml(featureCategory)}</span><h3>${escapeHtml(project.name)}</h3><span class="project-feature-subtitle">${escapeHtml(featureSubtitle)}</span><strong class="project-feature-statement">${escapeHtml(featureStatement)}</strong><p class="project-feature-description">${escapeHtml(featureDescription)}</p>${isNexTerra ? '<span class="project-feature-stack">SCHEMATIC MAPS · ILLUSTRATIVE DATA · BROWSER DEMO</span>' : ''}` : `<h3>${escapeHtml(project.name)}</h3><span class="project-folder-category">${escapeHtml(project.category)}</span>`}</div>${isFeatured ? '<span class="project-feature-cta">VIEW PROJECT <span aria-hidden="true">↗</span></span>' : '<span class="project-folder-arrow" aria-hidden="true">↗</span>'}</div>
   </a>`;
 }
 
@@ -1176,10 +1193,10 @@ function archive() {
 
         <section class="section selected-work-section" id="projects" aria-labelledby="projects-title">
           <div class="section-heading selected-work-heading">
-            <div class="selected-work-title"><span class="eyebrow">THE PROJECT ARCHIVE</span><h2 id="projects-title">SELECTED WORKS · 2025–26</h2></div>
-            <span class="section-index">04 / SELECTED WORK</span>
+            <div class="selected-work-title"><span class="eyebrow">THE MAKING OF THINGS</span><h2 id="projects-title">Ideas, in orbit.</h2></div>
+            <span class="section-index">04 / WORKSHOP WINDOW</span>
           </div>
-          <p class="section-intro selected-work-intro">A collection of ideas, experiments and things brought to life.</p>
+          <p class="section-intro selected-work-intro">A constellation of experiments, questions and things made real.</p>
           <div class="project-desktop" role="group" aria-label="Dishti's project desktop">
             <nav class="project-desktop-toolbar" aria-label="Project desktop controls">
               <button class="project-toolbar-control" type="button" data-project-carousel-step="-1" aria-label="Show previous featured projects" title="Previous projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
@@ -1255,7 +1272,23 @@ function archive() {
     ${footer('archive')}`;
 }
 
+function projectPreviewFrame(slug, title) {
+  const artifacts = {
+    cloudforge: './CloudForge — Serverless Rescue (Landscape).html',
+    pravaha: './PRAVAHA — Scan It. Know Its Worth. (Landscape).html',
+    nexterra: './nexterra-landscape.html',
+    vriddhaksha: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html'
+  };
+  const artifact = artifacts[slug];
+  if (!artifact) return '';
+  const src = encodeURI(artifact);
+  return `<iframe class="project-media-frame" src="${src}" title="${escapeHtml(title)}" loading="eager" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="no-referrer-when-downgrade" aria-label="${escapeHtml(title)} video preview"></iframe>`;
+}
+
 function projectFolderIcon(project) {
+  if (project.slug === 'pravaha') {
+    return `<span class="project-media-shell" aria-label="PRAVAHA artifact video preview">${projectPreviewFrame(project.slug, 'PRAVAHA artifact video')}</span>`;
+  }
   const symbols = {
     nexterra: '<circle cx="64" cy="58" r="15"/><path d="M49 58h30M64 43c6 7 6 23 0 30M64 43c-6 7-6 23 0 30"/><circle cx="82" cy="48" r="3" fill="currentColor" stroke="none"/>',
     cloudforge: '<path d="M47 61a10 10 0 0 1 1-20 15 15 0 0 1 28 3 9 9 0 1 1 2 17H47Z"/><path d="M58 67h24m-20 5h16"/>',
@@ -1344,6 +1377,7 @@ function projectCover(project) {
   ].map(([label, url]) => url
     ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`
     : `<span>${label}: Not supplied</span>`).join('');
+  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra'].includes(project.slug);
   return `<section class="project-cover" style="--cover-accent:${theme.accent};--cover-deep:${theme.deep};--cover-soft:${theme.soft}">
     <div class="project-cover-identity">
       <span class="eyebrow">${escapeHtml(theme.identity)} / ${project.featured ? `FEATURED ${String(project.order).padStart(2, '0')}` : `ARCHIVE ${String(project.order - 6).padStart(2, '0')}`}</span>
@@ -1351,7 +1385,7 @@ function projectCover(project) {
     </div>
     <div class="project-cover-heading">
       <div><h2>${escapeHtml(project.name)}</h2><p class="project-cover-tagline">${escapeHtml(project.tagline)}</p><p class="project-cover-concept">${escapeHtml(project.concept)}</p></div>
-      <div class="project-cover-art" role="img" aria-label="${escapeHtml(theme.identity)} conceptual visual, not a product screenshot">${projectArtwork(project.slug)}<span>CONCEPT COVER</span></div>
+      <div class="project-cover-art" role="${hasArtifactPreview ? 'group' : 'img'}" aria-label="${escapeHtml(hasArtifactPreview ? `${project.name} animated artifact preview` : `${theme.identity} conceptual visual, not a product screenshot`)}">${projectArtwork(project.slug)}<span>${hasArtifactPreview ? 'ANIMATED ARTIFACT' : 'CONCEPT COVER'}</span></div>
     </div>
     <div class="project-cover-facts">
       <div><span>DOMAIN</span><strong>${escapeHtml(project.category)}</strong></div>
