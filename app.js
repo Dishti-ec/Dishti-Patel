@@ -55,8 +55,8 @@ const fieldNotes = [
   },
   {
     id: 'star-ideaxplore',
-    title: 'STAR · IDEAXPLORE 2025',
-    eventName: 'IDEAXPLORE 2025',
+    title: 'STAR · IDEAEXPLORE 2025',
+    eventName: 'IDEAEXPLORE 2025',
     organizer: null,
     category: 'Innovation',
     filter: 'Innovation',
@@ -64,6 +64,8 @@ const fieldNotes = [
     year: 2025,
     location: null,
     teamName: 'STAR',
+    coverImage: './assets/IDEAEXPLORE_2025.jpeg',
+    coverAlt: 'IDEAXPLORE team members gathered at their event venue.',
     status: 'needs-verification',
     historicalClaim: 'A first-place result was previously reported; supporting evidence has not been added.',
     summary: 'An IDEAXPLORE 2025 entry identified by the project/team name STAR.',
@@ -91,6 +93,8 @@ const fieldNotes = [
     year: null,
     location: null,
     teamName: null,
+    coverImage: './assets/SOLARIS%20NEXUS.jpeg',
+    coverAlt: 'A presentation slide describing an animal-intrusion problem and its impact on farms.',
     status: 'needs-verification',
     historicalClaim: 'A first-place result at a university-level competition was previously reported; evidence has not been added.',
     summary: 'A university-level competition entry; its category, organizer and project details are to be confirmed.',
@@ -172,6 +176,8 @@ const fieldNotes = [
     year: 2025,
     location: null,
     teamName: null,
+    coverImage: './assets/SIH%202025.jpeg',
+    coverAlt: 'A team presenting on stage at Smart India Hackathon 2025.',
     status: 'draft',
     historicalClaim: null,
     summary: 'A Smart India Hackathon 2025 record; participation stage and outcome remain unconfirmed.',
@@ -226,6 +232,8 @@ const fieldNotes = [
     year: null,
     location: null,
     teamName: null,
+    coverImage: './assets/TETRATHON.jpeg',
+    coverAlt: 'Team members holding certificates at a TetraTHON event.',
     status: 'needs-verification',
     historicalClaim: 'Top-nine overall, top-two in AgriTech, and only GSFC participant were previously reported; each claim needs evidence.',
     summary: 'An innovation competition record with a reported AgriTech track; project and event details remain to be confirmed.',
@@ -281,16 +289,17 @@ function filteredFieldNotes() {
 
 const featuredFieldNoteDetails = {
   'sih-internal': { caption: 'the first big leap', icon: 'lightbulb', rotation: '-2.2deg' },
+  'sih-2025': { caption: 'a team on the SIH stage', icon: 'presentation', rotation: '-2.2deg' },
   'iit-roorkee-casequest': { caption: 'a case of thinking bigger', icon: 'presentation', rotation: '1.8deg' },
   'star-ideaxplore': { caption: 'an idea that found its way', icon: 'rocket', rotation: '-1.4deg' },
   'navrachana-tetrathon': { caption: 'small team, big ambitions', icon: 'sprout', rotation: '2.5deg' },
   'solaris-nexus': { caption: 'one for the university', icon: 'trophy', rotation: '-1.7deg' },
+  'demo-eduspark': { caption: 'a day to remember at EduSpark', icon: 'presentation', rotation: '-1.2deg' },
   'demo-workshop-after-hours': { caption: 'the best ideas happen after hours', icon: 'lightbulb', rotation: '1.5deg' },
-  'demo-good-company': { caption: 'good people, new perspectives', icon: 'presentation', rotation: '-2deg' },
   'demo-one-more-try': { caption: 'one more idea, one more try', icon: 'rocket', rotation: '2.3deg' }
 };
 const featuredFieldNoteIds = [
-  'sih-internal',
+  'sih-2025',
   'iit-roorkee-casequest',
   'star-ideaxplore',
   'navrachana-tetrathon',
@@ -308,13 +317,15 @@ const demoFieldNotes = [
     isDemo: true
   },
   {
-    id: 'demo-good-company',
-    title: 'Learning in Good Company',
-    eventName: 'People / demo memory',
+    id: 'demo-eduspark',
+    title: 'EduSpark',
+    eventName: 'EduSpark / demo memory',
     category: 'Demo memory',
     year: null,
     status: 'draft',
-    summary: 'A placeholder for a future collaboration, team memory or shared learning moment.',
+    summary: 'An EduSpark photograph. Event details and a fuller memory can be added later.',
+    coverImage: './assets/EDUSPARK.jpeg',
+    coverAlt: 'Four people standing together at an EduSpark event, two holding certificates.',
     isDemo: true
   },
   {
@@ -530,69 +541,177 @@ function fieldNoteDetail(route) {
     ${footer('archive')}`;
 }
 
-const projects = [
+const documentationModules = [
+  { slug: 'overview', folder: '01_Overview', title: 'Overview', purpose: 'Project identity, problem, vision and timeline.', files: ['project-brief.md', 'elevator-pitch.md', 'problem-statement.md', 'vision.md', 'project-metadata.json', 'project-timeline.md'] },
+  { slug: 'research', folder: '02_Research', title: 'Research', purpose: 'Market, users, evidence and research sources.', files: ['problem-research.md', 'market-research.md', 'competitor-analysis.md', 'user-research.md', 'personas.md', 'research-sources.md'] },
+  { slug: 'ideation', folder: '03_Ideation', title: 'Ideation', purpose: 'Concept development, alternatives and prioritization.', files: ['initial-ideas.md', 'brainstorming.md', 'concept-evolution.md', 'alternative-solutions.md', 'feature-prioritization.md', 'why-this-approach.md'] },
+  { slug: 'requirements', folder: '04_Requirements', title: 'Requirements', purpose: 'Functional scope, user needs and constraints.', files: ['functional-requirements.md', 'non-functional-requirements.md', 'user-stories.md', 'use-cases.md', 'constraints.md', 'scope.md'] },
+  { slug: 'architecture', folder: '05_Architecture', title: 'Architecture', purpose: 'System design, technologies, interfaces and infrastructure.', files: ['system-architecture.md', 'tech-stack.md', 'database-schema.md', 'api-design.md', 'integrations.md', 'infrastructure.md', 'security-design.md'] },
+  { slug: 'user-flows', folder: '06_User_Flows', title: 'User Flows', purpose: 'Journeys, workflows and information architecture.', files: ['user-journey.md', 'user-flow.md', 'information-architecture.md', 'process-workflows.md', 'stakeholder-flows.md'] },
+  { slug: 'design-studio', folder: '07_Design_Studio', title: 'Design Studio', purpose: 'Visual direction, interface decisions and prototypes.', files: ['design-direction.md', 'color-system.md', 'typography.md', 'components.md', 'design-decisions.md', 'wireframes/', 'prototypes/', 'screenshots/'] },
+  { slug: 'implementation', folder: '08_Implementation', title: 'Implementation', purpose: 'Engineering work, code references and deployment.', files: ['implementation-notes.md', 'frontend.md', 'backend.md', 'database.md', 'ai-ml-models.md', 'deployment.md', 'github-links.md', 'codebase/'] },
+  { slug: 'decisions', folder: '09_Decisions', title: 'Decisions', purpose: 'Trade-offs, alternatives, challenges and lessons.', files: ['decision-log.md', 'technical-tradeoffs.md', 'alternatives-considered.md', 'challenges.md', 'lessons-learned.md'] },
+  { slug: 'testing', folder: '10_Testing', title: 'Testing', purpose: 'Validation, quality, performance and limitations.', files: ['test-plan.md', 'test-cases.md', 'bug-log.md', 'performance.md', 'validation.md', 'limitations.md'] },
+  { slug: 'outcomes', folder: '11_Outcomes', title: 'Outcomes', purpose: 'Results, achievements, metrics and feedback.', files: ['results.md', 'achievements.md', 'metrics.md', 'demonstrations.md', 'feedback.md'] },
+  { slug: 'future-scope', folder: '12_Future_Scope', title: 'Future Scope', purpose: 'Roadmap, planned features and open research.', files: ['roadmap.md', 'planned-features.md', 'research-gaps.md', 'next-iterations.md'] },
+  { slug: 'media-assets', folder: '13_Media_Assets', title: 'Media Assets', purpose: 'Project identity, imagery, diagrams and demonstrations.', files: ['cover.webp', 'icon.svg', 'hero.webp', 'gallery/', 'diagrams/', 'videos/', 'screenshots/', 'photographs/'] }
+];
+
+const projectRegistry = [
   {
-    slug: 'nexterra',
-    accent: '#79c9c1',
-    name: 'NexTerra',
-    folder: '01_NexTerra',
-    category: 'AI / Geospatial Intelligence / Environment',
-    tagline: 'Exploring how geospatial data can make environmental risk easier to understand.',
-    concept: 'A proposed geospatial environmental intelligence project. Data sources, analysis and validated capabilities need confirmation.',
-    files: [
-      ['overview.md', 'Project overview', 'A geospatial environmental intelligence concept: connect environmental context with a map-based way to explore risk. The exact user need, current feature set and project status should be confirmed against the working prototype.'],
-      ['research.md', 'Research & discovery', 'A useful next step is to document the target users, data provenance, hazard definitions and evidence behind each proposed insight. No interviews, datasets or findings are claimed in this portfolio draft.'],
-      ['architecture.md', 'Architecture', 'A potential workflow is data inputs → processing and analysis → map-based presentation. This is a discussion outline, not a claim about a deployed or validated pipeline.'],
-      ['prototype.md', 'Prototype & evidence', 'Add real interface captures, a caption for each image and a clear label distinguishing a working build from a design prototype. No product screenshots or live demo have been supplied yet.'],
-      ['decisions.md', 'Limitations & decisions', 'Document uncertainty, data freshness, geographic coverage and how people should interpret risk. Validation and implementation details remain to be verified.']
-    ]
+    slug: 'nexterra', featured: true, order: 1, accent: '#86c9a6', deep: '#173a34', soft: '#e8f1e7',
+    name: 'NexTerra', folder: '01_NexTerra', category: 'Environmental intelligence / ClimateTech', identity: 'Climate Intelligence Laboratory', code: 'CLIMATE / GEO',
+    tagline: 'Environmental intelligence, explored through a climate-focused lens.',
+    concept: 'A climate intelligence project direction. The intended users, environmental data sources, methods and implemented scope still need confirmation.',
+    signature: 'Interactive environmental map and climate-risk layer exploration.'
   },
   {
-    slug: 'cloudforge',
-    accent: '#c4a9f3',
-    name: 'CloudForge',
-    folder: '02_CloudForge',
-    category: 'Cloud / AWS / Gamified Learning',
-    tagline: 'Exploring a more hands-on path into cloud concepts and developer tools.',
-    concept: 'A proposed gamified cloud-learning environment. Simulated scenarios and any real AWS integrations need confirmation.',
-    files: [
-      ['overview.md', 'Project overview', 'CloudForge is framed as a gamified cloud-learning environment. Confirm the learner audience, completed challenges and current project status before describing it as a working product.'],
-      ['learning-design.md', 'Learning design', 'Show how a learner progresses from a concept to an exercise and useful feedback. Label planned exercises separately from scenarios that have actually been built.'],
-      ['system-design.md', 'System design', 'Document the implementation and distinguish simulated cloud scenarios from any real AWS integration. This draft does not imply that cloud resources are provisioned.'],
-      ['build-notes.md', 'Build notes & reflection', 'Add the hardest implementation problem, what was tried, and the trade-offs or limitations observed. No performance or learning outcomes are claimed here.']
-    ]
+    slug: 'cloudforge', featured: true, order: 2, accent: '#93b8ff', deep: '#182b50', soft: '#e8eefb',
+    name: 'CloudForge', folder: '02_CloudForge', category: 'Cloud computing / Education', identity: 'Cloud Engineering Playground', code: 'CLOUD / LEARN',
+    tagline: 'A cloud engineering playground shaped around learning and practice.',
+    concept: 'A cloud computing and education project direction. Learner workflows, completed exercises and any real cloud integrations need confirmation.',
+    signature: 'Simulated terminal or interactive cloud quest explorer.'
   },
   {
-    slug: 'pravaha',
-    accent: '#9ad5b2',
-    name: 'PRAVAHA',
-    folder: '03_PRAVAHA',
-    category: 'Sustainability / Circular Economy',
-    tagline: 'A project direction around more transparent e-waste collection and valuation.',
-    concept: 'A proposed e-waste collection and circular-economy workflow. User research and implemented capabilities need confirmation.',
-    files: [
-      ['overview.md', 'Project overview', 'PRAVAHA is framed around e-waste collection, fair valuation and circular-economy workflows. Confirm the intended users, project scope and current prototype before publishing stronger claims.'],
-      ['problem.md', 'Problem & motivation', 'Describe the specific collection or valuation problem this project addresses, who experiences it, and what evidence informed the idea. This draft does not claim interviews or validated demand.'],
-      ['workflows.md', 'Workflows & design', 'A case study could map the real collector, recycler and material-verification journeys, then show the prototype screens that support each step. Those workflows are not yet documented here.'],
-      ['architecture.md', 'Architecture', 'Record the services, data model and integrations that exist in the implementation. No particular backend, material-recognition model or traceability system is assumed.'],
-      ['impact-and-limitations.md', 'Limitations & next steps', 'Separate demonstrated prototype behaviour from intended impact. Add field validation, pricing evidence and traceability limits only after they have been researched.']
-    ]
+    slug: 'carbon-credits', featured: true, order: 3, accent: '#b4c690', deep: '#334431', soft: '#edf1e2',
+    name: 'Carbon Credits Ecosystem', folder: '03_Carbon_Credits', category: 'Climate finance / Sustainability', identity: 'The Carbon Exchange', code: 'CARBON / LEDGER',
+    tagline: 'A sustainability-focused exploration of the carbon-credit ecosystem.',
+    concept: 'A climate finance and sustainability project direction. Credit-generation methods, verification evidence and marketplace scope need confirmation.',
+    signature: 'Explore a carbon-credit lifecycle from generation through verification to trading.'
   },
   {
-    slug: 'carbon-credits',
-    accent: '#b4c690',
-    name: 'Carbon Credits Ecosystem',
-    folder: '04_Carbon_Credits',
-    category: 'Climate Tech / Verification',
-    tagline: 'A systems concept for land registration and environmental evidence.',
-    concept: 'A proposed carbon-credit registration and verification concept. Verification methods, data and implementation need confirmation.',
-    files: [
-      ['overview.md', 'Project overview', 'This project is framed around land registration, environmental verification and traceability. The stakeholder workflow and implemented scope still need to be verified.'],
-      ['verification.md', 'Verification approach', 'Explain what evidence is collected, its source, and the limits of any geospatial or satellite verification. No verification accuracy or environmental impact is claimed.'],
-      ['implementation.md', 'Implementation & next steps', 'Record implemented roles, data structures and integrations separately from planned work. Add evidence and limitations from the actual build before publication.']
-    ]
+    slug: 'pravaha', featured: true, order: 4, accent: '#9ad5b2', deep: '#183d32', soft: '#e8eee3',
+    name: 'PRAVAHA', folder: '04_PRAVAHA', category: 'Circular economy / E-waste', identity: 'Circular Systems Studio', code: 'E-WASTE / CIRCULAR',
+    tagline: 'A circular-systems direction centered on e-waste.',
+    concept: 'A circular economy and e-waste project direction. Stakeholder research, collection workflows and implemented capabilities need confirmation.',
+    signature: 'Trace an e-waste item through a proposed recycling ecosystem.'
+  },
+  {
+    slug: 'urvara', featured: true, order: 5, accent: '#d9a276', deep: '#4d3025', soft: '#f3e8dc',
+    name: 'Urvara', folder: '05_Urvara', category: 'AgriTech / Precision agriculture', identity: 'Agricultural Intelligence Field', code: 'AGRI / FIELD',
+    tagline: 'An agricultural intelligence direction grounded in the crop cycle.',
+    concept: 'An AgriTech and precision agriculture project direction. Crop advisory methods, farmer workflows and validated capabilities need confirmation.',
+    signature: 'Explore a crop lifecycle alongside proposed advisory and post-harvest decisions.'
+  },
+  {
+    slug: 'trilogy', featured: true, order: 6, accent: '#e5a9bd', deep: '#482a3d', soft: '#f5e8ec',
+    name: 'Trilogy', folder: '06_Trilogy', category: 'Creative / Editorial', identity: 'A Shared Digital Scrapbook', code: 'EDITORIAL / MEMORY',
+    tagline: 'A creative and editorial space for three contributors.',
+    concept: 'A shared digital scrapbook project direction. Contributor histories, content and media organization have not been supplied.',
+    signature: 'Flip through photographs, journal entries and memories from three contributors.'
+  },
+  {
+    slug: 'kanochi', featured: false, order: 7, accent: '#77d7a2', deep: '#122e2b', soft: '#e4efe9',
+    name: 'Kanochi', folder: '07_Kanochi', category: 'Cybersecurity', identity: 'Cybersecurity Operations Center', code: 'SECURITY / OPS',
+    tagline: 'A cybersecurity project identity for a research and engineering archive.',
+    concept: 'A cybersecurity project direction. The threat landscape, detection methodology and project implementation need confirmation.',
+    signature: 'Interactive threat-monitoring or security-workflow exploration.'
+  },
+  {
+    slug: 'cognivault', featured: false, order: 8, accent: '#91abc9', deep: '#283747', soft: '#eceeea',
+    name: 'Cognivault', folder: '08_Cognivault', category: 'Research / Knowledge management', identity: 'The Research Archive', code: 'RESEARCH / INDEX',
+    tagline: 'A research archive identity for organizing and exploring knowledge.',
+    concept: 'A research and knowledge-management project direction. The topic taxonomy, search behavior and content collection need confirmation.',
+    signature: 'Explore and search the research library, including its 200+ topics.'
+  },
+  {
+    slug: 'retra-038-suraksha', featured: false, order: 9, accent: '#c6b67b', deep: '#3e3a26', soft: '#efeddf',
+    name: 'Retra 038 / Suraksha', folder: '09_Retra_038_Suraksha', category: 'AI / Agricultural protection', identity: 'Smart Farm Protection Laboratory', code: 'VISION / AGRI',
+    tagline: 'A smart-farm protection identity for agricultural AI research.',
+    concept: 'Retra 038 and Suraksha remain one registry entry as directed. Their individual histories, differences and any implemented capabilities have not been established.',
+    signature: 'Visual detection demonstration with bounding boxes and livestock-identification overlays.'
   }
 ];
+
+const projectDomains = {
+  nexterra: ['Environment', 'AI / ML'],
+  cloudforge: ['Cloud'],
+  'carbon-credits': ['Environment', 'Systems'],
+  pravaha: ['Environment', 'Systems'],
+  urvara: ['Environment', 'AI / ML'],
+  trilogy: ['Systems'],
+  kanochi: ['Cybersecurity'],
+  cognivault: ['AI / ML', 'Systems'],
+  'retra-038-suraksha': ['Environment', 'AI / ML', 'Cybersecurity']
+};
+
+const projects = projectRegistry.map(project => ({
+  theme: project.slug,
+  status: 'Details to verify',
+  role: null,
+  duration: null,
+  icon: null,
+  cover: null,
+  hero: null,
+  technologies: [],
+  collaborators: [],
+  links: { website: null, github: null, prototype: null },
+  sections: documentationModules.map(module => module.slug),
+  relatedProjects: [],
+  domains: projectDomains[project.slug] || [],
+  ...project
+}));
+
+const workshopSession = {
+  openProjects: [],
+  activeProject: null,
+  activeFiles: {}
+};
+
+function resetWorkshopSession() {
+  workshopSession.openProjects = [];
+  workshopSession.activeProject = null;
+  workshopSession.activeFiles = {};
+}
+
+const projectDocuments = {
+  nexterra: {
+    overview: 'The supplied Workshop brief identifies NexTerra as an environmental intelligence / ClimateTech project with a climate intelligence laboratory identity. Its problem statement, current build and project history have not been supplied.',
+    research: 'Document environmental problem research, urban heat mitigation methodology and geospatial data sources. No datasets, interviews or findings have been supplied.',
+    architecture: 'The brief calls for mapping and analytics architecture documentation. The actual system design, data flow and technologies are not yet supplied.',
+    implementation: 'Implementation evidence, repository links and screenshots have not been supplied. Add them only after reviewing the project source.',
+    testing: 'Model and data validation are priority documentation areas. No validation results or performance claims have been supplied.'
+  },
+  cloudforge: {
+    overview: 'The supplied Workshop brief identifies CloudForge as a cloud computing / education project with a cloud engineering playground identity. The learner audience, completed challenges and project status need confirmation.',
+    ideation: 'The brief proposes documenting learning architecture and the quest or challenge system. No completed learning materials or outcomes have been supplied.',
+    architecture: 'Document the actual cloud service mapping and infrastructure. Distinguish any simulated scenario from a real cloud integration.',
+    implementation: 'Implementation details and repository links have not been supplied. No cloud resources or deployment are represented as verified.',
+    testing: 'No learner testing or learning outcomes have been supplied.'
+  },
+  'carbon-credits': {
+    overview: 'The supplied Workshop brief identifies this as a climate finance / sustainability project with a carbon exchange identity. No credit lifecycle, marketplace or impact is claimed as implemented.',
+    research: 'Document carbon-credit ecosystem research, farmer and company personas, and the evidence behind the proposed workflow. No research findings have been supplied.',
+    implementation: 'The project source and actual transaction, verification or traceability implementation have not been supplied.'
+  },
+  pravaha: {
+    overview: 'The supplied Workshop brief identifies PRAVAHA as a circular economy / e-waste project with a circular systems studio identity. Scope and project status need confirmation.',
+    research: 'Document the e-waste problem landscape and stakeholder ecosystem. No interviews or validated demand have been supplied.',
+    architecture: 'The project source and actual material lineage, tracking or verification system have not been supplied.',
+    'user-flows': 'Collection and processing workflows are priority documentation areas. Current stakeholder journeys have not been supplied.',
+    testing: 'No field validation or verified impact measures have been supplied.'
+  }
+};
+
+const projectThemes = Object.fromEntries(projects.map(project => [project.theme, {
+  accent: project.accent,
+  deep: project.deep,
+  soft: project.soft,
+  identity: project.identity
+}]));
+
+function projectModules(project) {
+  const projectContent = projectDocuments[project.slug] || {};
+  return documentationModules.map(module => ({
+    ...module,
+    content: projectContent[module.slug] || '',
+    status: projectContent[module.slug] ? 'Portfolio outline · source not supplied' : 'Documentation not supplied'
+  }));
+}
+
+function featuredProjects() {
+  return projects.filter(project => project.featured).sort((a, b) => a.order - b.order);
+}
 
 const observatoryPosts = [
   {
@@ -777,18 +896,141 @@ function projectArtwork(slug) {
     nexterra: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M17 37c37-29 65 8 103-8s60-33 99-12 57 4 84 19M10 60c37-29 67 11 109-7s62-30 98-8 54 3 87 18M6 85c45-25 66 8 111-8s67-29 99-8 51 3 82 18M18 111c34-20 62 4 101-9s72-26 106-6 51 2 72 12M39 139c25-14 53 1 83-9s67-20 97-5 47 4 66 10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M216 48c0 20-26 42-26 42s-26-22-26-42a26 26 0 1 1 52 0Z" fill="currentColor" opacity=".14"/><circle cx="190" cy="48" r="7" fill="currentColor"/><path d="M235 122h52M261 96v52" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>',
     cloudforge: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M84 83a31 31 0 0 1 59-13 25 25 0 0 1 40 14h6a21 21 0 0 1 0 42H89a22 22 0 0 1-5-43Z" fill="currentColor" opacity=".17" stroke="currentColor" stroke-width="2"/><rect x="194" y="46" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><rect x="194" y="79" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><rect x="194" y="112" width="70" height="23" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M205 58h4m-4 33h4m-4 33h4M218 58h35m-35 33h35m-35 33h35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m75 137 11-11 11 11m-11-11v27h36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     pravaha: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M86 78a51 51 0 0 1 89-23l10 12m0 0-19 2m19-2-2-19M232 91a51 51 0 0 1-88 30l-11-12m0 0 19-1m-19 1 1 19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M147 78h39l-5 43h-30z" fill="currentColor" opacity=".14" stroke="currentColor" stroke-width="2"/><path d="M150 91h34m-30 9h28m-24 9h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="109" cy="55" r="4" fill="currentColor"/><circle cx="213" cy="128" r="4" fill="currentColor"/><path d="M62 145h196" stroke="currentColor" stroke-width="1" stroke-dasharray="3 6"/></svg>',
-    'carbon-credits': '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M52 142h220M69 142V89m0 0 20-29 20 29v53m38 0V70m0 0 25-35 25 35v72m30 0V95m0 0 18-25 18 25v47" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="239" cy="51" r="28" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><path d="m226 51 9 9 18-19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M43 40h45M43 48h29M254 135h31" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>'
+    'carbon-credits': '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M52 142h220M69 142V89m0 0 20-29 20 29v53m38 0V70m0 0 25-35 25 35v72m30 0V95m0 0 18-25 18 25v47" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="239" cy="51" r="28" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><path d="m226 51 9 9 18-19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M43 40h45M43 48h29M254 135h31" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>',
+    urvara: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M160 148V56m0 55c-43 0-66-25-66-63 39 0 66 22 66 63Zm0-29c0-38 24-64 66-64 0 39-23 64-66 64Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="2"/><path d="M74 148h172M108 148v-20m104 20v-20M122 126c15-10 29-10 38 0m0 0c12-10 25-10 38 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="160" cy="48" r="4" fill="currentColor"/></svg>',
+    trilogy: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><rect x="55" y="35" width="94" height="110" rx="2" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2" transform="rotate(-8 102 90)"/><rect x="112" y="27" width="94" height="110" rx="2" fill="currentColor" fill-opacity=".08" stroke="currentColor" stroke-width="2" transform="rotate(5 159 82)"/><rect x="169" y="38" width="94" height="110" rx="2" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="2" transform="rotate(-3 216 93)"/><path d="M91 115c14-25 26-23 39 0m-8-20h1m63 13c14-21 25-22 39 0m-18-29h1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    kanochi: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M160 28 236 57v40c0 34-28 55-76 72-48-17-76-38-76-72V57l76-29Z" fill="currentColor" fill-opacity=".09" stroke="currentColor" stroke-width="2"/><path d="M160 48 216 69v29c0 23-19 39-56 53-37-14-56-30-56-53V69l56-21Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 5"/><path d="m132 92 18 18 39-40" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="69" cy="40" r="3" fill="currentColor"/><circle cx="254" cy="130" r="3" fill="currentColor"/></svg>',
+    cognivault: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M75 41h117l39 39v62H75z" fill="currentColor" fill-opacity=".08" stroke="currentColor" stroke-width="2"/><path d="M192 41v39h39M94 96h112m-112 14h93m-93 14h105" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="248" cy="48" r="20" fill="none" stroke="currentColor" stroke-width="2"/><path d="m263 63 17 17m-36-32v12m-6-6h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    'retra-038-suraksha': '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M53 53h214v101H53z" fill="currentColor" fill-opacity=".06" stroke="currentColor" stroke-width="2"/><path d="M82 123V87l22-18 25 18v36m15 0V76l24-20 25 20v47m16 0V94l21-16 20 16v29" fill="none" stroke="currentColor" stroke-width="2"/><rect x="151" y="68" width="54" height="61" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/><path d="M151 68v9m0-9h9m45 0h-9m9 0v9m-54 52v-9m0 9h9m45 0h-9m9 0v-9" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
   };
   return illustrations[slug] || '';
 }
 
 function projectDesktopFolder(project, index) {
-  const number = String(index + 1).padStart(2, '0');
-  return `<a class="project-folder project-folder--${project.slug}" href="#/workshop/${project.slug}" aria-label="Open ${escapeHtml(project.name)} project overview in the Workshop">
-    <span class="project-folder-topline"><span class="project-folder-number">${number}</span><span class="project-folder-code">${project.slug === 'nexterra' ? 'GEO / AI' : project.slug === 'cloudforge' ? 'AWS / CLOUD' : project.slug === 'pravaha' ? 'CIRCULARITY' : 'CLIMATE TECH'}</span><span class="project-folder-open">OPEN PROJECT <span aria-hidden="true">↗</span></span></span>
-    <span class="project-folder-art" role="img" aria-label="${escapeHtml(project.name)} conceptual illustration, not a product screenshot">${projectArtwork(project.slug)}<span class="project-folder-art-caption" aria-hidden="true">CONCEPT VISUAL</span></span>
-    <div class="project-folder-copy"><div class="project-folder-meta"><h3>${escapeHtml(project.name)}</h3><span class="project-folder-category">${escapeHtml(project.category)}</span></div><span class="project-folder-arrow" aria-hidden="true">↗</span></div>
+  const number = String(project.order || index + 1).padStart(2, '0');
+  const isFeatured = index === 0;
+  const isNexTerra = project.slug === 'nexterra';
+  const description = isNexTerra
+    ? 'An AI-powered geospatial platform for understanding environmental risks and enabling smarter urban decisions.'
+    : project.tagline;
+  const fileNumber = String(project.order || index + 1).padStart(3, '0');
+  return `<a class="project-folder project-folder--${project.slug}${isFeatured ? ' project-folder--featured' : ''}" data-project-slug="${project.slug}" href="#/workshop/${project.slug}" style="--folder-accent:${project.accent};--folder-surface:color-mix(in srgb, ${project.soft} 66%, var(--paper-raised));--folder-border:color-mix(in srgb, ${project.accent} 66%, var(--rule))" aria-label="Open ${escapeHtml(project.name)} project overview in the Workshop">
+    <span class="project-folder-topline"><span class="${isFeatured ? 'project-folder-file' : 'project-folder-number'}">${isFeatured ? `FILE ${fileNumber}` : number}</span><span class="project-folder-code">${escapeHtml(project.code)}</span><span class="project-folder-open">OPEN PROJECT <span aria-hidden="true">↗</span></span></span>
+    <span class="project-folder-art" role="img" aria-label="${escapeHtml(project.identity)} conceptual illustration, not a product screenshot">${projectArtwork(project.slug)}<span class="project-folder-art-caption" aria-hidden="true">CONCEPT VISUAL</span></span>
+    <div class="project-folder-copy"><div class="project-folder-meta">${isFeatured ? `<span class="project-feature-category">${isNexTerra ? '01 — CLIMATE TECHNOLOGY' : escapeHtml(project.category)}</span>` : ''}<h3>${escapeHtml(project.name)}</h3>${isFeatured ? `${isNexTerra ? '<span class="project-feature-subtitle">Environmental Intelligence</span><strong class="project-feature-statement">Building intelligence for a changing planet.</strong>' : ''}<p class="project-feature-description">${escapeHtml(description)}</p>${isNexTerra ? '<span class="project-feature-stack">GIS · AI/ML · React · Python</span>' : ''}` : `<span class="project-folder-category">${escapeHtml(project.category)}</span>`}</div>${isFeatured ? '<span class="project-feature-cta">VIEW PROJECT <span aria-hidden="true">↗</span></span>' : '<span class="project-folder-arrow" aria-hidden="true">↗</span>'}</div>
   </a>`;
+}
+
+function projectDesktopWindow() {
+  const featured = featuredProjects();
+  return Array.from({ length: Math.min(4, featured.length) }, (_, slot) => featured[(projectCarouselIndex + slot) % featured.length]);
+}
+
+function updateProjectCarouselStatus() {
+  const status = document.querySelector('[data-project-carousel-status]');
+  const visible = projectDesktopWindow();
+  if (status) status.textContent = `Showing ${visible.map(project => project.name).join(', ')}`;
+  const count = document.querySelector('[data-project-carousel-count]');
+  if (count) count.textContent = `${String(projectCarouselIndex + 1).padStart(2, '0')} / ${String(featuredProjects().length).padStart(2, '0')}`;
+}
+
+function stepProjectCarousel(direction) {
+  const grid = document.querySelector('[data-project-carousel-grid]');
+  const featured = featuredProjects();
+  if (!grid || projectCarouselAnimating || featured.length <= 4) return;
+
+  const oldCards = [...grid.querySelectorAll('.project-folder')];
+  const oldPositions = new Map(oldCards.map(card => [card.dataset.projectSlug, card.getBoundingClientRect()]));
+  const gridBounds = grid.getBoundingClientRect();
+  const desktop = grid.closest('.project-desktop');
+  const desktopBounds = desktop.getBoundingClientRect();
+  projectCarouselIndex = (projectCarouselIndex + direction + featured.length) % featured.length;
+  const visible = projectDesktopWindow();
+  const visibleSlots = new Map(visible.map((project, slot) => [project.slug, slot]));
+  const exiting = oldCards.filter(card => {
+    const slot = visibleSlots.get(card.dataset.projectSlug);
+    return slot === undefined || card.classList.contains('project-folder--featured') !== (slot === 0);
+  });
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const exitClones = reducedMotion ? [] : exiting.map(card => {
+    const bounds = oldPositions.get(card.dataset.projectSlug);
+    const clone = card.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    clone.inert = true;
+    clone.style.position = 'absolute';
+    clone.style.left = `${bounds.left - desktopBounds.left}px`;
+    clone.style.top = `${bounds.top - desktopBounds.top}px`;
+    clone.style.width = `${bounds.width}px`;
+    clone.style.height = `${bounds.height}px`;
+    clone.style.margin = '0';
+    clone.style.zIndex = '3';
+    clone.style.pointerEvents = 'none';
+    clone.dataset.carouselExit = 'true';
+    return clone;
+  });
+
+  projectCarouselAnimating = true;
+  grid.setAttribute('aria-busy', 'true');
+  document.querySelectorAll('[data-project-carousel-step]').forEach(button => { button.disabled = true; });
+  exitClones.forEach(clone => desktop.append(clone));
+  exiting.forEach(card => card.remove());
+
+  const nextCards = visible.map((project, slot) => {
+    const existing = oldCards.find(card => card.dataset.projectSlug === project.slug
+      && card.classList.contains('project-folder--featured') === (slot === 0));
+    if (existing) {
+      grid.append(existing);
+      return existing;
+    }
+    const template = document.createElement('template');
+    template.innerHTML = projectDesktopFolder(project, slot);
+    const card = template.content.firstElementChild;
+    card.dataset.projectSlug = project.slug;
+    grid.append(card);
+    return card;
+  });
+  updateProjectCarouselStatus();
+
+  if (!reducedMotion) {
+    void grid.offsetHeight;
+    const duration = 660;
+    const animations = nextCards.map(card => {
+      const previous = oldPositions.get(card.dataset.projectSlug);
+      if (!previous) {
+        return card.animate([
+          { translate: `0px ${direction > 0 ? 54 : -54}px`, opacity: 0 },
+          { translate: '0px 0px', opacity: 1 }
+        ], { duration, easing: 'cubic-bezier(.22,.75,.22,1)' });
+      }
+      const current = card.getBoundingClientRect();
+      return card.animate([
+        { translate: `${previous.left - current.left}px ${previous.top - current.top}px`, opacity: 1 },
+        { translate: '0px 0px', opacity: 1 }
+      ], { duration, easing: 'cubic-bezier(.22,.75,.22,1)' });
+    });
+    const exitDistance = gridBounds.width + 32;
+    exitClones.forEach(clone => {
+      animations.push(clone.animate([
+        { translate: '0px 0px', opacity: 1 },
+        { translate: `${direction > 0 ? -exitDistance : exitDistance}px 0px`, opacity: 0 }
+      ], { duration: duration - 70, easing: 'cubic-bezier(.55,0,.8,.35)' }));
+    });
+    projectCarouselAnimations = animations;
+    Promise.all(animations.map(animation => animation.finished.catch(() => null))).then(() => {
+      exitClones.forEach(clone => clone.remove());
+      if (grid.isConnected) {
+        projectCarouselAnimating = false;
+        projectCarouselAnimations = [];
+        grid.removeAttribute('aria-busy');
+        document.querySelectorAll('[data-project-carousel-step]').forEach(button => { button.disabled = false; });
+      }
+    });
+    return;
+  }
+
+  projectCarouselAnimating = false;
+  grid.removeAttribute('aria-busy');
+  document.querySelectorAll('[data-project-carousel-step]').forEach(button => { button.disabled = false; });
 }
 
 const polaroidPhotos = [
@@ -808,6 +1050,9 @@ let explorationObserver = null;
 let explorationTween = null;
 let projectDesktopObserver = null;
 let projectDesktopTimeline = null;
+let projectCarouselIndex = 0;
+let projectCarouselAnimating = false;
+let projectCarouselAnimations = [];
 let fieldNotesObserver = null;
 let fieldNotesTimeline = null;
 
@@ -843,6 +1088,31 @@ function archive() {
               <span class="scrap-doodle scrap-doodle--heart" aria-hidden="true">♡</span>
             </div>
             <p class="polaroid-caption">small frames, big feelings <span aria-hidden="true">↗</span></p>
+          </div>
+        </section>
+
+        <section class="academic-snapshot" aria-labelledby="academic-snapshot-title">
+          <div class="academic-snapshot-topline">
+            <span class="eyebrow">02.5 / ACADEMIC SNAPSHOT</span>
+            <span class="academic-snapshot-status"><i aria-hidden="true"></i> IN PROGRESS</span>
+          </div>
+          <div class="academic-snapshot-main">
+            <div class="academic-snapshot-degree">
+              <span class="eyebrow">ACADEMIC RECORD / 001 · CURRENTLY PURSUING</span>
+              <h2 id="academic-snapshot-title">Computer Science &amp; Engineering</h2>
+              <p>B.Tech · GSFC University</p>
+              <span class="academic-snapshot-location">Vadodara, Gujarat, India</span>
+            </div>
+            <div class="academic-snapshot-gpa" aria-label="Current CGPA 8.38 out of 10">
+              <strong>8.38</strong>
+              <span>CGPA / 10</span>
+            </div>
+          </div>
+          <div class="academic-snapshot-bottom">
+            <div><span>YEAR</span><strong>02</strong></div>
+            <div><span>SEMESTER</span><strong>03</strong></div>
+            <div><span>GRADUATION</span><strong>2028</strong></div>
+            <p>BUILDING THE FUNDAMENTALS, ONE SEMESTER AT A TIME.</p>
           </div>
         </section>
 
@@ -896,32 +1166,35 @@ function archive() {
 
         <section class="section selected-work-section" id="projects" aria-labelledby="projects-title">
           <div class="section-heading selected-work-heading">
-            <div class="selected-work-title"><span class="eyebrow">PROJECT ARCHIVE · 2026</span><h2 id="projects-title">Things I've been building.</h2></div>
+            <div class="selected-work-title"><span class="eyebrow">THE PROJECT ARCHIVE</span><h2 id="projects-title">SELECTED WORKS · 2025–26</h2></div>
             <span class="section-index">04 / SELECTED WORK</span>
           </div>
           <p class="section-intro selected-work-intro">A collection of ideas, experiments and things brought to life.</p>
           <div class="project-desktop" role="group" aria-label="Dishti's project desktop">
             <nav class="project-desktop-toolbar" aria-label="Project desktop controls">
-              <a class="project-toolbar-control" href="#exploring-title" aria-label="Back to currently exploring" title="Back to currently exploring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></a>
-              <a class="project-toolbar-control" href="#projects" aria-label="Forward to selected work" title="Forward to selected work"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></a>
+              <button class="project-toolbar-control" type="button" data-project-carousel-step="-1" aria-label="Show previous featured projects" title="Previous projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+              <button class="project-toolbar-control" type="button" data-project-carousel-step="1" aria-label="Show next featured projects" title="Next projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
               <span class="project-desktop-address"><span class="address-lock" aria-hidden="true">⌑</span>dishti.dev <span aria-hidden="true">/</span> workshop</span>
               <button class="project-toolbar-control project-desktop-refresh" type="button" aria-label="Refresh the project desktop" title="Refresh the project desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5"></path><path d="M19 12a7 7 0 1 1-2-5l3 5"></path></svg></button>
               <span class="project-toolbar-spacer"></span>
               <a class="project-toolbar-control project-github-link" href="https://github.com/Dishti-ec" target="_blank" rel="noopener noreferrer" aria-label="Open Dishti's GitHub profile in a new tab" title="GitHub profile"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .9a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.1c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.01-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15.99 1.7 2.6 1.21 3.24.93.1-.73.39-1.21.7-1.49-2.47-.28-5.06-1.24-5.06-5.52 0-1.22.44-2.22 1.16-3-.12-.29-.5-1.42.11-2.96 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.13-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.67.11 2.96.72.78 1.16 1.78 1.16 3 0 4.29-2.6 5.23-5.08 5.51.4.35.75 1.02.75 2.06v3.05c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .9Z"></path></svg></a>
               <a class="project-toolbar-control project-workshop-link" href="#/workshop/home" aria-label="Open the full Workshop" title="Open the full Workshop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"></path><path d="m20 4-9 9"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg></a>
             </nav>
-            <div class="project-desktop-caption"><span>MY PROJECT DESKTOP</span><span>04 ITEMS · OPEN TO EXPLORE <span aria-hidden="true">↗</span></span></div>
-            <div class="project-desktop-grid">
-              ${projects.map((project, index) => projectDesktopFolder(project, index)).join('')}
+            <span class="sr-only" data-project-carousel-status aria-live="polite">Showing ${projectDesktopWindow().map(project => escapeHtml(project.name)).join(', ')}</span>
+            <div class="project-desktop-grid" data-project-carousel-grid>
+              ${projectDesktopWindow().map((project, index) => projectDesktopFolder(project, index)).join('')}
             </div>
-            <div class="project-desktop-footer"><span><strong>DISHTI'S WORKSPACE</strong><span>A glimpse into the Workshop.</span></span><a href="#/workshop/home">OPEN FULL WORKSPACE <span aria-hidden="true">↗</span></a></div>
+            <div class="project-desktop-footer">
+              <span class="project-desktop-count" data-project-carousel-count>${String(projectCarouselIndex + 1).padStart(2, '0')} / ${String(featuredProjects().length).padStart(2, '0')}</span>
+              <a class="project-desktop-enter" href="#/workshop/home">ENTER WORKSHOP <span aria-hidden="true">↗</span></a>
+            </div>
           </div>
         </section>
 
         ${fieldNotesSection()}
 
         <section class="section" aria-labelledby="roles-title">
-          <div class="section-heading"><h2 id="roles-title">Roles &amp; current work</h2><span class="section-index">02 / COMMUNITY</span></div>
+          <div class="section-heading"><h2 id="roles-title">Roles &amp; current work</h2><span class="section-index">06 / COMMUNITY</span></div>
           <div class="role-spread">
             <article class="role-card role-cloud"><div class="role-illustration" aria-hidden="true"><span class="role-star">✳</span><span class="role-orbit"></span><span class="role-planet"></span><span class="role-coordinate">AWS / BUILD</span></div><div class="role-copy"><span class="eyebrow">CLOUD · COMMUNITY · TECHNICAL LEADERSHIP</span><h3>AWS Student Builder Group</h3><p class="role">Technical Lead</p><p>Cloud learning, technical exploration and student building initiatives.</p><div class="role-tags"><span>Cloud</span><span>Learning</span><span>Community</span></div></div></article>
             <article class="role-card role-literature"><div class="role-illustration" aria-hidden="true"><span class="book-mark">Aa</span><span class="book-line"></span><span class="role-coordinate">WORDS / IDEAS</span><span class="book-star">✳</span></div><div class="role-copy"><span class="eyebrow">LITERATURE · LEADERSHIP · CREATIVITY</span><h3>University Literature Club</h3><p class="role">President</p><p>Literary initiatives, student participation and creative expression.</p><div class="role-tags"><span>Literature</span><span>Leadership</span><span>Community</span></div></div></article>
@@ -929,11 +1202,11 @@ function archive() {
         </section>
 
         <section class="section" aria-labelledby="worlds-title">
-          <div class="section-heading"><h2 id="worlds-title">One identity, three worlds</h2><span class="section-index">06 / EXPLORE FURTHER</span></div>
+          <div class="section-heading"><h2 id="worlds-title">One identity, three worlds</h2><span class="section-index">07 / EXPLORE FURTHER</span></div>
           <div class="world-previews">
             <a class="preview-card" href="#/workshop">
               <div class="preview-top"><span>THE WORKSHOP · PROJECT ARCHIVE</span><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-              <div class="preview-files"><div class="file-list"><span>⌄ DISHTI_WORKSPACE</span><span>　▸ 01_NexTerra</span><span>　▸ 02_PRAVAHA</span><span>　▸ 03_CloudForge</span><span>　▸ 04_Carbon_Credits</span></div><div class="mini-map" aria-hidden="true"></div></div>
+              <div class="preview-files"><div class="file-list"><span>⌄ DISHTI_WORKSPACE</span><span>　▸ 01_NexTerra</span><span>　▸ 02_CloudForge</span><span>　▸ 03_Carbon_Credits</span><span>　▸ 04_PRAVAHA</span><span>　▸ 05_Urvara</span></div><div class="mini-map" aria-hidden="true"></div></div>
               <div class="preview-copy"><h3>A closer look at the work behind the work.</h3><p>Project stories, decisions, architecture and what remains to be learned.</p></div>
               <span class="preview-arrow">Explore the Archive →</span>
             </a>
@@ -947,7 +1220,7 @@ function archive() {
         </section>
 
         <section class="section choose-path-section" aria-labelledby="choose-path-title">
-          <div class="section-heading"><h2 id="choose-path-title">Choose your path</h2><span class="section-index">07 / YOUR NEXT STEP</span></div>
+          <div class="section-heading"><h2 id="choose-path-title">Choose your path</h2><span class="section-index">08 / YOUR NEXT STEP</span></div>
           <div class="choose-path-grid">
             <a class="path-card path-recruiter" href="#projects"><span class="eyebrow">FOR RECRUITERS</span><strong>Start with the work</strong><span>Selected projects and the professional archive</span><b>Explore projects →</b></a>
             <a class="path-card path-builder" href="#/workshop"><span class="eyebrow">FOR BUILDERS</span><strong>Open the Workshop</strong><span>Ideas, decisions and technical case studies</span><b>Explore the Workshop →</b></a>
@@ -957,7 +1230,7 @@ function archive() {
 
         <section class="section" id="contact" aria-labelledby="contact-title">
           <div class="contact-panel">
-            <div class="contact-copy"><span class="eyebrow">07 / BACK COVER</span><h2 id="contact-title">Have something interesting in mind?</h2><p>For internships, collaborations, technical conversations or creative projects, I'd love to hear from you.</p><p class="muted-note">Contact details and a delivery service have not been supplied. This form will not claim to send a message; add a verified email address or configure a form endpoint to enable it.</p></div>
+            <div class="contact-copy"><span class="eyebrow">09 / BACK COVER</span><h2 id="contact-title">Have something interesting in mind?</h2><p>For internships, collaborations, technical conversations or creative projects, I'd love to hear from you.</p><p class="muted-note">Contact details and a delivery service have not been supplied. This form will not claim to send a message; add a verified email address or configure a form endpoint to enable it.</p></div>
             <form class="contact-form" id="contact-form">
               <div class="field"><label for="contact-name">Name</label><input id="contact-name" name="name" autocomplete="name" required /></div>
               <div class="field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required /></div>
@@ -972,67 +1245,213 @@ function archive() {
     ${footer('archive')}`;
 }
 
+function projectFolderIcon(project) {
+  const symbols = {
+    nexterra: '<circle cx="64" cy="58" r="15"/><path d="M49 58h30M64 43c6 7 6 23 0 30M64 43c-6 7-6 23 0 30"/><circle cx="82" cy="48" r="3" fill="currentColor" stroke="none"/>',
+    cloudforge: '<path d="M47 61a10 10 0 0 1 1-20 15 15 0 0 1 28 3 9 9 0 1 1 2 17H47Z"/><path d="M58 67h24m-20 5h16"/>',
+    'carbon-credits': '<path d="M64 70c-20-2-26-18-22-31 16-2 29 7 29 24-1 4-3 6-7 7Z"/><path d="M54 51c8 5 13 11 15 19m2-5 5 5 9-12"/>',
+    pravaha: '<path d="M78 48a17 17 0 0 0-28-4l-5 5m0 0 1-10m-1 10 10-1m-13 13a17 17 0 0 0 28 4l5-5m0 0-1 10m1-10-10 1"/>',
+    urvara: '<path d="M64 73V48m0 14c-13 0-20-7-20-20 12 0 20 7 20 20Zm0-9c0-12 8-20 21-20 0 12-8 20-21 20Z"/>',
+    trilogy: '<circle cx="54" cy="51" r="8"/><circle cx="74" cy="51" r="8"/><circle cx="64" cy="68" r="8"/><path d="m60 56 3 5m5-5-3 5m-3 4h4"/>',
+    kanochi: '<path d="M64 40 81 47v12c0 11-7 18-17 23-10-5-17-12-17-23V47l17-7Z"/><path d="m56 60 6 6 11-13"/>',
+    cognivault: '<circle cx="64" cy="56" r="5"/><circle cx="48" cy="45" r="4"/><circle cx="80" cy="44" r="4"/><circle cx="49" cy="69" r="4"/><circle cx="80" cy="69" r="4"/><path d="m52 48 8 6m8 0 8-7m-17 12-7 7m16-7 7 7"/>',
+    'retra-038-suraksha': '<path d="M64 40 81 47v12c0 11-7 18-17 23-10-5-17-12-17-23V47l17-7Z"/><path d="M64 51v17m-8-8h16"/>'
+  };
+  return `<svg class="project-folder-icon" viewBox="0 0 128 108" aria-hidden="true" focusable="false">
+    <path d="M10 26V17a5 5 0 0 1 5-5h31l11 12h56a5 5 0 0 1 5 5v8H10Z" fill="currentColor" opacity=".27" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M10 30a4 4 0 0 1 4-4h100a4 4 0 0 1 4 4v57a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5Z" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/>
+    <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${symbols[project.slug] || symbols.nexterra}</g>
+  </svg>`;
+}
+
+function workshopProjectCard(project) {
+  const collection = project.featured ? 'FEATURED' : 'ARCHIVE';
+  return `<a class="workspace-project-card project-${project.slug}" href="#/workshop/${project.slug}" data-project-card data-project-order="${project.order}" data-project-collection="${project.featured ? 'featured' : 'archive'}" data-project-category="${escapeHtml(project.category)}" data-project-domains="${escapeHtml(project.domains.join('|'))}" data-project-experimental="${project.experimental === true}" style="--project-accent:${project.accent};--project-deep:${project.deep};--project-soft:${project.soft}">
+    <span class="workspace-project-number">${String(project.order).padStart(2, '0')} / ${collection}</span>
+    <span class="workspace-project-art">${projectFolderIcon(project)}</span>
+    <span class="workspace-project-identity">${escapeHtml(project.identity)}</span>
+    <strong>${escapeHtml(project.name)}</strong>
+    <span class="workspace-project-category">${escapeHtml(project.category)}</span>
+    <span class="workspace-project-summary">${escapeHtml(project.tagline)}</span>
+    <b>Open project <span aria-hidden="true">↗</span></b>
+  </a>`;
+}
+
+function workshopDirectory() {
+  const featured = featuredProjects();
+  const archive = projects.filter(project => !project.featured).sort((a, b) => a.order - b.order);
+  const domains = ['AI / ML', 'Cloud', 'Environment', 'Cybersecurity', 'Systems'];
+  return `<section class="workspace-welcome">
+    <div class="workspace-directory-intro">
+      <span class="eyebrow">WORKSHOP / 01 PROJECT DIRECTORY</span>
+      <h1>Things I've been building.</h1>
+      <p>An evolving archive of ideas, experiments, engineered systems and things I couldn't resist building.</p>
+      <span class="workspace-directory-count">09 PROJECTS <i>·</i> MULTIPLE DOMAINS <i>·</i> CONTINUOUSLY EVOLVING</span>
+    </div>
+    <div class="workspace-directory-toolbar">
+      <div class="workspace-view-filters" role="group" aria-label="Filter project collection">
+        <button type="button" data-project-view="all" aria-pressed="true">All projects <span>09</span></button>
+        <button type="button" data-project-view="featured" aria-pressed="false">Featured <span>06</span></button>
+      </div>
+      <label class="workspace-search-wrap"><span class="workspace-search-label">Search projects</span><input class="workspace-search" id="workshop-search" type="search" placeholder="Search projects…" autocomplete="off"></label>
+      <label class="workspace-sort-label" for="workspace-sort">Sort
+        <select id="workspace-sort" data-project-sort><option value="featured">Featured order</option><option value="alphabetical">A–Z</option><option value="recently-updated" disabled>Recently updated · dates not supplied</option></select>
+      </label>
+    </div>
+    <div class="workspace-domain-filters" role="group" aria-label="Filter projects by domain">
+      <span>DOMAIN</span><button type="button" data-project-domain="all" aria-pressed="true">All</button>
+      ${domains.map(domain => `<button type="button" data-project-domain="${escapeHtml(domain)}" aria-pressed="false">${escapeHtml(domain)}</button>`).join('')}
+    </div>
+    <div class="workspace-directory-options">
+      <span data-project-results>09 projects</span>
+      <div class="workspace-layout-toggle" role="group" aria-label="Project layout">
+        <button type="button" data-project-layout="grid" aria-pressed="true">Folders</button>
+        <button type="button" data-project-layout="explorer" aria-pressed="false">List</button>
+      </div>
+    </div>
+    <section class="workspace-collection" data-project-collection-section="featured" aria-labelledby="featured-projects-title">
+      <div class="workspace-collection-heading"><div><span class="eyebrow">COLLECTION A / PRIORITY PROJECTS</span><h2 id="featured-projects-title">Featured projects</h2></div><span>06 PROJECTS</span></div>
+      <div class="workspace-project-grid">${featured.map(workshopProjectCard).join('')}</div>
+    </section>
+    <section class="workspace-collection workspace-archive-collection" data-project-collection-section="archive" aria-labelledby="archive-projects-title">
+      <div class="workspace-collection-heading"><div><span class="eyebrow">COLLECTION B / ENGINEERING &amp; RESEARCH</span><h2 id="archive-projects-title">More experiments</h2></div><span>03 PROJECTS</span></div>
+      <div class="workspace-project-grid">${archive.map(workshopProjectCard).join('')}</div>
+      <p class="workspace-archive-note">Retra 038 and Suraksha remain one registry entry until their histories and differences are established.</p>
+    </section>
+    <p class="workspace-directory-empty" data-project-empty hidden>No projects match these filters. Try another search or domain.</p>
+    <div class="workspace-legend"><span><i class="legend-proposed"></i>Project details to verify</span><span>END OF DIRECTORY — MORE EXPERIMENTS AHEAD.</span></div>
+  </section>`;
+}
+
+function projectCover(project) {
+  const modules = projectModules(project);
+  const theme = projectThemes[project.theme];
+  const related = (project.relatedProjects || []).map(slug => projects.find(item => item.slug === slug)).filter(Boolean);
+  const projectLinks = [
+    ['Website', project.links.website],
+    ['Source', project.links.github],
+    ['Prototype', project.links.prototype]
+  ].map(([label, url]) => url
+    ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`
+    : `<span>${label}: Not supplied</span>`).join('');
+  return `<section class="project-cover" style="--cover-accent:${theme.accent};--cover-deep:${theme.deep};--cover-soft:${theme.soft}">
+    <div class="project-cover-identity">
+      <span class="eyebrow">${escapeHtml(theme.identity)} / ${project.featured ? `FEATURED ${String(project.order).padStart(2, '0')}` : `ARCHIVE ${String(project.order - 6).padStart(2, '0')}`}</span>
+      <span class="project-cover-status">${escapeHtml(project.status.toUpperCase())}</span>
+    </div>
+    <div class="project-cover-heading">
+      <div><h2>${escapeHtml(project.name)}</h2><p class="project-cover-tagline">${escapeHtml(project.tagline)}</p><p class="project-cover-concept">${escapeHtml(project.concept)}</p></div>
+      <div class="project-cover-art" role="img" aria-label="${escapeHtml(theme.identity)} conceptual visual, not a product screenshot">${projectArtwork(project.slug)}<span>CONCEPT COVER</span></div>
+    </div>
+    <div class="project-cover-facts">
+      <div><span>DOMAIN</span><strong>${escapeHtml(project.category)}</strong></div>
+      <div><span>PERSONAL CONTRIBUTION</span><strong>${escapeHtml(project.role || 'Not supplied')}</strong></div>
+      <div><span>TECHNOLOGIES</span><strong>${escapeHtml(project.technologies.length ? project.technologies.join(', ') : 'Not supplied')}</strong></div>
+      <div><span>COLLABORATORS / DURATION</span><strong>${escapeHtml(project.collaborators.length ? project.collaborators.join(', ') : 'Not supplied')}${project.duration ? ` / ${escapeHtml(project.duration)}` : ''}</strong></div>
+    </div>
+    <div class="project-links" aria-label="Project links"><span class="eyebrow">PROJECT LINKS</span>${projectLinks}</div>
+    <section class="project-signature" aria-labelledby="project-signature-title">
+      <span class="eyebrow">SIGNATURE INTERACTION / PLANNED CONCEPT</span>
+      <h3 id="project-signature-title">${escapeHtml(project.signature)}</h3>
+      <p>This interaction is a direction from the Workshop brief, not a functioning project demo. Its implementation and evidence have not been supplied.</p>
+    </section>
+    <div class="project-cover-documents">
+      <span class="eyebrow">DOCUMENTATION MAP</span>
+      <p>${project.sections.length} modular sections. Open a section in the explorer to see its purpose, expected files and any supplied portfolio outline.</p>
+      <a href="#/workshop/${project.slug}/overview">Open project overview ↗</a>
+    </div>
+    ${related.length ? `<nav class="project-related" aria-label="Related projects"><span class="eyebrow">CONNECTED PROJECTS</span>${related.map(item => `<a href="#/workshop/${item.slug}">${escapeHtml(item.name)} ↗</a>`).join('')}</nav>` : ''}
+  </section>`;
+}
+
+function projectModulePage(project, module) {
+  const expectedFiles = module.files.map(file => `<li><code>${escapeHtml(file)}</code><span>Not supplied</span></li>`).join('');
+  return `<section class="doc-section project-module-page">
+    <div class="project-module-heading"><span class="eyebrow">${escapeHtml(module.folder)} / DOCUMENTATION MODULE</span><span class="project-module-status">${escapeHtml(module.status)}</span></div>
+    <h2>${escapeHtml(module.title)}</h2>
+    <p>${escapeHtml(module.purpose)}</p>
+    ${module.content ? `<div class="project-source-note"><span class="eyebrow">PORTFOLIO OUTLINE / NOT SOURCE DOCUMENTATION</span><p>${escapeHtml(module.content)}</p></div>` : `<div class="project-missing-note"><strong>Documentation not supplied.</strong><p>This section is part of the shared Workshop structure. Its project-specific content should be added after the project source and supporting materials are reviewed.</p></div>`}
+    <div class="project-document-list"><h3>Expected files <span>optional when not applicable</span></h3><ul>${expectedFiles}</ul><p>These are documentation targets, not files that currently exist in this portfolio.</p></div>
+  </section>`;
+}
+
 function workshop(route) {
   const isWorkspaceHome = route.project === 'home';
-  let project = isWorkspaceHome ? null : projects.find(item => item.slug === route.project) || projects[0];
-  let selected = project ? project.files.find(item => item[0] === route.file) || project.files[0] : null;
-  const body = isWorkspaceHome
-    ? `<section class="workspace-welcome"><span class="eyebrow">DISHTI / WORKSHOP</span><h1>A workspace for ideas in progress.</h1><p>Choose a project to explore its story, the questions around it and the parts that still need evidence.</p><p class="workspace-honesty">Project status, screenshots and technical details are being verified. This archive distinguishes directions from implemented work.</p><h2>Pick a project to explore</h2><div class="workspace-project-grid">${projects.map((item, index) => `<a class="workspace-project-card project-${item.slug}" href="#/workshop/${item.slug}"><span class="workspace-project-number">${String(index + 1).padStart(2, '0')} / PROJECT</span><strong>${item.name}</strong><span>${item.category}</span><b>Open project ↗</b></a>`).join('')}</div><div class="workspace-legend"><span><i class="legend-proposed"></i>Project details being verified</span><span>Dates are not shown until confirmed</span></div></section>`
-    : route.file && project.files.some(item => item[0] === route.file)
-    ? `<section class="doc-section"><h2>${selected[1]}</h2><p>${selected[2]}</p></section>`
-    : `<div class="workshop-content-grid">
-        <section class="workshop-card"><span class="eyebrow">The idea</span><h2>${project.name}</h2><p>${project.concept}</p><p><strong>Case study status:</strong> This outline is a starting point, not proof of completed functionality.</p></section>
-        <section class="workshop-card architecture-visual" aria-label="Documentation workflow outline"><div class="arch-node">Problem &amp; evidence</div><div class="arch-arrow" aria-hidden="true">↓</div><div class="arch-node">Design &amp; implementation</div><div class="arch-arrow" aria-hidden="true">↓</div><div class="arch-node">Results &amp; limitations</div></section>
-      </div>
-      <section class="doc-section"><h2>What this case study needs</h2><p>Document the origin, intended users, real research, implementation, trade-offs and limitations. Link to demos or source code only after verifying that they are public and working.</p></section>`;
+  if (isWorkspaceHome) {
+    return `${header('workshop')}
+      <main id="main" class="workshop-directory-main">
+        <div class="workshop-directory-topbar">
+          <a class="workspace-brand" href="#/workshop/home"><span aria-hidden="true">⌑</span><span>DISHTI <i>/</i> WORKSHOP</span></a>
+          <span class="directory-breadcrumb">WORKSHOP <i>/</i> DIRECTORY</span>
+          <a class="workspace-return" href="#/">← Back to portfolio</a>
+        </div>
+        <div class="workshop-directory-content">${workshopDirectory()}</div>
+      </main>
+      ${footer('workshop')}`;
+  }
+  const project = projects.find(item => item.slug === route.project);
+  if (!project || !workshopSession.openProjects.includes(project.slug)) return workshop({ mode: 'workshop', project: 'home', file: '' });
+  const modules = project ? projectModules(project) : [];
+  const selected = modules.find(module => module.slug === route.file) || modules.find(module => module.slug === (workshopSession.activeFiles[project.slug] || 'overview')) || modules[0];
+  const activeTheme = projectThemes[project.theme];
+  const body = route.file ? projectModulePage(project, selected) : projectCover(project);
   return `${header('workshop')}
-    <main id="main">
-      <div class="workshop-layout" style="--project-accent:${project?.accent || '#a8b9d4'}">
+    <main id="main" class="workshop-app-main">
+      <div class="workshop-layout" style="--project-accent:${activeTheme.accent};--project-deep:${activeTheme.deep};--project-soft:${activeTheme.soft}">
         <div class="workspace-bar">
-              <a class="workspace-brand" href="#/workshop/home"><span aria-hidden="true">✳</span><span>DISHTI <i>/</i> WORKSHOP</span></a>
-          <a class="workspace-selector" href="#/workshop/home">WORKSPACE <span>⌄</span></a>
-          <label class="workspace-search-label" for="workshop-search">Search projects</label>
-          <input class="workspace-search" id="workshop-search" type="search" placeholder="Search projects…" autocomplete="off">
+          <a class="workspace-brand" href="#/workshop/home"><span aria-hidden="true">⌑</span><span>DISHTI <i>/</i> WORKSHOP</span></a>
+          <a class="workspace-selector" href="#/workshop/home">PROJECT DIRECTORY <span>↗</span></a>
+          <button class="workspace-explorer-toggle" type="button" data-explorer-toggle aria-expanded="false" aria-controls="project-explorer">Explorer</button>
+          <span class="workspace-current-path">WORKSHOP <i>/</i> ${escapeHtml(project.name.toUpperCase())} <i>/</i> ${escapeHtml(selected.title.toUpperCase())}</span>
           <a class="workspace-return" href="#/">← Archive</a>
         </div>
-        <aside class="explorer" aria-label="Project file explorer">
-          <div class="explorer-title">EXPLORER</div>
-          <div class="tree-root">⌄ DISHTI_WORKSPACE</div>
-          ${projects.map(item => `<div class="tree-project">
-            <button class="tree-project-button project-${item.slug}" type="button" data-project="${item.slug}" aria-expanded="${item.slug === project?.slug}">
-              <span class="tree-chevron" aria-hidden="true">›</span><span class="tree-folder" aria-hidden="true">${item.slug === project?.slug ? '▾' : '▰'}</span>${item.folder}
-            </button>
-            <div class="tree-children" ${item.slug === project?.slug ? '' : 'hidden'}>
-              ${item.files.map(file => `<a class="tree-file" href="#/workshop/${item.slug}/${file[0]}" ${item.slug === project?.slug && file[0] === selected?.[0] ? 'aria-current="true"' : ''}><span class="file-icon" aria-hidden="true">▤</span>${file[0]}</a>`).join('')}
-            </div>
-          </div>`).join('')}
+        <aside class="explorer" id="project-explorer" aria-label="Open project explorer">
+          <div class="explorer-title">EXPLORER <span>${workshopSession.openProjects.length} OPEN</span></div>
+          <div class="tree-root">⌄ OPEN PROJECTS</div>
+          ${workshopSession.openProjects.map(slug => {
+            const item = projects.find(candidate => candidate.slug === slug);
+            if (!item) return '';
+            const itemModules = projectModules(item);
+            const activeFile = workshopSession.activeFiles[slug] || 'overview';
+            const active = item.slug === project.slug;
+            return `<div class="tree-project${active ? ' is-active' : ''}" data-project-tree="${item.slug}">
+              <div class="tree-project-heading">
+                <button class="tree-project-button project-${item.slug}" type="button" data-project="${item.slug}" style="--project-accent:${item.accent}" ${active ? 'aria-current="page"' : ''}>
+                  <span class="tree-folder" aria-hidden="true">${projectFolderIcon(item)}</span><span>${escapeHtml(item.name)}</span>
+                </button>
+                <button class="tree-project-close" type="button" data-close-project="${item.slug}" aria-label="Close ${escapeHtml(item.name)}">×</button>
+              </div>
+              <div class="tree-children">
+                ${itemModules.map(module => `<a class="tree-file tree-module-link" href="#/workshop/${item.slug}/${module.slug}" ${item.slug === project.slug && module.slug === selected.slug ? 'aria-current="true"' : ''}><span class="file-icon" aria-hidden="true">▤</span><span>${escapeHtml(module.folder)}</span></a>`).join('')}
+              </div>
+            </div>`;
+          }).join('')}
+          <a class="explorer-add-project" href="#/workshop/home">＋ Add project from directory</a>
+          <div class="explorer-session-count">${workshopSession.openProjects.length} ${workshopSession.openProjects.length === 1 ? 'project' : 'projects'} in this workspace</div>
         </aside>
-        <label class="mobile-project-select-label" for="mobile-project-select" hidden>Choose a project</label>
-        <select class="mobile-project-select" id="mobile-project-select" aria-label="Choose a project">
-          <option value="home" ${isWorkspaceHome ? 'selected' : ''}>Workspace home</option>
-          ${projects.map(item => `<option value="${item.slug}" ${item.slug === project?.slug ? 'selected' : ''}>${item.name}</option>`).join('')}
-        </select>
-        <section class="editor" aria-label="Project document">
-          <div class="editor-tabs"><a class="editor-tab ${isWorkspaceHome ? 'is-current' : ''}" href="#/workshop/home"><span aria-hidden="true">✳</span>workspace</a>${project ? `<div class="editor-tab is-current"><span aria-hidden="true">▤</span>${selected[0]}</div>` : ''}</div>
-          <div class="editor-breadcrumb">${isWorkspaceHome ? 'DISHTI_WORKSPACE / HOME' : `DISHTI_WORKSPACE / ${project.folder} / ${selected[0]}`}</div>
+        <section class="editor" aria-label="${escapeHtml(project.name)} project workspace">
+          <div class="editor-tabs">${workshopSession.openProjects.map(slug => {
+            const item = projects.find(candidate => candidate.slug === slug);
+            const file = projectModules(item).find(module => module.slug === (workshopSession.activeFiles[slug] || 'overview')) || projectModules(item)[0];
+            return `<div class="editor-tab-wrap${item.slug === project.slug ? ' is-current' : ''}"><a class="editor-tab${item.slug === project.slug ? ' is-current' : ''}" href="#/workshop/${item.slug}/${file.slug}"><span aria-hidden="true">▤</span>${escapeHtml(item.name)} / ${escapeHtml(file.title)}</a><button type="button" data-close-project="${item.slug}" aria-label="Close ${escapeHtml(item.name)} tab">×</button></div>`;
+          }).join('')}</div>
+          <div class="editor-breadcrumb">WORKSHOP / ${escapeHtml(project.folder)} / ${escapeHtml(selected.folder)}</div>
           <article class="editor-content">
-            ${project ? `<span class="eyebrow">${project.category}</span>
-            <h1>${project.name}</h1>
-            <p class="editor-lede">${project.tagline}</p>
-            <div class="workshop-alert"><strong>Editorial note:</strong> ${project.concept} No demo, repository, implementation detail or result has been supplied, so none is represented as verified.</div>` : ''}
+            <span class="eyebrow">${escapeHtml(project.category)} / ${escapeHtml(activeTheme.identity)}</span><h1>${escapeHtml(project.name)}</h1><p class="editor-lede">${escapeHtml(project.tagline)}</p>
             ${body}
-            ${project ? '<a class="workshop-back" href="#/workshop/home">← All projects</a>' : ''}
+            <a class="workshop-back" href="#/workshop/home">← Project directory</a>
           </article>
         </section>
         <aside class="doc-meta" aria-label="Project information">
-          <h2>${project ? 'Project info' : 'Workspace notes'}</h2>
-          ${project ? `<div class="meta-row"><span>Documentation</span><strong>In progress</strong></div>
-          <div class="meta-row"><span>Category</span><strong>${project.category}</strong></div>
-          <div class="meta-row"><span>Source code</span><strong>Not supplied</strong></div>
-          <div class="meta-row"><span>Live demo</span><strong>Not supplied</strong></div>
-          <div class="meta-row"><span>Current document</span><strong>${selected[1]}</strong></div>` : `<div class="meta-row"><span>Projects</span><strong>04 concepts &amp; case studies</strong></div><div class="meta-row"><span>Last updated</span><strong>Not stated</strong></div><div class="meta-row"><span>Working principle</span><strong>Evidence before claims</strong></div>`}
-          <a class="workshop-back" href="#/">← Back to Archive</a>
+          <h2>Project info</h2>
+          <div class="meta-row"><span>Collection</span><strong>${project.featured ? `Featured · ${String(project.order).padStart(2, '0')} / 06` : `Archive · ${String(project.order - 6).padStart(2, '0')} / 03`}</strong></div>
+          <div class="meta-row"><span>Project status</span><strong>Details to verify</strong></div>
+          <div class="meta-row"><span>Documentation modules</span><strong>13</strong></div>
+          <div class="meta-row"><span>Current section</span><strong>${escapeHtml(selected.title)}</strong></div>
+          <div class="meta-row"><span>Source / demo</span><strong>Not supplied</strong></div>
+          <div class="meta-row"><span>Working principle</span><strong>Evidence before claims</strong></div>
         </aside>
+        <div class="workspace-status-bar"><span><i></i>WORKSPACE ACTIVE</span><span>${workshopSession.openProjects.length} OPEN PROJECTS</span><span>${escapeHtml(selected.folder)} · ${escapeHtml(selected.status)}</span></div>
       </div>
     </main>
     ${footer('workshop')}`;
@@ -1360,6 +1779,9 @@ function clearProjectDesktopAnimation() {
   projectDesktopObserver = null;
   projectDesktopTimeline?.kill();
   projectDesktopTimeline = null;
+  projectCarouselAnimations.forEach(animation => animation.cancel());
+  projectCarouselAnimations = [];
+  projectCarouselAnimating = false;
 }
 
 function setupProjectDesktopAnimation() {
@@ -1380,13 +1802,19 @@ function setupProjectDesktopAnimation() {
     if (!entry.isIntersecting) return;
     observer.disconnect();
     if (projectDesktopObserver === observer) projectDesktopObserver = null;
+    projectCarouselAnimating = true;
+    section.querySelectorAll('[data-project-carousel-step]').forEach(button => { button.disabled = true; });
     projectDesktopTimeline = gsap.timeline();
     projectDesktopTimeline
       .to(heading, { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power2.out' })
       .to(desktop, { autoAlpha: 1, scale: 1, duration: 0.48, ease: 'power2.out' }, '-=0.16')
       .to(toolbar, { autoAlpha: 1, y: 0, duration: 0.34, ease: 'power2.out' }, '-=0.2')
       .to(folders, { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.12, ease: 'power2.out' }, '-=0.12')
-      .to(footer, { autoAlpha: 1, y: 0, duration: 0.32, ease: 'power2.out' }, '-=0.16');
+      .to(footer, { autoAlpha: 1, y: 0, duration: 0.32, ease: 'power2.out' }, '-=0.16')
+      .call(() => {
+        projectCarouselAnimating = false;
+        section.querySelectorAll('[data-project-carousel-step]').forEach(button => { button.disabled = false; });
+      });
   }, { threshold: 0.12 });
   projectDesktopObserver = observer;
   observer.observe(section);
@@ -1504,18 +1932,38 @@ function bindInteractions() {
     menuButton.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
     nav.classList.toggle('is-open', !expanded);
   });
+  document.querySelectorAll('[data-project-carousel-step]').forEach(button => {
+    button.addEventListener('click', () => stepProjectCarousel(Number(button.dataset.projectCarouselStep)));
+  });
   document.querySelectorAll('.tree-project-button').forEach(button => {
     button.addEventListener('click', () => {
-      const wasExpanded = button.getAttribute('aria-expanded') === 'true';
-      if (!wasExpanded) location.hash = `#/workshop/${button.dataset.project}`;
-      else {
-        button.setAttribute('aria-expanded', 'false');
-        button.nextElementSibling.hidden = true;
-      }
+      const projectId = button.dataset.project;
+      const file = workshopSession.activeFiles[projectId] || 'overview';
+      location.hash = `#/workshop/${projectId}/${file}`;
     });
   });
-  document.querySelector('.mobile-project-select')?.addEventListener('change', event => {
-    location.hash = `#/workshop/${event.target.value}`;
+  document.querySelector('[data-explorer-toggle]')?.addEventListener('click', event => {
+    const button = event.currentTarget;
+    const expanded = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!expanded));
+    document.querySelector('.workshop-layout').classList.toggle('is-explorer-open', !expanded);
+  });
+  document.querySelectorAll('[data-close-project]').forEach(button => {
+    button.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const projectId = button.dataset.closeProject;
+      workshopSession.openProjects = workshopSession.openProjects.filter(id => id !== projectId);
+      delete workshopSession.activeFiles[projectId];
+      if (workshopSession.activeProject === projectId) {
+        const nextProject = workshopSession.openProjects.at(-1);
+        location.hash = nextProject
+          ? `#/workshop/${nextProject}/${workshopSession.activeFiles[nextProject] || 'overview'}`
+          : '#/workshop/home';
+        return;
+      }
+      render();
+    });
   });
   document.querySelector('.project-desktop-refresh')?.addEventListener('click', () => window.location.reload());
   document.querySelector('.field-note-filters')?.addEventListener('click', event => {
@@ -1645,15 +2093,65 @@ function bindInteractions() {
       wave.setAttribute('scale', '0');
     });
   }
-  document.querySelector('.workspace-search')?.addEventListener('input', event => {
-    const query = event.target.value.trim().toLowerCase();
-    document.querySelectorAll('.tree-project').forEach(folder => {
-      folder.hidden = !folder.textContent.toLowerCase().includes(query);
+  const projectSearch = document.querySelector('.workspace-search');
+  const projectDirectory = document.querySelector('.workspace-welcome');
+  if (projectSearch) {
+    let activeDomain = 'all';
+    const applyProjectFilters = () => {
+      const query = projectSearch.value.trim().toLowerCase();
+      const activeView = document.querySelector('[data-project-view][aria-pressed="true"]')?.dataset.projectView || 'featured';
+      let visibleCount = 0;
+      document.querySelectorAll('[data-project-card]').forEach(card => {
+        const matchesSearch = card.textContent.toLowerCase().includes(query);
+        const matchesView = activeView === 'all'
+          || activeView === card.dataset.projectCollection
+          || (activeView === 'experimental' && card.dataset.projectExperimental === 'true');
+        const matchesDomain = activeDomain === 'all' || card.dataset.projectDomains.split('|').includes(activeDomain);
+        const visible = matchesSearch && matchesView && matchesDomain;
+        card.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+      document.querySelectorAll('[data-project-collection-section]').forEach(section => {
+        section.hidden = !section.querySelector('[data-project-card]:not([hidden])');
+      });
+      document.querySelector('[data-project-empty]').hidden = visibleCount > 0;
+      document.querySelector('[data-project-results]').textContent = `${String(visibleCount).padStart(2, '0')} ${visibleCount === 1 ? 'project' : 'projects'}`;
+    };
+    const sortCards = () => {
+      const alphabetical = document.querySelector('[data-project-sort]').value === 'alphabetical';
+      document.querySelectorAll('.workspace-project-grid').forEach(grid => {
+        [...grid.querySelectorAll('[data-project-card]')]
+          .sort((a, b) => alphabetical
+            ? a.querySelector('strong').textContent.localeCompare(b.querySelector('strong').textContent)
+            : Number(a.dataset.projectOrder) - Number(b.dataset.projectOrder))
+          .forEach(card => grid.append(card));
+      });
+    };
+    projectSearch.addEventListener('input', applyProjectFilters);
+    document.querySelectorAll('[data-project-domain]').forEach(button => {
+      button.addEventListener('click', () => {
+        activeDomain = button.dataset.projectDomain;
+        document.querySelectorAll('[data-project-domain]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        applyProjectFilters();
+      });
     });
-    document.querySelectorAll('.workspace-project-card').forEach(card => {
-      card.hidden = !card.textContent.toLowerCase().includes(query);
+    document.querySelector('[data-project-sort]')?.addEventListener('change', sortCards);
+    document.querySelectorAll('[data-project-view]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-project-view]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        applyProjectFilters();
+      });
     });
-  });
+    document.querySelectorAll('[data-project-layout]').forEach(button => {
+      button.addEventListener('click', () => {
+        const listView = button.dataset.projectLayout === 'explorer';
+        projectDirectory.classList.toggle('is-file-explorer-view', listView);
+        document.querySelectorAll('[data-project-layout]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      });
+    });
+    sortCards();
+    applyProjectFilters();
+  }
   document.querySelector('.contact-form')?.addEventListener('submit', event => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -1663,11 +2161,46 @@ function bindInteractions() {
   });
 }
 
+const initialRoute = getRoute();
+if (initialRoute.mode === 'workshop' && initialRoute.project !== 'home') {
+  history.replaceState(null, '', `${location.pathname}${location.search}#/workshop/home`);
+}
+
+let lastRoute = getRoute();
+
 window.addEventListener('hashchange', () => {
   if (location.hash.startsWith('#/')) {
+    const nextRoute = getRoute();
+    if (lastRoute.mode === 'workshop' && nextRoute.mode !== 'workshop') resetWorkshopSession();
+    if (nextRoute.mode === 'workshop' && nextRoute.project !== 'home') {
+      const project = projects.find(item => item.slug === nextRoute.project);
+      if (!project) {
+        location.hash = '#/workshop/home';
+        return;
+      }
+      if (!workshopSession.openProjects.includes(project.slug)) workshopSession.openProjects.push(project.slug);
+      const modules = projectModules(project);
+      const requestedFile = modules.find(module => module.slug === nextRoute.file)?.slug;
+      workshopSession.activeFiles[project.slug] = requestedFile || workshopSession.activeFiles[project.slug] || 'overview';
+      workshopSession.activeProject = project.slug;
+    } else if (nextRoute.mode === 'workshop') {
+      workshopSession.activeProject = null;
+    }
+    lastRoute = nextRoute;
     render();
     if (getRoute().mode === 'field-note') document.querySelector('.field-detail-heading h1')?.focus();
   }
   else document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
 });
+
+window.addEventListener('pageshow', event => {
+  if (!event.persisted) return;
+  resetWorkshopSession();
+  if (getRoute().mode === 'workshop' && getRoute().project !== 'home') {
+    history.replaceState(null, '', `${location.pathname}${location.search}#/workshop/home`);
+  }
+  lastRoute = getRoute();
+  render();
+});
+
 render();

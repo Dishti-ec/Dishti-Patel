@@ -5,10 +5,14 @@ A dependency-free portfolio built with HTML, CSS and JavaScript. Open `index.htm
 ## The three modes
 
 - **Archive** (`#/`) — the professional landing page, exploration index, interactive project desktop, roles, event records and contact section.
-- **Workshop** (`#/workshop`) — a responsive project explorer. Select a project and its documents to navigate the case-study outline.
+- **Workshop** (`#/workshop`) — a spacious nine-project directory with custom folder identities, search/domain filters and grid/list views. Opening a project creates a temporary multi-project workspace with a project explorer, document tabs and a shared 13-module documentation map. Documentation targets are shown separately from supplied project evidence; missing source material is not fabricated.
 - **Observatory** (`#/observatory`) — a full-screen vertical thought archive with 11 story sections, category filters, wheel/touch navigation, keyboard controls and a timed, pause-to-advance slideshow.
 
-Project and story content and route behavior live in `app.js`; visual tokens, responsive layouts and mode-specific styling live in `styles.css`. The Archive theme preference is saved in local storage.
+The Workshop remains part of this dependency-free portfolio rather than a separate React application. Its registry, project themes, documentation module definitions and route behavior live in `app.js`; visual tokens, responsive layouts and mode-specific styling live in `styles.css`. The Archive theme preference is saved in local storage.
+
+The Workshop registry order is NexTerra, CloudForge, Carbon Credits Ecosystem, PRAVAHA, Urvara and Trilogy as featured projects, followed by Kanochi, Cognivault and Retra 038 / Suraksha in the archive. The directory is the landing page; its explorer starts empty. Projects opened from the directory are held only in in-memory session state, retained while navigating within the Workshop and cleared on exit, reload or browser back-forward cache restoration. Registry metadata and project notes are kept in separate `projectRegistry` and `projectDocuments` data structures. Every project exposes the same 13 documentation modules, from Overview through Media Assets. The displayed file lists are documentation targets and do not imply that those files, project source code, live demos or project results have been supplied.
+
+The homepage project desktop shows four featured projects at once in an asymmetrical two-row grid. Its toolbar arrows advance or reverse one project at a time; the folders animate between positions, and the next featured folder enters from below. The full nine-project registry remains available in the Workshop.
 
 ## Field Notes
 
