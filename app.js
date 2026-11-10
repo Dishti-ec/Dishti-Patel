@@ -268,6 +268,8 @@ const fieldNotes = [
   ...note
 }));
 
+const CONTACT_FORM_ENDPOINT = 'https://formspree.io/f/mkjrwjpv';
+
 const fieldNoteFilters = ['All', 'Hackathons', 'Innovation', 'Case Competitions', 'Cybersecurity', 'University Events'];
 let activeFieldNoteFilter = 'All';
 
@@ -278,7 +280,12 @@ function escapeHtml(value) {
 }
 
 function publishedFieldNotes() {
-  return fieldNotes.filter(note => note.visibility === 'public');
+  return fieldNotes.filter(note =>
+    note.visibility === 'public'
+    && note.status === 'verified'
+    && Boolean(note.result)
+    && ((note.gallery || []).length + (note.documents || []).length + (note.externalLinks || []).length > 0)
+  );
 }
 
 function filteredFieldNotes() {
@@ -369,6 +376,7 @@ function fieldNoteCard(note, index) {
 
 function fieldNotesSection() {
   const notes = featuredFieldNotes();
+  if (!notes.length) return '';
   const duplicatedNotes = [...notes, ...notes.map(note => ({ ...note, isDuplicate: true }))];
   return `<section class="section field-notes-section" id="field-notes" aria-labelledby="field-notes-title">
     <div class="section-heading"><div><span class="eyebrow">MILESTONES &amp; MEMORIES</span><h2 id="field-notes-title">A few things happened along the way.</h2></div><span class="section-index">05 / FIELD NOTES</span></div>
@@ -524,7 +532,13 @@ const projectRegistry = [
     tagline: 'Explore neighbourhood heat and test city-cooling scenarios.',
     concept: 'A self-contained browser demo with schematic neighbourhood maps for Bengaluru and Vadodara, seven selectable map layers, draggable cooling interventions and a transparent rules-based scenario. Its data and impact estimates are explicitly illustrative, not live measurements or certified predictions.',
     signature: 'Place cooling interventions on a schematic city map and compare baseline and illustrative scenarios.',
-    technologies: ['HTML', 'CSS', 'JavaScript', 'SVG', 'localStorage']
+    technologies: ['HTML', 'CSS', 'JavaScript', 'SVG', 'localStorage'],
+    concepts: ['Urban heat-risk analysis', 'Geospatial visualisation', 'Environmental monitoring', 'Rules-based scenario planning'],
+    demoFeatures: ['Schematic neighbourhood heat-risk maps and exposure context', 'Selectable environmental and population-context layers', 'Cooling intervention placement and baseline/scenario comparison', 'Illustrative scenario summary and action-plan/export flows'],
+    featureLabel: 'Features in the current demo:',
+    demoFocus: 'Use the live demo to turn schematic environmental data into place-based heat insights. The broader multi-hazard direction is not implemented in the current heat-focused demo.',
+    demoDisclosure: 'Displayed data and rules-based impact calculations are synthetic. No live AI model, sensor feed, authoritative GIS source, or certified climate prediction is connected.',
+    links: { website: 'https://next-erra.vercel.app/', github: null, prototype: null }
   },
   {
     slug: 'cloudforge', featured: true, order: 2, accent: '#93b8ff', deep: '#182b50', soft: '#e8eefb',
@@ -533,7 +547,13 @@ const projectRegistry = [
     tagline: 'Learn AWS by building, breaking, debugging and explaining.',
     concept: 'A gamified cloud-learning prototype centered on Serverless Rescue: diagnose a simulated 403 AccessDeniedException between Lambda and DynamoDB, explain the IAM fix and earn mock XP. The ZIP also includes a five-stage First Deploy quest and a catalog of planned future quests; no live AWS environment or AI mentor service is configured.',
     signature: 'Follow an interactive AWS incident from architecture and logs through diagnosis and explanation.',
-    technologies: ['React', 'Vite', 'React Router', 'JavaScript', 'TypeScript', 'CSS Modules']
+    technologies: ['React', 'Vite', 'React Router', 'JavaScript', 'TypeScript', 'CSS Modules'],
+    concepts: ['AWS fundamentals', 'Gamified learning quests', 'Build → Break → Debug → Explain'],
+    demoFeatures: ['Serverless Rescue: diagnose a simulated Lambda-to-DynamoDB IAM permission error', 'First Deploy: a five-stage guided AWS learning quest', 'Quest progression, scoring and XP backed by mock state', 'Mentor-style guidance uses fixed responses, not a connected AI service'],
+    featureLabel: 'Features in the supplied learning prototype:',
+    demoFocus: 'Walk through Serverless Rescue from architecture and logs to the missing IAM permission, then show the separate First Deploy journey.',
+    demoDisclosure: 'The quests simulate cloud work; no AWS account, deployment, live logs, learner persistence, or AI mentor integration is supplied. Other listed quests are planned, not available.',
+    links: { website: 'https://cloud-forge-umber.vercel.app/', github: null, prototype: null }
   },
   {
     slug: 'carbon-credits', featured: true, order: 3, accent: '#b4c690', deep: '#334431', soft: '#edf1e2',
@@ -542,21 +562,39 @@ const projectRegistry = [
     tagline: 'A farmer–corporate platform concept for India’s carbon market.',
     concept: 'The supplied CarbonBridge dashboard source and Indian Carbon Nexus brief describe a role-based platform for farmer land records, carbon-credit workflows, corporate compliance, geospatial monitoring and education. Live registry, verification, trading and impact evidence are not supplied.',
     signature: 'Follow farmer and corporate records through evidence review toward registry-ready credits.',
-    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Supabase', 'Leaflet', 'Recharts']
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Supabase', 'Leaflet', 'Recharts'],
+    concepts: ['Farmer and company participation', 'Carbon-project registration', 'Geospatial/MRV evidence', 'Credit exchange and compliance'],
+    demoFeatures: ['Farmer/company role-based views and land/company records', 'Supabase-backed account, company and farmland data paths', 'Leaflet project-map visualisation', 'Education, compliance and carbon-credit workflow screens'],
+    featureLabel: 'Features in the supplied source (some data is seeded or simulated):',
+    demoFocus: 'Explain the intended journey from a farmer project and land record through evidence review to company participation and exchange.',
+    demoDisclosure: 'Many figures and records are seeded; the credit sale is simulated. Satellite, official registry, independent verification, trading, and measured environmental impact are not connected or verified.',
+    links: { website: 'https://carbon-credits-ecosystem.vercel.app/', github: null, prototype: null }
   },
   {
     slug: 'pravaha', featured: true, order: 4, accent: '#9ad5b2', deep: '#183d32', soft: '#e8eee3',
     name: 'PRAVAHA', folder: '04_PRAVAHA', category: 'Circular economy / E-waste', identity: 'Circular Systems Studio', code: 'E-WASTE / CIRCULAR',
-    tagline: 'A circular-systems direction centered on e-waste.',
-    concept: 'A circular economy and e-waste project direction. Stakeholder research, collection workflows and implemented capabilities need confirmation.',
-    signature: 'Trace an e-waste item through a proposed recycling ecosystem.'
+    status: 'Public demo · demo data and integrations unverified',
+    tagline: 'Trace an e-waste item from collection toward recycling.',
+    concept: 'The public demo presents collector and recycler journeys for identifying e-waste, showing an indicative price, arranging handover, and creating a QR passport. Its own page labels the network figures and examples as demo data.',
+    signature: 'Trace an e-waste item through a proposed recycling ecosystem.',
+    concepts: ['QR-based traceability', 'Collector and recycler portals', 'Offline-first interaction', 'Hindi and Marathi voice interface', 'Geospatial tracking'],
+    demoFeatures: ['Collector and recycler portal flows', 'Seven-step identify → value → match → arrange → handover → payment → trace journey', 'QR e-waste passport and material-lineage views', 'Offline, voice and multilingual support are presented in the demo'],
+    featureLabel: 'Flows presented in the public demo (data and integrations are not verified):',
+    demoFocus: 'Follow one item from identification through a QR handover passport and traceability view.',
+    demoDisclosure: 'The live page explicitly labels its content as demo data. AI identification, indicative prices, recycler counts, payments, and the recycling network are not independently verified as live services.',
+    links: { website: 'https://pravaha-kc.vercel.app/', github: null, prototype: null }
   },
   {
     slug: 'urvara', featured: true, order: 5, accent: '#d9a276', deep: '#4d3025', soft: '#f3e8dc',
     name: 'Urvara', folder: '05_Urvara', category: 'AgriTech / Precision agriculture', identity: 'Agricultural Intelligence Field', code: 'AGRI / FIELD',
-    tagline: 'An agricultural intelligence direction grounded in the crop cycle.',
-    concept: 'An AgriTech and precision agriculture project direction. Crop advisory methods, farmer workflows and validated capabilities need confirmation.',
-    signature: 'Explore a crop lifecycle alongside proposed advisory and post-harvest decisions.'
+    status: 'Concept reference · implementation not verified',
+    tagline: 'An agricultural intelligence concept across crop and post-harvest decisions.',
+    concept: 'Urvara is positioned as a precision-agriculture concept spanning crop advisory, cultivation insights, data-informed recommendations, and post-harvest decision support. No implementation evidence or public demo link has been supplied.',
+    signature: 'Explore a crop lifecycle alongside proposed advisory and post-harvest decisions.',
+    concepts: ['Crop advisory', 'Cultivation insights', 'Data-informed recommendations', 'Post-harvest intelligence'],
+    demoFocus: 'The intended walkthrough would connect cultivation decisions to post-harvest support; these capabilities remain proposed until a working demo is provided.',
+    demoDisclosure: 'No runnable public demo or source implementation was supplied, so these are product concepts—not implemented capabilities.',
+    featureLabel: 'Proposed concepts—not verified implementation:'
   },
   {
     slug: 'trilogy', featured: true, order: 6, accent: '#e5a9bd', deep: '#482a3d', soft: '#f5e8ec',
@@ -566,28 +604,51 @@ const projectRegistry = [
     concept: 'A scrapbook-style collection that brings together Dishti, Mallika and Palak as three linked volumes. Readers can move through the illustrated archive, then open each contributor’s personal site, journal, travel diary or blog. The supplied README identifies the implementation as HTML, CSS and JavaScript.',
     signature: 'Scroll through three illustrated volumes or jump directly to a creator from the volume tabs.',
     technologies: ['HTML', 'CSS', 'JavaScript'],
+    concepts: ['Collaborative digital publishing', 'Individual contributor sections', 'Personalised storytelling'],
+    demoFeatures: ['Shared scrapbook landing page with three contributor volumes', 'Volume navigation to individual creator sections', 'Separate personal blogs, profiles, journals and travel content'],
+    demoFocus: 'Open the Dishti section and explain its content separately from Mallika’s and Palak’s destinations.',
+    featureLabel: 'Features in the supplied site:',
     links: { website: 'https://dishti-ec.github.io/triology-blog/', github: null, prototype: null }
   },
   {
-    slug: 'kanochi', featured: false, order: 7, accent: '#77d7a2', deep: '#122e2b', soft: '#e4efe9',
-    name: 'Kanochi', folder: '07_Kanochi', category: 'Cybersecurity', identity: 'Cybersecurity Operations Center', code: 'SECURITY / OPS',
-    tagline: 'A cybersecurity project identity for a research and engineering archive.',
-    concept: 'A cybersecurity project direction. The threat landscape, detection methodology and project implementation need confirmation.',
-    signature: 'Interactive threat-monitoring or security-workflow exploration.'
+    slug: 'kanadshield', featured: false, order: 7, accent: '#77d7a2', deep: '#122e2b', soft: '#e4efe9',
+    name: 'Kanadshield', folder: '07_Kanadshield', category: 'Cyber safety / Fraud response', identity: 'Cyber Safety Response Prototype', code: 'SAFETY / RESPONSE',
+    status: 'Front-end prototype · sample data and local-only records',
+    tagline: 'A cyber-safety interface concept for scam reporting and response.',
+    concept: 'The supplied React app includes scam-reporting, case-tracking, emergency-response, family-support, resource and AI-protection screens. Complaint submissions are stored in browser localStorage; case histories, AI scores and response details are sample data, with no live backend or official integration.',
+    signature: 'Submit a simulated scam report and review its local sample case record.',
+    technologies: ['React', 'TypeScript', 'Vite', 'Wouter', 'Tailwind CSS', 'React Query', 'Framer Motion'],
+    concepts: ['Cyber-safety education', 'Fraud-response workflow', 'Case-status interface'],
+    demoFeatures: ['Scam report form with local sample case creation', 'Case-tracking screen populated by hard-coded examples', 'Emergency, family-support and resource interfaces', 'AI-protection dashboard with illustrative—not measured—scores'],
+    demoFocus: 'Walk through the report form and local case view as a UI simulation, not as a real report or security scan.',
+    demoDisclosure: 'No detection/scanning capability, backend delivery, police integration, or live response is evidenced by the supplied source.',
+    featureLabel: 'Screens and local prototype behavior in the supplied source:',
   },
   {
     slug: 'cognivault', featured: false, order: 8, accent: '#91abc9', deep: '#283747', soft: '#eceeea',
     name: 'Cognivault', folder: '08_Cognivault', category: 'Research / Knowledge management', identity: 'The Research Archive', code: 'RESEARCH / INDEX',
-    tagline: 'A research archive identity for organizing and exploring knowledge.',
-    concept: 'A research and knowledge-management project direction. The topic taxonomy, search behavior and content collection need confirmation.',
-    signature: 'Explore and search the research library, including its 200+ topics.'
+    status: 'Research archive concept · demo/source not supplied',
+    tagline: 'A structured research repository concept for independent learning.',
+    concept: 'Cognivault is intended to organise curated learning material by research topic and support independent exploration. A target collection of 200+ topics has been proposed, but the repository, search experience and content collection have not been supplied for verification.',
+    signature: 'Explore and search the research library, including its 200+ topics.',
+    concepts: ['Research topic organisation', 'Knowledge categorisation', 'Curated learning material', '200+ topic collection target'],
+    demoFocus: 'A future demo should show real topics and a working search/browse journey; no searchable knowledge base has been verified.',
+    demoDisclosure: 'The 200+ figure is a target, not a verified current collection.',
+    featureLabel: 'Planned capabilities—not a verified current product:'
   },
   {
     slug: 'retra-038-suraksha', featured: false, order: 9, accent: '#c6b67b', deep: '#3e3a26', soft: '#efeddf',
-    name: 'Retra 038 / Suraksha', folder: '09_Retra_038_Suraksha', category: 'AI / Agricultural protection', identity: 'Smart Farm Protection Laboratory', code: 'VISION / AGRI',
-    tagline: 'A smart-farm protection identity for agricultural AI research.',
-    concept: 'Retra 038 and Suraksha remain one registry entry as directed. Their individual histories, differences and any implemented capabilities have not been established.',
-    signature: 'Visual detection demonstration with bounding boxes and livestock-identification overlays.'
+    name: 'TETRA 038 / FasalRaksha', folder: '09_TETRA_038_FasalRaksha', category: 'AI / Computer vision / AgriTech', identity: 'Farm Intrusion Response Demo', code: 'VISION / AGRI',
+    status: 'Public FasalRaksha demo · model and integrations not source-verified',
+    tagline: 'A farm-protection concept spanning animal detection and response.',
+    concept: 'The public demo identifies itself as FasalRaksha; the supplied project brief describes an animal-intrusion and crop-protection workflow. The relationship between TETRA 038 and FasalRaksha, and the underlying model or hardware implementation, still needs source verification.',
+    signature: 'Visual detection demonstration with bounding boxes and livestock-identification overlays.',
+    concepts: ['Animal intrusion detection', 'YOLO-based computer vision (as described; model not verified)', 'Risk assessment and boundary monitoring', 'Deterrence and notification workflow', 'Farm management and simulation'],
+    demoFeatures: ['The supplied brief describes animal classification and confidence scores', 'Risk assessment, boundary monitoring and deterrent recommendations', 'LED, sound and water-sprayer control concepts', 'Dashboard, detection history, alerts, FarmHub and simulation concepts'],
+    demoFocus: 'The intended walkthrough is detection → risk assessment → deterrence → notification → history. Treat model accuracy and device control as unverified until the source and running implementation are reviewed.',
+    demoDisclosure: 'The linked site is titled FasalRaksha. No implementation source, validated YOLO model, sensor, actuator, or real farm trial was supplied.',
+    featureLabel: 'Capabilities described in the supplied brief; implementation is not source-verified:',
+    links: { website: 'https://tetra038.vercel.app/', github: null, prototype: null }
   }
 ];
 
@@ -598,7 +659,7 @@ const projectDomains = {
   pravaha: ['Environment', 'Systems'],
   urvara: ['Environment', 'AI / ML'],
   trilogy: ['Systems'],
-  kanochi: ['Cybersecurity'],
+  kanadshield: ['Cybersecurity'],
   cognivault: ['AI / ML', 'Systems'],
   'retra-038-suraksha': ['Environment', 'AI / ML', 'Cybersecurity']
 };
@@ -699,6 +760,14 @@ const projectDocuments = {
     outcomes: `The supplied source and README establish a three-volume static scrapbook concept and identify a public demo URL. They do not report visitor counts, engagement, collaborator feedback, launch results, awards, or other measured outcomes. Do not infer adoption or user impact from the existence of the demo link or the project's visual presentation.`,
     'future-scope': `Confirm current contributor links and public hosting; add a clear accessible volume-navigation state and descriptive image text; and test responsive behavior, keyboard use and contrast across devices. If the scrapbook is maintained, document who can approve edits to each contributor's pages, add link checks, and keep each linked site's ownership and content boundaries clear. No future roadmap or planned feature list is included in the supplied materials.`,
     'media-assets': `The ZIP contains the static scrapbook site and its visual presentation, plus links to creator-specific pages. Its README identifies the public demo URL https://dishti-ec.github.io/triology-blog/. Treat the supplied visuals and personal content as project assets; verify attribution and contributor permission before reusing them elsewhere. The archive does not provide a separate media inventory, asset-license register, or verified usage/results imagery.`
+  },
+  kanadshield: {
+    overview: `Kanadshield is a React front-end prototype for a cyber-safety and fraud-response concept. The supplied source includes routes for scam reporting, case tracking, emergency response, family support, resources and AI protection. It is a UI prototype, not an operating cybercrime service.`,
+    research: `The supplied application frames a user journey from scam-report submission to case-status review and safety resources. No user research, validated threat-detection study, official service agreement or deployment evidence is included.`,
+    architecture: `The app is a React 19 and TypeScript single-page application built with Vite 6, Wouter routing, Tailwind CSS, React Query and Framer Motion. The source places generated complaint entries in browser localStorage; no server or official police/cybercrime integration is present in the supplied archive.`,
+    implementation: `The source includes scam-report forms with Zod validation, sample case-tracking views, emergency and family interfaces, educational resources, and an AI-protection dashboard. Submitted complaint data is stored locally in the browser; uploaded files are represented by client-side metadata. Case histories, officer details, AI classifications and performance figures are hard-coded examples, not live records or model outputs.`,
+    testing: `The supplied package defines build and TypeScript-check scripts but no test script or executed test report. There is no supplied backend, production integration, security assessment, real-world response workflow or evidence that the displayed detection figures are measured.`,
+    outcomes: `The source demonstrates front-end flows for reporting a scam, viewing a sample case timeline, and navigating safety-support screens. It does not show real complaint delivery, police response, verified incident resolution, deployed AI detection, or measured user outcomes.`
   }
 };
 
@@ -711,13 +780,43 @@ const projectThemes = Object.fromEntries(projects.map(project => [project.theme,
 
 function projectModules(project) {
   const projectContent = projectDocuments[project.slug] || {};
-  return documentationModules.map(module => ({
+  const projectLinks = projectLinksFor(project);
+  const technologyNotes = [
+    project.technologies.length ? `Tools identified in the supplied source: ${project.technologies.join(' · ')}` : '',
+    project.concepts?.length ? `Technologies or product concepts described: ${project.concepts.join(' · ')}` : ''
+  ].filter(Boolean).join('\n\n');
+  const modules = [
+    { slug: 'overview', folder: '01_Introduction', title: 'Project introduction', content: project.concept || project.tagline, status: 'Registry summary' },
+    { slug: 'demo', folder: '02_Demonstration', title: 'Demonstration', content: [project.demoFocus, project.demoDisclosure].filter(Boolean).join('\n\n') || (projectLinks.length ? 'Open the linked project for its current demonstration.' : ''), status: 'Demo status disclosed' },
+    { slug: 'features', folder: '03_Features_and_Demo_Focus', title: 'Features & demo focus', content: project.featureLabel || '', items: project.demoFeatures || [], status: 'Feature claims scoped to evidence' },
+    { slug: 'problem', folder: '04_Problem_and_Context', title: 'Problem & context', content: projectContent.research || '' },
+    { slug: 'contribution', folder: '05_My_Contribution', title: 'My contribution', content: project.role || project.contribution || '' },
+    { slug: 'technology-stack', folder: '06_Technologies_and_Concepts', title: 'Technologies & concepts', content: technologyNotes },
+    { slug: 'architecture', folder: '07_Architecture', title: 'Architecture', content: projectContent.architecture || '' },
+    { slug: 'implementation', folder: '08_Implementation', title: 'Implementation', content: projectContent.implementation || '' },
+    { slug: 'results', folder: '09_Results_and_Limitations', title: 'Results & limitations', content: [projectContent.testing, projectContent.outcomes, project.demoDisclosure].filter(Boolean).join('\n\n') },
+    { slug: 'links', folder: '10_Links', title: 'Links', content: projectLinks.length ? 'Open the available project links from this page.' : '' }
+  ];
+  return modules.filter(module => module.content || module.items?.length).map(module => ({
     ...module,
-    content: projectContent[module.slug] || '',
-    status: projectContent[module.slug]
-      ? ['carbon-credits', 'nexterra', 'cloudforge', 'trilogy'].includes(project.slug) ? 'ZIP source reviewed · portfolio summary' : 'Portfolio outline · source not supplied'
-      : 'Documentation not supplied'
+    status: module.status || 'Source summary'
   }));
+}
+
+function projectLinksFor(project) {
+  const links = [
+    ['Website', project.links.website],
+    ['Source', project.links.github],
+    ['Prototype', project.links.prototype]
+  ].filter(([, url]) => url);
+  const localArtifacts = {
+    nexterra: ['Open interactive local demo', './nexterra-landscape.html'],
+    cloudforge: ['Open local artifact preview', './CloudForge — Serverless Rescue (Landscape).html'],
+    pravaha: ['Open local artifact preview', './PRAVAHA — Scan It. Know Its Worth. (Landscape).html'],
+    kanadshield: ['Open local interface preview', './VRIDDHAKSHA – Safety Has a Shield (Landscape).html']
+  };
+  if (localArtifacts[project.slug]) links.push(localArtifacts[project.slug]);
+  return links;
 }
 
 function featuredProjects() {
@@ -897,15 +996,15 @@ function footer(active) {
       ${active !== 'archive' ? '<a href="#/">Archive</a>' : ''}
       ${active !== 'workshop' ? '<a href="#/workshop">Workshop</a>' : ''}
       ${active !== 'observatory' ? '<a href="#/observatory">Observatory</a>' : ''}
-      <a href="${active === 'archive' ? '#contact' : '#/contact'}">${active === 'archive' ? 'Contact details pending' : 'Contact · Archive'}</a>
+      <a href="mailto:dishti.271@gmail.com">Email Dishti</a>
     </nav>
   </div></footer>`;
 }
 
 function projectArtwork(slug) {
-  if (['pravaha', 'cloudforge', 'nexterra'].includes(slug)) {
+  if (['pravaha', 'cloudforge', 'nexterra', 'kanadshield'].includes(slug)) {
     const project = projects.find(item => item.slug === slug);
-    return projectPreviewFrame(slug, `${project?.name || 'Project'} animated artifact`);
+    return projectPreviewFrame(slug, `${project?.name || 'Project'} local artifact preview`);
   }
   const illustrations = {
     nexterra: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M17 37c37-29 65 8 103-8s60-33 99-12 57 4 84 19M10 60c37-29 67 11 109-7s62-30 98-8 54 3 87 18M6 85c45-25 66 8 111-8s67-29 99-8 51 3 82 18M18 111c34-20 62 4 101-9s72-26 106-6 51 2 72 12M39 139c25-14 53 1 83-9s67-20 97-5 47 4 66 10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M216 48c0 20-26 42-26 42s-26-22-26-42a26 26 0 1 1 52 0Z" fill="currentColor" opacity=".14"/><circle cx="190" cy="48" r="7" fill="currentColor"/><path d="M235 122h52M261 96v52" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>',
@@ -914,7 +1013,7 @@ function projectArtwork(slug) {
     'carbon-credits': '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M52 142h220M69 142V89m0 0 20-29 20 29v53m38 0V70m0 0 25-35 25 35v72m30 0V95m0 0 18-25 18 25v47" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="239" cy="51" r="28" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/><path d="m226 51 9 9 18-19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M43 40h45M43 48h29M254 135h31" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/></svg>',
     urvara: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M160 148V56m0 55c-43 0-66-25-66-63 39 0 66 22 66 63Zm0-29c0-38 24-64 66-64 0 39-23 64-66 64Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="2"/><path d="M74 148h172M108 148v-20m104 20v-20M122 126c15-10 29-10 38 0m0 0c12-10 25-10 38 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="160" cy="48" r="4" fill="currentColor"/></svg>',
     trilogy: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><rect x="55" y="35" width="94" height="110" rx="2" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2" transform="rotate(-8 102 90)"/><rect x="112" y="27" width="94" height="110" rx="2" fill="currentColor" fill-opacity=".08" stroke="currentColor" stroke-width="2" transform="rotate(5 159 82)"/><rect x="169" y="38" width="94" height="110" rx="2" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="2" transform="rotate(-3 216 93)"/><path d="M91 115c14-25 26-23 39 0m-8-20h1m63 13c14-21 25-22 39 0m-18-29h1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-    kanochi: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M160 28 236 57v40c0 34-28 55-76 72-48-17-76-38-76-72V57l76-29Z" fill="currentColor" fill-opacity=".09" stroke="currentColor" stroke-width="2"/><path d="M160 48 216 69v29c0 23-19 39-56 53-37-14-56-30-56-53V69l56-21Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 5"/><path d="m132 92 18 18 39-40" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="69" cy="40" r="3" fill="currentColor"/><circle cx="254" cy="130" r="3" fill="currentColor"/></svg>',
+    kanadshield: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M160 28 236 57v40c0 34-28 55-76 72-48-17-76-38-76-72V57l76-29Z" fill="currentColor" fill-opacity=".09" stroke="currentColor" stroke-width="2"/><path d="M160 48 216 69v29c0 23-19 39-56 53-37-14-56-30-56-53V69l56-21Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 5"/><path d="m132 92 18 18 39-40" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="69" cy="40" r="3" fill="currentColor"/><circle cx="254" cy="130" r="3" fill="currentColor"/></svg>',
     cognivault: '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M75 41h117l39 39v62H75z" fill="currentColor" fill-opacity=".08" stroke="currentColor" stroke-width="2"/><path d="M192 41v39h39M94 96h112m-112 14h93m-93 14h105" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="248" cy="48" r="20" fill="none" stroke="currentColor" stroke-width="2"/><path d="m263 63 17 17m-36-32v12m-6-6h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     'retra-038-suraksha': '<svg viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M53 53h214v101H53z" fill="currentColor" fill-opacity=".06" stroke="currentColor" stroke-width="2"/><path d="M82 123V87l22-18 25 18v36m15 0V76l24-20 25 20v47m16 0V94l21-16 20 16v29" fill="none" stroke="currentColor" stroke-width="2"/><rect x="151" y="68" width="54" height="61" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/><path d="M151 68v9m0-9h9m45 0h-9m9 0v9m-54 52v-9m0 9h9m45 0h-9m9 0v-9" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
   };
@@ -929,7 +1028,7 @@ function projectDesktopFolder(project, index) {
     ? 'A browser demo for exploring schematic urban-heat scenarios and testing illustrative cooling interventions.'
     : project.tagline;
   const fileNumber = String(project.order || index + 1).padStart(3, '0');
-  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra'].includes(project.slug);
+  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra', 'kanadshield'].includes(project.slug);
   const artworkLabel = hasArtifactPreview ? 'Animated project artifact preview' : 'Conceptual project illustration';
   const featureCategory = isNexTerra ? '01 — CLIMATE TECHNOLOGY' : project.category;
   const featureSubtitle = isNexTerra ? 'Urban Heat Planning Demo' : project.identity;
@@ -1091,16 +1190,15 @@ function archive() {
           <div class="hero-copy">
             <p class="eyebrow">Computer Science &amp; Engineering <span aria-hidden="true">·</span> GSFC University</p>
             <h1 id="hero-title">Dishti Patel</h1>
-            <p class="hero-lede">I'm a Computer Science student who enjoys building thoughtful software, exploring systems and turning ambitious ideas into useful digital experiences.</p>
-            <p class="interest-line">Software · Cloud · AI/ML · Research · Creative Computing</p>
+            <p class="hero-lede">Computer Science &amp; Engineering student interested in software engineering, cloud technologies and AI-driven products. I enjoy turning complex problems into practical applications through development, experimentation and collaborative building.</p>
+            <p class="interest-line">PYTHON · JAVA · REACT · JAVASCRIPT · AWS · LINUX · SQL</p>
             <div class="actions">
               <a class="button" href="#projects">Explore projects <span aria-hidden="true">→</span></a>
-              <button class="button secondary resume-unavailable" type="button" disabled aria-describedby="resume-status" title="A résumé file has not been supplied">Download résumé</button>
+              <a class="button secondary" href="./assets/DISHTI%20PATEL_CV.pdf" download="Dishti-Patel-CV.pdf">Download résumé</a>
               <a class="button secondary" href="#contact">Get in touch</a>
               <a class="text-link" href="#/observatory">Read my notes ↗</a>
             </div>
-            <p class="sr-only" id="resume-status">The résumé download is unavailable because no verified résumé file has been supplied.</p>
-            <div class="currently-exploring"><span class="eyebrow">CURRENTLY EXPLORING</span><strong>Building at the intersection of code and curiosity.</strong><div class="exploring-tags"><span>Cloud</span><span>Open source</span><span>Research</span></div><small>A snapshot of ongoing interests · update as they evolve</small></div>
+            <div class="currently-exploring"><span class="eyebrow">CURRENTLY EXPLORING</span><strong>Building at the intersection of code and curiosity.</strong><div class="exploring-tags"><span>AWS</span><span>AI &amp; ML</span><span>Full-stack</span></div></div>
           </div>
           <div class="polaroid-scrapbook" data-polaroid-stack role="group" aria-label="A scrapbook bundle of six personal photographs">
             <div class="polaroid-stage">
@@ -1129,6 +1227,7 @@ function archive() {
               <h2 id="academic-snapshot-title">Computer Science &amp; Engineering</h2>
               <p>B.Tech · GSFC University</p>
               <span class="academic-snapshot-location">Vadodara, Gujarat, India</span>
+              <span class="academic-snapshot-specialization">Specialization: AI, Machine Learning &amp; Data Science</span>
             </div>
             <div class="academic-snapshot-gpa" aria-label="Current CGPA 8.38 out of 10">
               <strong>8.38</strong>
@@ -1140,6 +1239,10 @@ function archive() {
             <div><span>SEMESTER</span><strong>03</strong></div>
             <div><span>GRADUATION</span><strong>2028</strong></div>
             <p>BUILDING THE FUNDAMENTALS, ONE SEMESTER AT A TIME.</p>
+          </div>
+          <div class="academic-snapshot-actions" aria-label="Résumé">
+            <a href="./assets/DISHTI%20PATEL_CV.pdf" target="_blank" rel="noopener noreferrer">View résumé ↗</a>
+            <a href="./assets/DISHTI%20PATEL_CV.pdf" download="Dishti-Patel-CV.pdf">Download PDF ↓</a>
           </div>
         </section>
 
@@ -1155,37 +1258,37 @@ function archive() {
                 <span class="exploration-summary">AWS · Linux · Infrastructure</span>
                 <span class="exploration-arrow" aria-hidden="true">↗</span>
               </summary>
-              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Exploring how systems are deployed, managed, automated and scaled.</p><span class="exploration-tags">AWS / LINUX / CI-CD / AUTOMATION</span></div></div>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Learning cloud foundations and the tooling around deploying and operating software.</p><span class="exploration-tags">AWS / LINUX / CI-CD</span></div></div>
             </details>
             <details class="exploration-item">
               <summary>
                 <span class="exploration-code">02 / INTELLIGENCE</span>
                 <svg class="exploration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 18V5.5a3.5 3.5 0 0 0-7 0A3.5 3.5 0 0 0 4 12a3.5 3.5 0 0 0 3 5.5"></path><path d="M12 18V5.5a3.5 3.5 0 0 1 7 0A3.5 3.5 0 0 1 20 12a3.5 3.5 0 0 1-3 5.5"></path><path d="M8 9h1m-2 5h2m6-5h1m-1 5h2m-5-8v2m0 8v2"></path><path d="M9 18v2m6-2v2"></path></svg>
                 <strong class="exploration-title">AI &amp; ML</strong>
-                <span class="exploration-summary">Intelligent systems · Data</span>
+                <span class="exploration-summary">Python · ML fundamentals · Geospatial intelligence</span>
                 <span class="exploration-arrow" aria-hidden="true">↗</span>
               </summary>
-              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Exploring intelligent systems and how data can make them more useful.</p><span class="exploration-tags">INTELLIGENT SYSTEMS / DATA</span></div></div>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Building foundations in machine learning and exploring how data can inform useful, context-aware products.</p><span class="exploration-tags">PYTHON / ML FUNDAMENTALS / GEOSPATIAL INTELLIGENCE</span></div></div>
             </details>
             <details class="exploration-item">
               <summary>
                 <span class="exploration-code">03 / ENGINEERING</span>
                 <svg class="exploration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 17 6-5-6-5"></path><path d="M12 19h8"></path></svg>
                 <strong class="exploration-title">Development</strong>
-                <span class="exploration-summary">Full-stack · Experimentation</span>
+                <span class="exploration-summary">React · JavaScript · Full-stack applications</span>
                 <span class="exploration-arrow" aria-hidden="true">↗</span>
               </summary>
-              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Building across the stack and learning through hands-on experimentation.</p><span class="exploration-tags">FULL-STACK / EXPERIMENTATION</span></div></div>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Practicing application development with modern frontend tools and full-stack workflows.</p><span class="exploration-tags">REACT / JAVASCRIPT / FULL-STACK APPLICATIONS</span></div></div>
             </details>
             <details class="exploration-item">
               <summary>
                 <span class="exploration-code">04 / CREATIVITY</span>
                 <svg class="exploration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15.5 5.5 3 3"></path><path d="M4 20c4.5-.5 7.5-3 10-5.5l5-5a2.1 2.1 0 0 0-3-3l-5 5C8.5 14 6 16.5 4 20Z"></path><path d="m13 8 3 3"></path></svg>
                 <strong class="exploration-title">Design &amp; Ideas</strong>
-                <span class="exploration-summary">Product thinking · UI/UX</span>
+                <span class="exploration-summary">Figma · Product thinking · Interface design</span>
                 <span class="exploration-arrow" aria-hidden="true">↗</span>
               </summary>
-              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Thinking about how useful products feel, work and communicate.</p><span class="exploration-tags">PRODUCT THINKING / UI/UX</span></div></div>
+              <div class="exploration-detail"><div class="exploration-detail-inner"><p>Exploring how product decisions and interface design make software easier to understand and use.</p><span class="exploration-tags">FIGMA / PRODUCT THINKING / INTERFACE DESIGN</span></div></div>
             </details>
           </div>
           <div class="exploration-footer"><span>ALWAYS LEARNING. ALWAYS BUILDING.</span><a class="text-link" href="#projects">Explore my work <span aria-hidden="true">↗</span></a></div>
@@ -1223,8 +1326,8 @@ function archive() {
         <section class="section" aria-labelledby="roles-title">
           <div class="section-heading"><h2 id="roles-title">Roles &amp; current work</h2><span class="section-index">06 / COMMUNITY</span></div>
           <div class="role-spread">
-            <article class="role-card role-cloud"><div class="role-illustration" aria-hidden="true"><span class="role-star">✳</span><span class="role-orbit"></span><span class="role-planet"></span><span class="role-coordinate">AWS / BUILD</span></div><div class="role-copy"><span class="eyebrow">CLOUD · COMMUNITY · TECHNICAL LEADERSHIP</span><h3>AWS Student Builder Group</h3><p class="role">Technical Lead</p><p>Cloud learning, technical exploration and student building initiatives.</p><div class="role-tags"><span>Cloud</span><span>Learning</span><span>Community</span></div></div></article>
-            <article class="role-card role-literature"><div class="role-illustration" aria-hidden="true"><span class="book-mark">Aa</span><span class="book-line"></span><span class="role-coordinate">WORDS / IDEAS</span><span class="book-star">✳</span></div><div class="role-copy"><span class="eyebrow">LITERATURE · LEADERSHIP · CREATIVITY</span><h3>University Literature Club</h3><p class="role">President</p><p>Literary initiatives, student participation and creative expression.</p><div class="role-tags"><span>Literature</span><span>Leadership</span><span>Community</span></div></div></article>
+            <article class="role-card role-cloud"><div class="role-illustration" aria-hidden="true"><span class="role-star">✳</span><span class="role-orbit"></span><span class="role-planet"></span><span class="role-coordinate">AWS / BUILD</span></div><div class="role-copy"><span class="eyebrow">CLOUD · COMMUNITY · TECHNICAL LEADERSHIP</span><h3>AWS Student Builder Group</h3><p class="role">Technical Lead</p><ul><li>Support student learning through cloud technology initiatives.</li><li>Organize practical AWS learning and technical exploration.</li><li>Contribute to the student developer community.</li></ul><div class="role-tags"><span>Cloud</span><span>Learning</span><span>Community</span></div></div></article>
+            <article class="role-card role-literature"><div class="role-illustration" aria-hidden="true"><span class="book-mark">Aa</span><span class="book-line"></span><span class="role-coordinate">WORDS / IDEAS</span><span class="book-star">✳</span></div><div class="role-copy"><span class="eyebrow">LITERATURE · LEADERSHIP · CREATIVITY</span><h3>University Literature Club</h3><p class="role">President</p><ul><li>Lead literary and creative initiatives.</li><li>Coordinate student participation and club activities.</li><li>Encourage communication, writing and creative expression.</li></ul><div class="role-tags"><span>Literature</span><span>Leadership</span><span>Community</span></div></div></article>
           </div>
         </section>
 
@@ -1257,12 +1360,13 @@ function archive() {
 
         <section class="section" id="contact" aria-labelledby="contact-title">
           <div class="contact-panel">
-            <div class="contact-copy"><span class="eyebrow">09 / BACK COVER</span><h2 id="contact-title">Have something interesting in mind?</h2><p>For internships, collaborations, technical conversations or creative projects, I'd love to hear from you.</p></div>
-            <form class="contact-form" id="contact-form">
-              <div class="field"><label for="contact-name">Name</label><input id="contact-name" name="name" autocomplete="name" required /></div>
-              <div class="field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required /></div>
-              <div class="field full"><label for="contact-message">Message</label><textarea id="contact-message" name="message" required></textarea></div>
-              <button class="button form-submit" type="submit">Prepare message <span aria-hidden="true">→</span></button>
+            <div class="contact-copy"><span class="eyebrow">09 / BACK COVER</span><h2 id="contact-title">Have something interesting in mind?</h2><p>For internships, collaborations, technical conversations or creative projects, I'd love to hear from you.</p><nav class="contact-profiles" aria-label="Contact and professional profiles"><a href="mailto:dishti.271@gmail.com">dishti.271@gmail.com</a><a href="https://www.linkedin.com/in/dishti-patel" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/Dishti-ec" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav></div>
+            <form class="contact-form" id="contact-form" method="post">
+              <div class="field"><label for="contact-name">Name</label><input id="contact-name" name="name" autocomplete="name" maxlength="120" required /></div>
+              <div class="field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required /></div>
+              <div class="field full"><label for="contact-message">Message</label><textarea id="contact-message" name="message" maxlength="5000" required></textarea></div>
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" hidden>
+              <button class="button form-submit" type="submit">Send message <span aria-hidden="true">→</span></button>
               <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
             </form>
           </div>
@@ -1277,12 +1381,13 @@ function projectPreviewFrame(slug, title) {
     cloudforge: './CloudForge — Serverless Rescue (Landscape).html',
     pravaha: './PRAVAHA — Scan It. Know Its Worth. (Landscape).html',
     nexterra: './nexterra-landscape.html',
-    vriddhaksha: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html'
+    vriddhaksha: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html',
+    kanadshield: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html'
   };
   const artifact = artifacts[slug];
   if (!artifact) return '';
   const src = encodeURI(artifact);
-  return `<iframe class="project-media-frame" src="${src}" title="${escapeHtml(title)}" loading="eager" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="no-referrer-when-downgrade" aria-label="${escapeHtml(title)} video preview"></iframe>`;
+  return `<iframe class="project-media-frame" src="${src}" title="${escapeHtml(title)}" loading="eager" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="no-referrer-when-downgrade" aria-label="${escapeHtml(title)}"></iframe>`;
 }
 
 function projectFolderIcon(project) {
@@ -1296,7 +1401,7 @@ function projectFolderIcon(project) {
     pravaha: '<path d="M78 48a17 17 0 0 0-28-4l-5 5m0 0 1-10m-1 10 10-1m-13 13a17 17 0 0 0 28 4l5-5m0 0-1 10m1-10-10 1"/>',
     urvara: '<path d="M64 73V48m0 14c-13 0-20-7-20-20 12 0 20 7 20 20Zm0-9c0-12 8-20 21-20 0 12-8 20-21 20Z"/>',
     trilogy: '<circle cx="54" cy="51" r="8"/><circle cx="74" cy="51" r="8"/><circle cx="64" cy="68" r="8"/><path d="m60 56 3 5m5-5-3 5m-3 4h4"/>',
-    kanochi: '<path d="M64 40 81 47v12c0 11-7 18-17 23-10-5-17-12-17-23V47l17-7Z"/><path d="m56 60 6 6 11-13"/>',
+    kanadshield: '<path d="M64 40 81 47v12c0 11-7 18-17 23-10-5-17-12-17-23V47l17-7Z"/><path d="m56 60 6 6 11-13"/>',
     cognivault: '<circle cx="64" cy="56" r="5"/><circle cx="48" cy="45" r="4"/><circle cx="80" cy="44" r="4"/><circle cx="49" cy="69" r="4"/><circle cx="80" cy="69" r="4"/><path d="m52 48 8 6m8 0 8-7m-17 12-7 7m16-7 7 7"/>',
     'retra-038-suraksha': '<path d="M64 40 81 47v12c0 11-7 18-17 23-10-5-17-12-17-23V47l17-7Z"/><path d="M64 51v17m-8-8h16"/>'
   };
@@ -1359,7 +1464,7 @@ function workshopDirectory() {
     <section class="workspace-collection workspace-archive-collection" data-project-collection-section="archive" aria-labelledby="archive-projects-title">
       <div class="workspace-collection-heading"><div><span class="eyebrow">COLLECTION B / ENGINEERING &amp; RESEARCH</span><h2 id="archive-projects-title">More experiments</h2></div><span>03 PROJECTS</span></div>
       <div class="workspace-project-grid">${archive.map(workshopProjectCard).join('')}</div>
-      <p class="workspace-archive-note">Retra 038 and Suraksha remain one registry entry until their histories and differences are established.</p>
+      <p class="workspace-archive-note">TETRA 038 / FasalRaksha are listed together until their project identities and implementations are confirmed as distinct.</p>
     </section>
     <p class="workspace-directory-empty" data-project-empty hidden>No projects match these filters. Try another search or domain.</p>
     <div class="workspace-legend"><span><i class="legend-proposed"></i>Project details to verify</span><span>END OF DIRECTORY — MORE EXPERIMENTS AHEAD.</span></div>
@@ -1370,14 +1475,14 @@ function projectCover(project) {
   const modules = projectModules(project);
   const theme = projectThemes[project.theme];
   const related = (project.relatedProjects || []).map(slug => projects.find(item => item.slug === slug)).filter(Boolean);
-  const projectLinks = [
-    ['Website', project.links.website],
-    ['Source', project.links.github],
-    ['Prototype', project.links.prototype]
-  ].map(([label, url]) => url
-    ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`
-    : `<span>${label}: Not supplied</span>`).join('');
-  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra'].includes(project.slug);
+  const projectLinks = projectLinksFor(project).map(([label, url]) => `<a href="${escapeHtml(encodeURI(url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>`).join('');
+  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra', 'kanadshield'].includes(project.slug);
+  const facts = [
+    ['DOMAIN', project.category],
+    ['PERSONAL CONTRIBUTION', project.role || project.contribution],
+    ['TECHNOLOGIES', project.technologies.length ? project.technologies.join(', ') : ''],
+    ['STATUS', project.status]
+  ].filter(([, value]) => value);
   return `<section class="project-cover" style="--cover-accent:${theme.accent};--cover-deep:${theme.deep};--cover-soft:${theme.soft}">
     <div class="project-cover-identity">
       <span class="eyebrow">${escapeHtml(theme.identity)} / ${project.featured ? `FEATURED ${String(project.order).padStart(2, '0')}` : `ARCHIVE ${String(project.order - 6).padStart(2, '0')}`}</span>
@@ -1385,40 +1490,25 @@ function projectCover(project) {
     </div>
     <div class="project-cover-heading">
       <div><h2>${escapeHtml(project.name)}</h2><p class="project-cover-tagline">${escapeHtml(project.tagline)}</p><p class="project-cover-concept">${escapeHtml(project.concept)}</p></div>
-      <div class="project-cover-art" role="${hasArtifactPreview ? 'group' : 'img'}" aria-label="${escapeHtml(hasArtifactPreview ? `${project.name} animated artifact preview` : `${theme.identity} conceptual visual, not a product screenshot`)}">${projectArtwork(project.slug)}<span>${hasArtifactPreview ? 'ANIMATED ARTIFACT' : 'CONCEPT COVER'}</span></div>
+      <div class="project-cover-art" role="${hasArtifactPreview ? 'group' : 'img'}" aria-label="${escapeHtml(hasArtifactPreview ? `${project.name} local artifact preview` : `${theme.identity} conceptual visual, not a product screenshot`)}">${projectArtwork(project.slug)}<span>${project.slug === 'nexterra' ? 'INTERACTIVE DEMO · SYNTHETIC DATA' : hasArtifactPreview ? 'LOCAL ARTIFACT PREVIEW' : 'CONCEPTUAL ILLUSTRATION · NOT A SCREENSHOT'}</span></div>
     </div>
     <div class="project-cover-facts">
-      <div><span>DOMAIN</span><strong>${escapeHtml(project.category)}</strong></div>
-      <div><span>PERSONAL CONTRIBUTION</span><strong>${escapeHtml(project.role || 'Not supplied')}</strong></div>
-      <div><span>TECHNOLOGIES</span><strong>${escapeHtml(project.technologies.length ? project.technologies.join(', ') : 'Not supplied')}</strong></div>
-      <div><span>COLLABORATORS / DURATION</span><strong>${escapeHtml(project.collaborators.length ? project.collaborators.join(', ') : 'Not supplied')}${project.duration ? ` / ${escapeHtml(project.duration)}` : ''}</strong></div>
+      ${facts.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')}
     </div>
-    <div class="project-links" aria-label="Project links"><span class="eyebrow">PROJECT LINKS</span>${projectLinks}</div>
-    <section class="project-signature" aria-labelledby="project-signature-title">
-      <span class="eyebrow">SIGNATURE INTERACTION / PLANNED CONCEPT</span>
-      <h3 id="project-signature-title">${escapeHtml(project.signature)}</h3>
-      <p>This interaction is a direction from the Workshop brief, not a functioning project demo. Its implementation and evidence have not been supplied.</p>
-    </section>
-    <div class="project-cover-documents">
-      <span class="eyebrow">DOCUMENTATION MAP</span>
-      <p>${project.sections.length} modular sections. Open a section in the explorer to see its purpose, expected files and any supplied portfolio outline.</p>
-      <a href="#/workshop/${project.slug}/overview">Open project overview ↗</a>
-    </div>
+    ${projectLinks ? `<div class="project-links" aria-label="Project links"><span class="eyebrow">PROJECT LINKS</span>${projectLinks}</div>` : ''}
+    <nav class="project-case-study-index" aria-label="Project case study sections"><span class="eyebrow">CASE STUDY</span>${modules.map(module => `<a href="#/workshop/${project.slug}/${module.slug}">${escapeHtml(module.title)} ↗</a>`).join('')}</nav>
     ${related.length ? `<nav class="project-related" aria-label="Related projects"><span class="eyebrow">CONNECTED PROJECTS</span>${related.map(item => `<a href="#/workshop/${item.slug}">${escapeHtml(item.name)} ↗</a>`).join('')}</nav>` : ''}
   </section>`;
 }
 
 function projectModulePage(project, module) {
-  const expectedFiles = module.files.map(file => `<li><code>${escapeHtml(file)}</code><span>Not supplied</span></li>`).join('');
-  const contentLabel = ['carbon-credits', 'nexterra', 'cloudforge', 'trilogy'].includes(project.slug)
-    ? 'ZIP SOURCE REVIEW / PORTFOLIO SUMMARY'
-    : 'PORTFOLIO OUTLINE / NOT SOURCE DOCUMENTATION';
+  const projectLinks = projectLinksFor(project);
   return `<section class="doc-section project-module-page">
-    <div class="project-module-heading"><span class="eyebrow">${escapeHtml(module.folder)} / DOCUMENTATION MODULE</span><span class="project-module-status">${escapeHtml(module.status)}</span></div>
+    <div class="project-module-heading"><span class="eyebrow">${escapeHtml(module.folder)} / CASE STUDY</span><span class="project-module-status">${escapeHtml(module.status)}</span></div>
     <h2>${escapeHtml(module.title)}</h2>
-    <p>${escapeHtml(module.purpose)}</p>
-    ${module.content ? `<div class="project-source-note"><span class="eyebrow">${contentLabel}</span>${module.content.split(/\n\s*\n/).map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div>` : `<div class="project-missing-note"><strong>Documentation not supplied.</strong><p>This section is part of the shared Workshop structure. Its project-specific content should be added after the project source and supporting materials are reviewed.</p></div>`}
-    <div class="project-document-list"><h3>Expected files <span>optional when not applicable</span></h3><ul>${expectedFiles}</ul><p>These are documentation targets, not files that currently exist in this portfolio.</p></div>
+    <div class="project-source-note">${module.content.split(/\n\s*\n/).map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div>
+    ${module.items?.length ? `<ul class="project-feature-list">${module.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+    ${module.slug === 'links' ? `<nav class="project-case-links" aria-label="Project links">${projectLinks.map(([label, url]) => `<a href="${escapeHtml(encodeURI(url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>`).join('')}</nav>` : ''}
   </section>`;
 }
 
@@ -1492,10 +1582,10 @@ function workshop(route) {
         <aside class="doc-meta" aria-label="Project information">
           <h2>Project info</h2>
           <div class="meta-row"><span>Collection</span><strong>${project.featured ? `Featured · ${String(project.order).padStart(2, '0')} / 06` : `Archive · ${String(project.order - 6).padStart(2, '0')} / 03`}</strong></div>
-          <div class="meta-row"><span>Project status</span><strong>Details to verify</strong></div>
-          <div class="meta-row"><span>Documentation modules</span><strong>13</strong></div>
+          <div class="meta-row"><span>Project status</span><strong>${escapeHtml(project.status)}</strong></div>
+          <div class="meta-row"><span>Case-study sections</span><strong>${modules.length}</strong></div>
           <div class="meta-row"><span>Current section</span><strong>${escapeHtml(selected.title)}</strong></div>
-          <div class="meta-row"><span>Source / demo</span><strong>Not supplied</strong></div>
+          ${project.links.website || project.links.github || project.links.prototype ? '<div class="meta-row"><span>Project links</span><strong>Available in case study</strong></div>' : ''}
           <div class="meta-row"><span>Working principle</span><strong>Evidence before claims</strong></div>
         </aside>
         <div class="workspace-status-bar"><span><i></i>WORKSPACE ACTIVE</span><span>${workshopSession.openProjects.length} OPEN PROJECTS</span><span>${escapeHtml(selected.folder)} · ${escapeHtml(selected.status)}</span></div>
@@ -2263,12 +2353,46 @@ function bindInteractions() {
     sortCards();
     applyProjectFilters();
   }
-  document.querySelector('.contact-form')?.addEventListener('submit', event => {
+  document.querySelector('.contact-form')?.addEventListener('submit', async event => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
-    const message = document.getElementById('form-message');
-    message.textContent = 'Your message has not been sent: contact delivery is not configured. Please add a verified email address or connect a form service.';
+    const message = form.querySelector('#form-message');
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (!message || !submitButton) {
+      console.error('Contact form is missing its status message or submit button.');
+      return;
+    }
+    if (!CONTACT_FORM_ENDPOINT) {
+      message.textContent = 'Your message has not been sent: Formspree delivery is not configured yet. Email dishti.271@gmail.com directly.';
+      return;
+    }
+    if (!/^https:\/\/formspree\.io\/f\/[A-Za-z0-9]+$/.test(CONTACT_FORM_ENDPOINT)) {
+      message.textContent = 'Your message has not been sent: the Formspree endpoint is invalid.';
+      console.error('Contact form endpoint must match https://formspree.io/f/{form-id}.');
+      return;
+    }
+    submitButton.disabled = true;
+    message.textContent = 'Sending your message…';
+    try {
+      const response = await fetch(CONTACT_FORM_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) {
+        message.textContent = `Your message was not sent (HTTP ${response.status}). Please try again or email me directly.`;
+        console.error(`Contact form delivery failed with HTTP ${response.status}.`);
+        return;
+      }
+      form.reset();
+      message.textContent = 'Thanks — your message has been sent.';
+    } catch (error) {
+      message.textContent = 'Your message could not be sent because the delivery service could not be reached. Please email me directly.';
+      console.error('Contact form request failed.', error);
+    } finally {
+      submitButton.disabled = false;
+    }
   });
 }
 
