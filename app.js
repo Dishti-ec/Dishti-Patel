@@ -1001,8 +1001,23 @@ function footer(active) {
   </div></footer>`;
 }
 
+const projectArtifacts = {
+  cloudforge: './CloudForge — Serverless Rescue (Landscape).html',
+  'carbon-credits': './CarbonBridge — Bridging Ecology & Economy.html',
+  pravaha: './PRAVAHA — Scan It. Know Its Worth. (Landscape).html',
+  urvara: './URVARA — Landscape Animation.html',
+  trilogy: './Dishti — Code • Words • Curiosity (Landscape).html',
+  nexterra: './nexterra-landscape.html',
+  vriddhaksha: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html',
+  kanadshield: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html'
+};
+
+function hasProjectArtifact(slug) {
+  return Object.prototype.hasOwnProperty.call(projectArtifacts, slug);
+}
+
 function projectArtwork(slug) {
-  if (['pravaha', 'cloudforge', 'nexterra', 'kanadshield'].includes(slug)) {
+  if (hasProjectArtifact(slug)) {
     const project = projects.find(item => item.slug === slug);
     return projectPreviewFrame(slug, `${project?.name || 'Project'} local artifact preview`);
   }
@@ -1028,7 +1043,7 @@ function projectDesktopFolder(project, index) {
     ? 'A browser demo for exploring schematic urban-heat scenarios and testing illustrative cooling interventions.'
     : project.tagline;
   const fileNumber = String(project.order || index + 1).padStart(3, '0');
-  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra', 'kanadshield'].includes(project.slug);
+  const hasArtifactPreview = hasProjectArtifact(project.slug);
   const artworkLabel = hasArtifactPreview ? 'Animated project artifact preview' : 'Conceptual project illustration';
   const featureCategory = isNexTerra ? '01 — CLIMATE TECHNOLOGY' : project.category;
   const featureSubtitle = isNexTerra ? 'Urban Heat Planning Demo' : project.identity;
@@ -1156,7 +1171,6 @@ function stepProjectCarousel(direction) {
 const polaroidPhotos = [
   { image: 'img 1.jpeg', width: 899, height: 1599, alt: 'A close-up selfie of Dishti in a black top.', caption: 'a little moment to keep', note: 'collect moments, not things ♡' },
   { image: 'img 2.jpeg', width: 576, height: 1280, alt: 'Dishti taking a mirror selfie with an event lanyard.', caption: 'somewhere new, feeling brave', note: 'ideas, adventures & little victories' },
-  { image: 'img 3.jpeg', width: 899, height: 1599, alt: 'A portrait of Dishti wearing a teal kurta.', caption: 'soft days, bright colors', note: 'soft heart, sharp mind' },
   { image: 'img 4.jpeg', width: 1141, height: 720, alt: 'Dishti at a mountain overlook beneath a hazy sky.', caption: 'a little closer to the clouds', note: 'mountains = healing' },
   { image: 'img 5.jpeg', width: 960, height: 1280, alt: 'Dishti standing outside a grand university building.', caption: 'showing up, one day at a time', note: 'build · learn · repeat' },
   { image: 'img 6.jpeg', width: 484, height: 658, alt: 'A candid portrait of Dishti in a light shirt with a lanyard.', caption: 'good people, good memories', note: 'still becoming ✿' }
@@ -1200,7 +1214,7 @@ function archive() {
             </div>
             <div class="currently-exploring"><span class="eyebrow">CURRENTLY EXPLORING</span><strong>Building at the intersection of code and curiosity.</strong><div class="exploring-tags"><span>AWS</span><span>AI &amp; ML</span><span>Full-stack</span></div></div>
           </div>
-          <div class="polaroid-scrapbook" data-polaroid-stack role="group" aria-label="A scrapbook bundle of six personal photographs">
+          <div class="polaroid-scrapbook" data-polaroid-stack role="group" aria-label="A scrapbook bundle of ${polaroidPhotos.length} personal photographs">
             <div class="polaroid-stage">
               ${polaroidPhotos.map((photo, index) => `<figure class="polaroid-card" data-position="${index}" data-note="${photo.note}" data-shuffle-direction="left">
                 <img src="./assets/${photo.image}" width="${photo.width}" height="${photo.height}" alt="${photo.alt}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
@@ -1237,7 +1251,7 @@ function archive() {
           <div class="academic-snapshot-bottom">
             <div><span>YEAR</span><strong>02</strong></div>
             <div><span>SEMESTER</span><strong>03</strong></div>
-            <div><span>GRADUATION</span><strong>2028</strong></div>
+            <div><span>GRADUATION</span><strong>2029</strong></div>
             <p>BUILDING THE FUNDAMENTALS, ONE SEMESTER AT A TIME.</p>
           </div>
           <div class="academic-snapshot-actions" aria-label="Résumé">
@@ -1326,8 +1340,8 @@ function archive() {
         <section class="section" aria-labelledby="roles-title">
           <div class="section-heading"><h2 id="roles-title">Roles &amp; current work</h2><span class="section-index">06 / COMMUNITY</span></div>
           <div class="role-spread">
-            <article class="role-card role-cloud"><div class="role-illustration" aria-hidden="true"><span class="role-star">✳</span><span class="role-orbit"></span><span class="role-planet"></span><span class="role-coordinate">AWS / BUILD</span></div><div class="role-copy"><span class="eyebrow">CLOUD · COMMUNITY · TECHNICAL LEADERSHIP</span><h3>AWS Student Builder Group</h3><p class="role">Technical Lead</p><ul><li>Support student learning through cloud technology initiatives.</li><li>Organize practical AWS learning and technical exploration.</li><li>Contribute to the student developer community.</li></ul><div class="role-tags"><span>Cloud</span><span>Learning</span><span>Community</span></div></div></article>
-            <article class="role-card role-literature"><div class="role-illustration" aria-hidden="true"><span class="book-mark">Aa</span><span class="book-line"></span><span class="role-coordinate">WORDS / IDEAS</span><span class="book-star">✳</span></div><div class="role-copy"><span class="eyebrow">LITERATURE · LEADERSHIP · CREATIVITY</span><h3>University Literature Club</h3><p class="role">President</p><ul><li>Lead literary and creative initiatives.</li><li>Coordinate student participation and club activities.</li><li>Encourage communication, writing and creative expression.</li></ul><div class="role-tags"><span>Literature</span><span>Leadership</span><span>Community</span></div></div></article>
+            <article class="role-card role-cloud"><div class="role-illustration"><img class="role-card-photo" src="./assets/AWS_TL.jpeg" alt="Dishti at an AWS student learning session." loading="lazy" decoding="async"><span class="role-coordinate" aria-hidden="true">AWS / BUILD</span></div><div class="role-copy"><span class="eyebrow">CLOUD · COMMUNITY · TECHNICAL LEADERSHIP</span><h3>AWS Student Builder Group</h3><p class="role">Technical Lead</p><ul><li>Support student learning through cloud technology initiatives.</li><li>Organize practical AWS learning and technical exploration.</li><li>Contribute to the student developer community.</li></ul><div class="role-tags"><span>Cloud</span><span>Learning</span><span>Community</span></div></div></article>
+            <article class="role-card role-literature"><div class="role-illustration"><img class="role-card-photo" src="./assets/PageTurners_P.jpeg" alt="Page Turners president, Dishti Patel." loading="lazy" decoding="async"><span class="role-coordinate" aria-hidden="true">WORDS / IDEAS</span></div><div class="role-copy"><span class="eyebrow">UNIVERSITY LITERATURE CLUB · LEADERSHIP · CREATIVITY</span><h3>Page Turners</h3><p class="role">President</p><ul><li>Lead literary and creative initiatives.</li><li>Coordinate student participation and club activities.</li><li>Encourage communication, writing and creative expression.</li></ul><div class="role-tags"><span>Literature</span><span>Leadership</span><span>Community</span></div></div></article>
           </div>
         </section>
 
@@ -1377,22 +1391,15 @@ function archive() {
 }
 
 function projectPreviewFrame(slug, title) {
-  const artifacts = {
-    cloudforge: './CloudForge — Serverless Rescue (Landscape).html',
-    pravaha: './PRAVAHA — Scan It. Know Its Worth. (Landscape).html',
-    nexterra: './nexterra-landscape.html',
-    vriddhaksha: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html',
-    kanadshield: './VRIDDHAKSHA – Safety Has a Shield (Landscape).html'
-  };
-  const artifact = artifacts[slug];
+  const artifact = projectArtifacts[slug];
   if (!artifact) return '';
   const src = encodeURI(artifact);
-  return `<iframe class="project-media-frame" src="${src}" title="${escapeHtml(title)}" loading="eager" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="no-referrer-when-downgrade" aria-label="${escapeHtml(title)}"></iframe>`;
+  return `<iframe class="project-media-frame" src="${src}" title="${escapeHtml(title)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="no-referrer-when-downgrade" aria-label="${escapeHtml(title)}"></iframe>`;
 }
 
 function projectFolderIcon(project) {
-  if (project.slug === 'pravaha') {
-    return `<span class="project-media-shell" aria-label="PRAVAHA artifact video preview">${projectPreviewFrame(project.slug, 'PRAVAHA artifact video')}</span>`;
+  if (hasProjectArtifact(project.slug)) {
+    return `<span class="project-media-shell" aria-label="${escapeHtml(project.name)} animated artifact preview">${projectPreviewFrame(project.slug, `${project.name} animated artifact preview`)}</span>`;
   }
   const symbols = {
     nexterra: '<circle cx="64" cy="58" r="15"/><path d="M49 58h30M64 43c6 7 6 23 0 30M64 43c-6 7-6 23 0 30"/><circle cx="82" cy="48" r="3" fill="currentColor" stroke="none"/>',
@@ -1476,7 +1483,7 @@ function projectCover(project) {
   const theme = projectThemes[project.theme];
   const related = (project.relatedProjects || []).map(slug => projects.find(item => item.slug === slug)).filter(Boolean);
   const projectLinks = projectLinksFor(project).map(([label, url]) => `<a href="${escapeHtml(encodeURI(url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>`).join('');
-  const hasArtifactPreview = ['cloudforge', 'pravaha', 'nexterra', 'kanadshield'].includes(project.slug);
+  const hasArtifactPreview = hasProjectArtifact(project.slug);
   const facts = [
     ['DOMAIN', project.category],
     ['PERSONAL CONTRIBUTION', project.role || project.contribution],
