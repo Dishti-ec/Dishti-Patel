@@ -972,6 +972,7 @@ function header(active) {
         ${navLink('observatory', 'Observatory', '#/observatory', active)}
       </nav>
       <div class="header-actions">
+        <a class="header-resume-button" href="./assets/DISHTI%20PATEL_CV.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open résumé PDF in a new tab">Resume <span aria-hidden="true">↗</span></a>
         <a class="text-link resume-shortcut" href="${active === 'archive' ? '#contact' : '#/contact'}">Contact</a>
         <button class="icon-button theme-button" type="button" aria-label="${theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}" title="Toggle theme">${theme === 'dark' ? icons.sun : icons.moon}</button>
         <button class="icon-button menu-button" type="button" aria-expanded="false" aria-controls="mode-nav" aria-label="Open navigation">${icons.menu}</button>
@@ -1016,6 +1017,12 @@ function hasProjectArtifact(slug) {
   return Object.prototype.hasOwnProperty.call(projectArtifacts, slug);
 }
 
+function projectDemoAction(project) {
+  const url = project.links?.website;
+  if (!url) return '<span class="project-demo-unavailable">DEMO LINK UNAVAILABLE</span>';
+  return `<a class="project-demo-link" href="${escapeHtml(encodeURI(url))}" target="_blank" rel="noopener noreferrer" aria-label="Visit the ${escapeHtml(project.name)} demo website in a new tab">VISIT DEMO <span aria-hidden="true">↗</span></a>`;
+}
+
 function projectArtwork(slug) {
   if (hasProjectArtifact(slug)) {
     const project = projects.find(item => item.slug === slug);
@@ -1049,11 +1056,13 @@ function projectDesktopFolder(project, index) {
   const featureSubtitle = isNexTerra ? 'Urban Heat Planning Demo' : project.identity;
   const featureStatement = isNexTerra ? 'Explore heat scenarios. Test cooling ideas.' : project.tagline;
   const featureDescription = isNexTerra ? description : project.concept;
-  return `<a class="project-folder project-folder--${project.slug}${isFeatured ? ' project-folder--featured' : ''}" data-project-slug="${project.slug}" href="#/workshop/${project.slug}" style="--folder-accent:${project.accent};--folder-surface:color-mix(in srgb, ${project.soft} 66%, var(--paper-raised));--folder-border:color-mix(in srgb, ${project.accent} 66%, var(--rule))" aria-label="Open ${escapeHtml(project.name)} project overview in the Workshop">
+  return `<div class="project-folder project-folder--${project.slug}${isFeatured ? ' project-folder--featured' : ''}" data-project-slug="${project.slug}" style="--folder-accent:${project.accent};--folder-surface:color-mix(in srgb, ${project.soft} 66%, var(--paper-raised));--folder-border:color-mix(in srgb, ${project.accent} 66%, var(--rule))">
+    <a class="project-folder-hitarea" href="#/workshop/${project.slug}" aria-label="Open ${escapeHtml(project.name)} project overview in the Workshop"></a>
+    ${projectDemoAction(project)}
     <span class="project-folder-topline"><span class="${isFeatured ? 'project-folder-file' : 'project-folder-number'}">${isFeatured ? `FILE ${fileNumber}` : number}</span><span class="project-folder-code">${escapeHtml(project.code)}</span><span class="project-folder-open">OPEN PROJECT <span aria-hidden="true">↗</span></span></span>
     <span class="project-folder-art" role="${hasArtifactPreview ? 'group' : 'img'}" aria-label="${escapeHtml(artworkLabel)} for ${escapeHtml(project.name)}">${projectArtwork(project.slug)}<span class="project-folder-art-caption" aria-hidden="true">${hasArtifactPreview ? 'ARTIFACT PREVIEW' : 'CONCEPT VISUAL'}</span></span>
     <div class="project-folder-copy"><div class="project-folder-meta">${isFeatured ? `<span class="project-feature-category">${escapeHtml(featureCategory)}</span><h3>${escapeHtml(project.name)}</h3><span class="project-feature-subtitle">${escapeHtml(featureSubtitle)}</span><strong class="project-feature-statement">${escapeHtml(featureStatement)}</strong><p class="project-feature-description">${escapeHtml(featureDescription)}</p>${isNexTerra ? '<span class="project-feature-stack">SCHEMATIC MAPS · ILLUSTRATIVE DATA · BROWSER DEMO</span>' : ''}` : `<h3>${escapeHtml(project.name)}</h3><span class="project-folder-category">${escapeHtml(project.category)}</span>`}</div>${isFeatured ? '<span class="project-feature-cta">VIEW PROJECT <span aria-hidden="true">↗</span></span>' : '<span class="project-folder-arrow" aria-hidden="true">↗</span>'}</div>
-  </a>`;
+  </div>`;
 }
 
 function projectDesktopWindow() {
@@ -1421,7 +1430,9 @@ function projectFolderIcon(project) {
 
 function workshopProjectCard(project) {
   const collection = project.featured ? 'FEATURED' : 'ARCHIVE';
-  return `<a class="workspace-project-card project-${project.slug}" href="#/workshop/${project.slug}" data-project-card data-project-order="${project.order}" data-project-collection="${project.featured ? 'featured' : 'archive'}" data-project-category="${escapeHtml(project.category)}" data-project-domains="${escapeHtml(project.domains.join('|'))}" data-project-experimental="${project.experimental === true}" style="--project-accent:${project.accent};--project-deep:${project.deep};--project-soft:${project.soft}">
+  return `<article class="workspace-project-card project-${project.slug}" data-project-card data-project-order="${project.order}" data-project-collection="${project.featured ? 'featured' : 'archive'}" data-project-category="${escapeHtml(project.category)}" data-project-domains="${escapeHtml(project.domains.join('|'))}" data-project-experimental="${project.experimental === true}" style="--project-accent:${project.accent};--project-deep:${project.deep};--project-soft:${project.soft}">
+    <a class="workspace-project-hitarea" href="#/workshop/${project.slug}" aria-label="Open ${escapeHtml(project.name)} project in the Workshop"></a>
+    ${projectDemoAction(project)}
     <span class="workspace-project-number">${String(project.order).padStart(2, '0')} / ${collection}</span>
     <span class="workspace-project-art">${projectFolderIcon(project)}</span>
     <span class="workspace-project-identity">${escapeHtml(project.identity)}</span>
@@ -1429,7 +1440,7 @@ function workshopProjectCard(project) {
     <span class="workspace-project-category">${escapeHtml(project.category)}</span>
     <span class="workspace-project-summary">${escapeHtml(project.tagline)}</span>
     <b>Open project <span aria-hidden="true">↗</span></b>
-  </a>`;
+  </article>`;
 }
 
 function workshopDirectory() {
